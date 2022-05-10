@@ -9,3 +9,6 @@ argo:
 
 cert_manager:
   use: true
+
+reloader:
+  use: true

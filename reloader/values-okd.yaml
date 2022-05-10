@@ -1,0 +1,7 @@
+upstream:
+  isOpenshift: true
+  reloader:
+    serviceMonitor:
+      enabled: true
+    deployment:
+      securityContext: false

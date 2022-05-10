@@ -6,3 +6,6 @@ argo:
   target_revision: main
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+
+cert_manager:
+  use: true

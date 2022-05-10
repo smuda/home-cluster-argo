@@ -1,0 +1,15 @@
+apiVersion: v2
+name: cert-manager-install
+description: Install cert-manager and configure cluster issuer
+
+type: application
+
+version: 0.1.0
+
+appVersion: "1.8.0"
+
+dependencies:
+  - name: cert-manager
+    version: v1.8.0
+    alias: upstream
+    repository: https://charts.jetstack.io

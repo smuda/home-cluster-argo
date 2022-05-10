@@ -1,0 +1,6 @@
+namespace: cert-manager
+
+# Dependency values
+upstream:
+  installCRDs: true
+  namespace: cert-manager

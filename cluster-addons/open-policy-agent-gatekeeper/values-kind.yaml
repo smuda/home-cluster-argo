@@ -1,0 +1,2 @@
+upstream:
+  replicas: 1

@@ -1,2 +1,8 @@
 ingressNginx:
   use: false
+
+kubecost:
+  use: false
+
+openPolicyAgent:
+  use: false

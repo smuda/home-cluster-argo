@@ -38,6 +38,10 @@ nginxIngress:
   use: false
   podSecurityLevel: baseline
 
+openPolicyAgent:
+  use: true
+  podSecurityLevel: baseline
+
 prometheus:
   use: false
   podSecurityLevel: baseline

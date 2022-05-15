@@ -1,0 +1,29 @@
+{{ if .Values.open_policy_agent.use }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: open-policy-agent-config
+  namespace: argocd
+  finalizers:
+{{ .Values.argo.finalizers | toYaml | indent 4 }}
+spec:
+  destination:
+    namespace: gatekeeper-system
+    server: https://kubernetes.default.svc
+  project: {{ .Values.argo.project }}
+  source:
+    helm:
+      version: v3
+      releaseName: gatekeeper-config
+      valueFiles:
+        - {{ .Values.values_file }}
+    path: open-policy-agent-gatekeeper-config/
+    repoURL: https://github.com/smuda/home-cluster-argo.git
+    targetRevision: {{ .Values.argo.target_revision }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
+{{ end }}

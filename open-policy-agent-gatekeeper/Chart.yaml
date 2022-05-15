@@ -1,0 +1,15 @@
+apiVersion: v2
+name: open-policy-agent
+description: Installs open-policy-agent-gatekeeper gatekeeper with configurations
+
+type: application
+
+version: 0.1.0
+
+appVersion: "v3.8.1"
+
+dependencies:
+  - name: gatekeeper
+    version: v3.8.1
+    alias: upstream
+    repository: https://open-policy-agent.github.io/gatekeeper/charts

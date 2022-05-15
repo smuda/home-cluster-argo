@@ -17,3 +17,6 @@ okd:
 
 clusterAdmins:
   use: true
+
+open_policy_agent:
+  use: true

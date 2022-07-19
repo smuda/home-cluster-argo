@@ -12,3 +12,6 @@ cert_manager:
 
 reloader:
   use: true
+
+ingressNginx:
+  use: true

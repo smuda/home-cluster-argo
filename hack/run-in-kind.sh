@@ -19,6 +19,7 @@ echo "Current git branch is ${GIT_REVISION}"
 echo ""
 echo "Create cluster"
 kind create cluster \
+  --config="${SCRIPT_DIR}/kind.yaml" \
   --name home-cluster \
   --kubeconfig "${KUBECONFIG}" \
   --wait 120s \

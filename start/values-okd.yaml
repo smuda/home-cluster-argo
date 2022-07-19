@@ -1,1 +1,4 @@
 values_file: values-okd.yaml
+
+ingressNginx:
+  use: false

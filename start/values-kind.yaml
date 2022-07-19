@@ -1,1 +1,4 @@
 values_file: values-kind.yaml
+
+dexidp:
+  use: true

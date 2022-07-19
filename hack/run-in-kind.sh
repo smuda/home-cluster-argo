@@ -17,9 +17,13 @@ GIT_REVISION=$(git rev-parse --abbrev-ref HEAD)
 echo "Current git branch is ${GIT_REVISION}"
 
 echo ""
+echo "Create cluster config"
+sed "s|{PROJECT_BASE}|${SCRIPT_DIR}/..|g" < "${SCRIPT_DIR}/kind.yaml" > "${SCRIPT_DIR}/kind-temp.yaml"
+
+echo ""
 echo "Create cluster"
 kind create cluster \
-  --config="${SCRIPT_DIR}/kind.yaml" \
+  --config="${SCRIPT_DIR}/kind-temp.yaml" \
   --name home-cluster \
   --kubeconfig "${KUBECONFIG}" \
   --wait 120s \

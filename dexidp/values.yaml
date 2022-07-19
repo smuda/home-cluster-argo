@@ -1,0 +1,36 @@
+hostname: dexidp.k8s.example.com
+certManager:
+  use: true
+  static: false
+
+upstream:
+  podSecurityContext:
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
+
+  securityContext:
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+
+  ingress:
+    enabled: true
+
+  volumes:
+    - name: cache-volume
+      emptyDir: {}
+  volumeMounts:
+    - mountPath: /tmp
+      name: cache-volume
+
+  config:
+    storage:
+      type: kubernetes
+      config:
+        inCluster: true
+
+    providers:

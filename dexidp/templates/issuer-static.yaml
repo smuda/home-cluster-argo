@@ -1,0 +1,24 @@
+{{ if and .Values.certManager.use .Values.certManager.static }}
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: dex-issuer
+spec:
+  ca:
+    secretName: dex-issuer-keys
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dex-issuer-keys
+stringData:
+  {{- $files := .Files }}
+  ca.crt: |-
+{{ $files.Get "certificates/kind/ca.pem" | indent 4 }}
+  tls.crt: |-
+{{ $files.Get "certificates/kind/ca.pem" | indent 4 }}
+  tls.key: |-
+{{ $files.Get "certificates/kind/ca.key" | indent 4 }}
+---
+{{ end }}

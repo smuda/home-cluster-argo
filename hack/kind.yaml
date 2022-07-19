@@ -1,5 +1,15 @@
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
+kubeadmConfigPatches:
+  - |
+    kind: ClusterConfiguration
+    apiServer:
+      extraArgs:
+        # oidc-ca-file: /etc/ssl/oidc-certs/ca.pem
+        oidc-issuer-url: https://dexidp.kind.example.com/dex
+        oidc-client-id: example-app
+        oidc-username-claim: email
+        oidc-groups-claim: groups
 nodes:
   - role: control-plane
     extraPortMappings:
@@ -7,3 +17,16 @@ nodes:
         hostPort: 80
       - containerPort: 30443
         hostPort: 443
+    extraMounts:
+      - hostPath: {PROJECT_BASE}/dexidp/certificates/kind/
+        containerPath: /etc/ssl/oidc-certs/
+        # optional: if set, the mount is read-only.
+        # default false
+        readOnly: true
+        # optional: if set, the mount needs SELinux relabeling.
+        # default false
+        selinuxRelabel: false
+        # optional: set propagation mode (None, HostToContainer or Bidirectional)
+        # see https://kubernetes.io/docs/concepts/storage/volumes/#mount-propagation
+        # default None
+        #propagation: HostToContainer

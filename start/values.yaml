@@ -15,3 +15,7 @@ reloader:
 
 ingressNginx:
   use: true
+
+dexidp:
+  use: false
+

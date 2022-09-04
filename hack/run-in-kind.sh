@@ -57,7 +57,8 @@ kubectl \
  --namespace=argocd \
   wait deployment ${DEPLOYMENTS} \
   --for condition=Available=True \
-  --timeout=120s
+  --timeout=120s \
+  || exit 1
 
 echo ""
 echo "Install application"

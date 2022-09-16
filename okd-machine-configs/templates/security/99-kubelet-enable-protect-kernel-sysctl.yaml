@@ -1,0 +1,26 @@
+{{ if .Values.machineConfigs.enableProtectKernelSysctl.enabled }}
+{{- range $mcpName := .Values.machineConfigPools }}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  name: "99-kubelet-enable-protect-kernel-sysctl-{{ $mcpName }}"
+  labels:
+    "pools.operator.machineconfiguration.openshift.io/{{ $mcpName }}": ""
+  annotations:
+    # This has to be applied before the kubelet config
+    # https://access.redhat.com/solutions/5957791
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+        - contents:
+            source: data:,vm.overcommit_memory%3D1%0Avm.panic_on_oom%3D0%0Akernel.panic%3D10%0Akernel.panic_on_oops%3D1%0Akernel.keys.root_maxkeys%3D1000000%0Akernel.keys.root_maxbytes%3D25000000
+          mode: 420
+          overwrite: true
+          path: /etc/sysctl.d/90-kubelet.conf
+---
+{{- end }}
+{{- end }}

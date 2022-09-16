@@ -9,3 +9,5 @@ okdCatalogSources:
   use: true
 okdComplianceOperator:
   use: true
+okdMachineConfigs:
+  use: true

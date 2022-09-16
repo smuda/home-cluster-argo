@@ -1,0 +1,27 @@
+machineConfigs:
+  enableProtectKernelSysctl:
+    enabled: false # This does not work on Fedora CoreOS.
+
+kubeletConfigs:
+  enabled: true
+  autosizeReserved:
+    enabled: true
+  tlsCipherSuites:
+    enabled: true
+  makeIPTablesUtilChains:
+    enabled: true
+  streamingConnectionIdleTimeout:
+    enabled: true
+  eventRecordQPS:
+    enabled: true
+  evictionConfig:
+    enabled: true
+  protectKernelDefaults:
+    enabled: false # this is a problem.
+                   # - Cannot join cluster with new nodes.
+                   # - For some reason, it does not trigger mcp reboot.
+
+machineConfigPools:
+  - master
+  - worker
+

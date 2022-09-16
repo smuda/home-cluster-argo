@@ -1,0 +1,26 @@
+{{ if and .Values.kubeletConfigs.enabled .Values.kubeletConfigs.evictionConfig.enabled }}
+{{- range $mcpName := .Values.machineConfigPools }}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: "eviction-thresholds-{{ $mcpName }}"
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+      "pools.operator.machineconfiguration.openshift.io/{{ $mcpName }}": ""
+  kubeletConfig:
+    evictionPressureTransitionPeriod: 0s
+    evictionMaxPodGracePeriod: 120s
+    evictionSoft:
+      imagefs.available: 15%
+      memory.available: 500Mi
+      nodefs.available: 10%
+      nodefs.inodesFree: 5%
+    evictionHard:
+      imagefs.available: 10%
+      memory.available: 200Mi
+      nodefs.available: 5%
+      nodefs.inodesFree: 4%
+---
+{{- end }}
+{{- end }}

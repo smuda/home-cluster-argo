@@ -1,29 +1,31 @@
-{{ if .Values.cert_manager.use }}
+{{ if .Values.okdComplianceOperator.use }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: okd-compliance-operator-config
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "11"
   finalizers:
 {{ .Values.argo.finalizers | toYaml | indent 4 }}
 spec:
   destination:
-    namespace: cert-manager
+    namespace: openshift-compliance
     server: https://kubernetes.default.svc
   project: {{ .Values.argo.project }}
   source:
     helm:
       version: v3
-      releaseName: cert-manager
+      releaseName: okd-compliance-operator-config
       valueFiles:
         - {{ .Values.values_file }}
-    path: cert-manager/
+    path: okd-compliance-operator-config/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
     automated:
-      prune: true
-      selfHeal: true
+      prune: false
+      selfHeal: false
 {{ end }}

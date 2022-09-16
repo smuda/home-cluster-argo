@@ -1,29 +1,31 @@
-{{ if .Values.okdComplianceOperator.use }}
+{{ if .Values.clusterAdmins.use }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: okd-compliance-operator-config
+  name: cluster-admins
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
   finalizers:
 {{ .Values.argo.finalizers | toYaml | indent 4 }}
 spec:
   destination:
-    namespace: openshift-compliance
+    namespace: cluster-admins
     server: https://kubernetes.default.svc
   project: {{ .Values.argo.project }}
   source:
     helm:
       version: v3
-      releaseName: okd-compliance-operator-config
+      releaseName: cluster-admins
       valueFiles:
         - {{ .Values.values_file }}
-    path: okd-compliance-operator-config/
+    path: cluster-admins/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
     automated:
-      prune: false
-      selfHeal: false
+      prune: true
+      selfHeal: true
 {{ end }}

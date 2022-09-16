@@ -1,0 +1,15 @@
+{{ if and .Values.kubeletConfigs.enabled .Values.kubeletConfigs.eventRecordQPS.enabled }}
+{{- range $mcpName := .Values.machineConfigPools }}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: "event-creation-{{ $mcpName }}"
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+      "pools.operator.machineconfiguration.openshift.io/{{ $mcpName }}": ""
+  kubeletConfig:
+    eventRecordQPS: 5
+---
+{{- end }}
+{{- end }}

@@ -1,23 +1,25 @@
-{{ if .Values.clusterAdmins.use }}
+{{ if .Values.cert_manager.use }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cluster-admins
+  name: cert-manager
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
   finalizers:
 {{ .Values.argo.finalizers | toYaml | indent 4 }}
 spec:
   destination:
-    namespace: cluster-admins
+    namespace: cert-manager
     server: https://kubernetes.default.svc
   project: {{ .Values.argo.project }}
   source:
     helm:
       version: v3
-      releaseName: cluster-admins
+      releaseName: cert-manager
       valueFiles:
         - {{ .Values.values_file }}
-    path: cluster-admins/
+    path: cert-manager/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:

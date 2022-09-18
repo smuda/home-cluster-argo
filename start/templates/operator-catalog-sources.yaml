@@ -1,0 +1,26 @@
+{{ if .Values.okdCatalogSources.use }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: operator-catalog-sources
+  namespace: argocd
+  finalizers:
+{{ .Values.argo.finalizers | toYaml | indent 4 }}
+spec:
+  destination:
+    namespace: openshift-marketplace
+    server: https://kubernetes.default.svc
+  project: {{ .Values.argo.project }}
+  source:
+    helm:
+      version: v3
+      releaseName: operator-catalog-sources
+      valueFiles:
+        - {{ .Values.values_file }}
+    path: operator-catalog-sources/
+    repoURL: https://github.com/smuda/home-cluster-argo.git
+    targetRevision: {{ .Values.argo.target_revision }}
+  syncPolicy:
+    automated:
+      selfHeal: false
+{{ end }}

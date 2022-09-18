@@ -21,3 +21,7 @@ ingressNginx:
 
 sealedSecrets:
   use: true
+okdCatalogSources:
+  use: false
+okdComplianceOperator:
+  use: false

@@ -2,3 +2,7 @@ values_file: values-okd.yaml
 
 ingressNginx:
   use: false
+okdCatalogSources:
+  use: true
+okdComplianceOperator:
+  use: true

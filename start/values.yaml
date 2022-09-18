@@ -10,6 +10,9 @@ argo:
 cert_manager:
   use: true
 
+clusterAdmins:
+  use: true
+
 reloader:
   use: true
 

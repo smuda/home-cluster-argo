@@ -1,0 +1,29 @@
+{{ if .Values.okdComplianceOperator.use }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: okd-config
+  namespace: argocd
+  finalizers:
+{{ .Values.argo.finalizers | toYaml | indent 4 }}
+spec:
+  destination:
+    namespace: openshift-config
+    server: https://kubernetes.default.svc
+  project: {{ .Values.argo.project }}
+  source:
+    helm:
+      version: v3
+      releaseName: okd-config
+      valueFiles:
+        - {{ .Values.values_file }}
+    path: okd/config/
+    repoURL: https://github.com/smuda/home-cluster-argo.git
+    targetRevision: {{ .Values.argo.target_revision }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=false
+    automated:
+      prune: true
+      selfHeal: false
+{{ end }}

@@ -2,3 +2,5 @@ openshiftConfig:
   namespace: openshift-config
   serviceAccount:
     name: patch-operator
+  clusterRole:
+    name: patch-operator-cluster

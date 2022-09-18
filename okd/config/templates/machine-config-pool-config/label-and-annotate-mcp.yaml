@@ -1,0 +1,20 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: "label-mcp-for-compliance-operator"
+spec:
+  serviceAccountRef:
+    name: "{{ .Values.openshiftConfig.serviceAccount.name }}"
+  patches:
+    master:
+      targetObjectRef:
+        apiVersion: machineconfiguration.openshift.io/v1
+        kind: MachineConfigPool
+        name: master
+      patchTemplate: |
+        metadata:
+          annotations:
+            complianceascode.io/node-role: worker
+          labels: 
+            complianceascode.io/node-role: worker
+      patchType: application/merge-patch+json

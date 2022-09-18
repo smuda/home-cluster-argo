@@ -1,0 +1,8 @@
+openshiftConfig:
+  namespace: openshift-config
+  serviceAccount:
+    name: patch-operator-config
+  clusterRole:
+    name: patch-operator-cluster-config
+  role:
+    name: patch-operator-update-patches-in-ns

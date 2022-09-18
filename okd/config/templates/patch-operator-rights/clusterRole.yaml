@@ -1,0 +1,21 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: "{{ .Values.openshiftConfig.clusterRole.name }}"
+rules:
+  - apiGroups:
+      - machineconfiguration.openshift.io
+    resources:
+      - '*'
+    verbs:
+      - get
+      - list
+      - watch
+      - patch
+      - update
+  - apiGroups:
+      - redhatcop.redhat.io
+    resources:
+      - '*'
+    verbs:
+      - '*'

@@ -3,10 +3,10 @@ kind: ScanSettingBinding
 metadata:
   name: rhcos4-moderate
 profiles:
-  - name: rhcos4-moderate
-    kind: Profile
+  - name: smuda-rhcos4-moderate
+    kind: TailoredProfile
     apiGroup: compliance.openshift.io/v1alpha1
 settingsRef:
-  name: default
+  name: smuda-default
   kind: ScanSetting
   apiGroup: compliance.openshift.io/v1alpha1

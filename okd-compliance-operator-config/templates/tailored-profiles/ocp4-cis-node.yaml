@@ -1,0 +1,15 @@
+apiVersion: compliance.openshift.io/v1alpha1
+kind: TailoredProfile
+metadata:
+  name: smuda-ocp4-cis-node
+spec:
+  description: Tailored profile of ocp4-cis-node
+  title: ocp4-cis-node
+  extends: ocp4-cis-node
+  setValues:
+    - name: ocp4-var-role-master
+      value: master
+      rationale: Set the mcp name for masters
+    - name: ocp4-var-role-worker
+      value: master
+      rationale: Set the mcp name for workers

@@ -3,6 +3,7 @@ kind: ClusterRole
 metadata:
   name: "{{ .Values.openshiftConfig.clusterRole.name }}"
 rules:
+  # To label and annotate the MachineConfigPools
   - apiGroups:
       - machineconfiguration.openshift.io
     resources:
@@ -13,9 +14,22 @@ rules:
       - watch
       - patch
       - update
+  # To setup OAuth with github
   - apiGroups:
-      - redhatcop.redhat.io
+      - config.openshift.io
     resources:
-      - '*'
+      - 'oauths'
     verbs:
-      - '*'
+      - get
+      - list
+      - watch
+      - patch
+      - update
+  # To setup OAuth with github, the operator needs to be able to list and watch on cluster scale
+  - apiGroups:
+      - ''
+    resources:
+      - 'secrets'
+    verbs:
+      - list
+      - watch

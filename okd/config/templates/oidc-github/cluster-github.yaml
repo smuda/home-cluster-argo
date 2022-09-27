@@ -1,0 +1,34 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: github-okd-oauth-provider
+spec:
+  serviceAccountRef:
+    name: "{{ .Values.openshiftConfig.serviceAccount.name }}"
+  patches:
+    gitlab-ocp-oauth-provider:
+      targetObjectRef:
+        apiVersion: config.openshift.io/v1
+        kind: OAuth
+        name: cluster
+      # The rather interesting look on clientID is to escape the curly brackets
+      patchTemplate: |
+        spec:
+          identityProviders:
+          - name: Github
+            type: GitHub
+            mappingMethod: claim
+            github:
+              clientID: "{{ "{{ (index . 1).data.clientID | b64dec }}" }}"
+              clientSecret:
+                name: {{ .Values.openshiftConfig.OAuth.github.secret.name }}
+              organizations:
+                {{- range .Values.openshiftConfig.OAuth.github.organizations }}
+                - "{{.}}"{{- end }}
+              teams: []
+      patchType: application/merge-patch+json
+      sourceObjectRefs:
+        - apiVersion: /v1
+          kind: Secret
+          name: {{ .Values.openshiftConfig.OAuth.github.secret.name }}
+          namespace: {{ .Release.Namespace }}

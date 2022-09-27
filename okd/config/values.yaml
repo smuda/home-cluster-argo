@@ -6,3 +6,10 @@ openshiftConfig:
     name: patch-operator-cluster-config
   role:
     name: patch-operator-update-patches-in-ns
+  OAuth:
+    github:
+      secret:
+        name: github-okd-oauth-provider
+      organizations:
+        - "AyoyAB"
+        - "AllbergKonsult"

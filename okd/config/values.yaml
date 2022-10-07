@@ -13,3 +13,5 @@ openshiftConfig:
       organizations:
         - "AyoyAB"
         - "AllbergKonsult"
+machineConfigPools:
+  patchLabels: true

@@ -24,6 +24,8 @@ kubeletConfigs:
 system:
   chrony:
     enabled: false
+  extensions:
+    usbGuard: false # Package usbguard does not exist for FCOS
   timezone:
     enabled: true
 

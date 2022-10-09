@@ -1,0 +1,20 @@
+{{- $root := . -}}
+{{- if and .Values.system.extensions.usbGuard -}}
+{{- range $mcpName := .Values.machineConfigPools }}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: {{ $mcpName }}
+  name: 80-extensions-{{ $mcpName }}
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+  extensions:
+    {{ if $root.Values.system.extensions.usbGuard -}}
+    - usbguard
+    {{- end }}
+---
+{{- end -}}
+{{- end -}}

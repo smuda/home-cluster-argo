@@ -5,7 +5,7 @@ kind: MachineConfig
 metadata:
   name: "99-timezone-{{ $mcpName }}"
   labels:
-    "pools.operator.machineconfiguration.openshift.io/{{ $mcpName }}": ""
+    machineconfiguration.openshift.io/role: {{ $mcpName }}
 spec:
   config:
     ignition:

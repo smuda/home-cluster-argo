@@ -21,6 +21,10 @@ kubeletConfigs:
                    # - Cannot join cluster with new nodes.
                    # - For some reason, it does not trigger mcp reboot.
 
+system:
+  chrony:
+    enabled: true
+
 machineConfigPools:
   - master
   - worker

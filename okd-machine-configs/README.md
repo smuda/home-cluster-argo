@@ -1,5 +1,20 @@
 # OKD Machine Configs
 
+# butane 
+Using `content: inline:` in a machine config does not seem to always work as expected.
+
+Therefore a number of machine configs (especially in the system folder) are generated with `butane`.
+However, the resulting template is used for multiple machine config pools, so care must be
+taken when updating the content.
+
+Run butane to update the yaml file:
+
+```shell
+butane --strict templates/system/99-chrony-master.bu -o templates/system/99-chrony.yaml
+```
+
+Then use git to restore helm variables.
+
 ## Security Compliance
 
 When you have installed the Compliance Operator, you can query the results:

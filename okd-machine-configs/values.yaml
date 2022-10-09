@@ -23,6 +23,8 @@ kubeletConfigs:
 
 system:
   chrony:
+    enabled: false
+  timezone:
     enabled: true
 
 machineConfigPools:

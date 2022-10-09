@@ -1,3 +1,4 @@
+{{- if .Values.system.timezone.enabled -}}
 {{- range $mcpName := .Values.machineConfigPools }}
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
@@ -25,4 +26,5 @@ spec:
           enabled: true
           name: custom-timezone.service
 ---
-{{- end }}
+{{- end -}}
+{{- end -}}

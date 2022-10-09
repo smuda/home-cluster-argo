@@ -5,7 +5,7 @@ kind: MachineConfig
 metadata:
   name: "99-kubelet-enable-protect-kernel-sysctl-{{ $mcpName }}"
   labels:
-    "pools.operator.machineconfiguration.openshift.io/{{ $mcpName }}": ""
+    machineconfiguration.openshift.io/role: {{ $mcpName }}
   annotations:
     # This has to be applied before the kubelet config
     # https://access.redhat.com/solutions/5957791

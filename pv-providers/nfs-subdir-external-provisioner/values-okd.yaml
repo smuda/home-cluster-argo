@@ -1,0 +1,6 @@
+nfs-subdir-external-provisioner:
+  # The service account is pre-created during cluster creation and give
+  # special rights (hostmount-anyuid).
+  serviceAccount:
+    create: false
+    name: nfs-pod-provisioner-sa

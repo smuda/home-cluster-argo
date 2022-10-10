@@ -1,4 +1,4 @@
-{{ if .Values.okdComplianceOperator.use }}
+{{ if .Values.okd.complianceOperator.use }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -19,7 +19,7 @@ spec:
       releaseName: okd-compliance-operator-config
       valueFiles:
         - {{ .Values.values_file }}
-    path: okd-compliance-operator-config/
+    path: okd/compliance-operator-config/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:

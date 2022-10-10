@@ -1,4 +1,4 @@
-{{ if .Values.okdCatalogSources.use }}
+{{ if .Values.okd.catalogSources.use }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -19,7 +19,7 @@ spec:
       releaseName: operator-catalog-sources
       valueFiles:
         - {{ .Values.values_file }}
-    path: operator-catalog-sources/
+    path: okd/operator-catalog-sources/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:

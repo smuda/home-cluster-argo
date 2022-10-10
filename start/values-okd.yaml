@@ -3,11 +3,12 @@ values_file: values-okd.yaml
 ingressNginx:
   use: false
 
-okdPatchOperator:
-  use: true
-okdCatalogSources:
-  use: true
-okdComplianceOperator:
-  use: true
-okdMachineConfigs:
-  use: true
+okd:
+  patchOperator:
+    use: true
+  catalogSources:
+    use: true
+  complianceOperator:
+    use: true
+  machineConfigs:
+    use: true

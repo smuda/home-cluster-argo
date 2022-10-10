@@ -22,11 +22,16 @@ ingressNginx:
 sealedSecrets:
   use: true
 
-okdPatchOperator:
-  use: false
-okdCatalogSources:
-  use: false
-okdComplianceOperator:
-  use: false
-okdMachineConfigs:
-  use: false
+pvProviders:
+  nfs:
+    use: true
+
+okd:
+  patchOperator:
+    use: false
+  catalogSources:
+    use: false
+  complianceOperator:
+    use: false
+  machineConfigs:
+    use: false

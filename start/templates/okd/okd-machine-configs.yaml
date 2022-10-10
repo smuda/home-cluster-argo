@@ -1,4 +1,4 @@
-{{ if .Values.okdMachineConfigs.use }}
+{{ if .Values.okd.machineConfigs.use }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -19,7 +19,7 @@ spec:
       releaseName: okd-machine-configs
       valueFiles:
         - {{ .Values.values_file }}
-    path: okd-machine-configs/
+    path: okd/machine-configs/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:

@@ -1,4 +1,4 @@
-{{ if .Values.okdPatchOperator.use }}
+{{ if .Values.okd.patchOperator.use }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -17,7 +17,7 @@ spec:
       releaseName: okd-patch-operator
       valueFiles:
         - {{ .Values.values_file }}
-    path: okd-patch-operator/
+    path: okd/patch-operator/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:

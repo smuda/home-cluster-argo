@@ -1,6 +1,61 @@
 namespace: cert-manager
 
+quota:
+  use: false
+
+
 # Dependency values
 upstream:
   installCRDs: true
   namespace: cert-manager
+  image:
+    repository: quay.io/jetstack/cert-manager-controller
+  resources:
+   requests:
+     cpu: 100m
+     memory: 128Mi
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+
+  prometheus:
+    enabled: true
+    servicemonitor:
+      enabled: true
+
+### webhook ###
+  webhook:
+    image:
+      repository: quay.io/jetstack/cert-manager-webhook
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 32Mi
+
+### cainjector ###
+  cainjector:
+    image:
+      repository: quay.io/jetstack/cert-manager-cainjector
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi

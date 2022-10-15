@@ -1,9 +1,11 @@
+{{- if .Values.quota.use -}}
 apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: compute-resources
 spec:
+  {{ with .Values.quota.hard -}}
   hard:
-    requests.cpu: "1"
-    requests.memory: 1Gi
-    limits.memory: 2Gi
+  {{- toYaml . | nindent 4  }}
+  {{- end -}}
+{{- end -}}

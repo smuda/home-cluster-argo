@@ -4,6 +4,6 @@ metadata:
   name: compute-resources
 spec:
   hard:
-    requests.cpu: "100m"
+    requests.cpu: "1"
     requests.memory: 1Gi
     limits.memory: 2Gi

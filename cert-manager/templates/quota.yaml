@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: compute-resources
+  name: cert-manager
 spec:
   {{ with .Values.quota.hard -}}
   hard:

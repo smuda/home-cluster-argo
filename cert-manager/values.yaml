@@ -15,7 +15,6 @@ upstream:
      cpu: 100m
      memory: 128Mi
    limits:
-     cpu: '1'
      memory: 128Mi
   containerSecurityContext:
     allowPrivilegeEscalation: false
@@ -47,7 +46,6 @@ upstream:
         cpu: 100m
         memory: 32Mi
       limits:
-        cpu: '1'
         memory: 32Mi
 
 ### cainjector ###
@@ -66,5 +64,4 @@ upstream:
         cpu: 100m
         memory: 256Mi
       limits:
-        cpu: '1'
         memory: 256Mi

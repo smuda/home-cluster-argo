@@ -1,3 +1,10 @@
+quota:
+  use: true
+  hard:
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.memory: 1Gi
+
 upstream:
   isOpenshift: true
   reloader:

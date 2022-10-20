@@ -1,0 +1,11 @@
+{{- if .Values.quota.use -}}
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: reloader
+spec:
+  {{ with .Values.quota.hard -}}
+  hard:
+  {{- toYaml . | nindent 4  }}
+  {{- end -}}
+{{- end -}}

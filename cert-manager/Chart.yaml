@@ -10,6 +10,6 @@ appVersion: "1.8.0"
 
 dependencies:
   - name: cert-manager
-    version: v1.8.0
+    version: v1.10.0
     alias: upstream
     repository: https://charts.jetstack.io

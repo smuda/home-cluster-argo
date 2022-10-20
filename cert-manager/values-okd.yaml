@@ -3,4 +3,4 @@ quota:
   hard:
     requests.cpu: "1"
     requests.memory: 1Gi
-    limits.memory: 2Gi
+    limits.memory: 1Gi

@@ -3,7 +3,6 @@ namespace: cert-manager
 quota:
   use: false
 
-
 # Dependency values
 upstream:
   installCRDs: true
@@ -59,6 +58,7 @@ upstream:
           - ALL
       readOnlyRootFilesystem: true
       runAsNonRoot: true
+
     resources:
       requests:
         cpu: 100m
@@ -69,6 +69,14 @@ upstream:
   startupapicheck:
     image:
       repository: quay.io/jetstack/cert-manager-ctl
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+
     resources:
       requests:
         cpu: 100m

@@ -1,3 +1,10 @@
+quota:
+  use: true
+  hard:
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.memory: 1Gi
+
 nfs-subdir-external-provisioner:
   # The service account is pre-created during cluster creation and give
   # special rights (hostmount-anyuid).

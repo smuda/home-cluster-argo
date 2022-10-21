@@ -1,0 +1,36 @@
+{{ if .Values.okd.use }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: okd-start
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  finalizers:
+{{ .Values.argo.finalizers | toYaml | indent 4 }}
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: {{ .Values.argo.project }}
+  source:
+    helm:
+      version: v3
+      releaseName: okd-start
+      valueFiles:
+        - {{ .Values.values_file }}
+      parameters:
+        - name: values_file
+          value: {{ .Values.values_file }}
+        - name: argo.target_revision
+          value: {{ .Values.argo.target_revision }}
+    path: okd/_start/
+    repoURL: https://github.com/smuda/home-cluster-argo.git
+    targetRevision: {{ .Values.argo.target_revision }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=false
+    automated:
+      prune: true
+      selfHeal: true
+{{ end }}

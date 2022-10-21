@@ -1,0 +1,17 @@
+{{ if .Values.okd.use }}
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: okd
+spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  destinations:
+    - namespace: 'openshift-*'
+      server: '*'
+    - namespace: 'okd-*'
+      server: '*'
+  sourceRepos:
+    - '*'
+{{- end -}}

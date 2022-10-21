@@ -4,11 +4,4 @@ ingressNginx:
   use: false
 
 okd:
-  patchOperator:
-    use: true
-  catalogSources:
-    use: true
-  complianceOperator:
-    use: true
-  machineConfigs:
-    use: true
+  use: true

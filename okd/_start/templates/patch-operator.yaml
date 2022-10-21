@@ -1,31 +1,29 @@
-{{ if .Values.okd.machineConfigs.use }}
+{{ if .Values.patchOperator.use }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: okd-machine-configs
+  name: okd-patch-operator
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "5"
   finalizers:
 {{ .Values.argo.finalizers | toYaml | indent 4 }}
 spec:
   destination:
-    namespace: okd-machine-configs
+    namespace: okd-patch-operator
     server: https://kubernetes.default.svc
   project: {{ .Values.argo.project }}
   source:
     helm:
       version: v3
-      releaseName: okd-machine-configs
+      releaseName: okd-patch-operator
       valueFiles:
         - {{ .Values.values_file }}
-    path: okd/machine-configs/
+    path: okd/patch-operator/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
     automated:
-      prune: true
-      selfHeal: true
+      prune: false
+      selfHeal: false
 {{ end }}

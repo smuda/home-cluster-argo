@@ -1,31 +1,28 @@
-{{ if .Values.okd.complianceOperator.use }}
+{{ if .Values.catalogSources.use }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: okd-compliance-operator
+  name: operator-catalog-sources
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: "0"
   finalizers:
 {{ .Values.argo.finalizers | toYaml | indent 4 }}
 spec:
   destination:
-    namespace: openshift-compliance
+    namespace: openshift-marketplace
     server: https://kubernetes.default.svc
   project: {{ .Values.argo.project }}
   source:
     helm:
       version: v3
-      releaseName: okd-compliance-operator
+      releaseName: operator-catalog-sources
       valueFiles:
         - {{ .Values.values_file }}
-    path: okd/compliance-operator/
+    path: okd/operator-catalog-sources/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
     automated:
-      prune: false
       selfHeal: false
 {{ end }}

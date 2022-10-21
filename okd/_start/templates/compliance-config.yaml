@@ -1,23 +1,25 @@
-{{ if .Values.okd.patchOperator.use }}
+{{ if .Values.complianceOperator.use }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: okd-patch-operator
+  name: okd-compliance-config
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "11"
   finalizers:
 {{ .Values.argo.finalizers | toYaml | indent 4 }}
 spec:
   destination:
-    namespace: patch-operator
+    namespace: openshift-compliance
     server: https://kubernetes.default.svc
   project: {{ .Values.argo.project }}
   source:
     helm:
       version: v3
-      releaseName: okd-patch-operator
+      releaseName: okd-compliance-operator-config
       valueFiles:
         - {{ .Values.values_file }}
-    path: okd/patch-operator/
+    path: okd/compliance-operator-config/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:

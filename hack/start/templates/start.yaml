@@ -17,7 +17,7 @@ spec:
       parameters:
         - name: argo.target_revision
           value: {{ .Values.targetRevision }}
-    path: start/
+    path: _start/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.targetRevision }}
   syncPolicy:

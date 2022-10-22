@@ -1,16 +1,23 @@
 values_file: values.yaml
 
 argo:
-  project: default
+  project: addons
   target_revision: main
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 
-addons:
+cert_manager:
   use: true
 
-okd:
-  use: false
-
-clusterAdmins:
+reloader:
   use: true
+
+ingressNginx:
+  use: true
+
+sealedSecrets:
+  use: true
+
+pvProviders:
+  nfs:
+    use: true

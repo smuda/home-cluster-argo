@@ -1,8 +1,8 @@
-{{ if .Values.sealedSecrets.use }}
+{{ if .Values.reloader.use }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sealed-secrets
+  name: reloader
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "0"
@@ -10,21 +10,21 @@ metadata:
 {{ .Values.argo.finalizers | toYaml | indent 4 }}
 spec:
   destination:
-    namespace: kube-system
+    namespace: addon-reloader
     server: https://kubernetes.default.svc
   project: {{ .Values.argo.project }}
   source:
     helm:
       version: v3
-      releaseName: sealed-secrets
+      releaseName: reloader
       valueFiles:
         - {{ .Values.values_file }}
-    path: sealed-secrets/
+    path: cluster-addons/reloader/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:
     syncOptions:
-      - CreateNamespace=false
+      - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true

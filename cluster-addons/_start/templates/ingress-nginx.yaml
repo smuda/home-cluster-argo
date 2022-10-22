@@ -1,30 +1,30 @@
-{{ if .Values.pvProviders.nfs.use }}
+{{ if .Values.ingressNginx.use }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nfs
+  name: ingress-nginx
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "1"
   finalizers:
 {{ .Values.argo.finalizers | toYaml | indent 4 }}
 spec:
   destination:
-    namespace: nfs-provisioner
+    namespace: addon-ingress-nginx
     server: https://kubernetes.default.svc
   project: {{ .Values.argo.project }}
   source:
     helm:
       version: v3
-      releaseName: nfs-provisioner
+      releaseName: ingress-nginx
       valueFiles:
         - {{ .Values.values_file }}
-    path: pv-providers/nfs-subdir-external-provisioner/
+    path: cluster-addons/ingress-nginx/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:
     syncOptions:
-      - CreateNamespace=false
+      - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true

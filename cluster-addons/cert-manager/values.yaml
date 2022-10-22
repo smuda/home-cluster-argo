@@ -1,4 +1,4 @@
-namespace: cert-manager
+namespace: addon-cert-manager
 
 quota:
   use: false
@@ -6,7 +6,7 @@ quota:
 # Dependency values
 upstream:
   installCRDs: true
-  namespace: cert-manager
+  namespace: addon-cert-manager
   image:
     repository: quay.io/jetstack/cert-manager-controller
   resources:

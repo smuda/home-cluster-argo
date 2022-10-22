@@ -1,0 +1,17 @@
+{{ if .Values.addons.use }}
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: addons
+spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  destinations:
+    - namespace: 'addon-*'
+      server: '*'
+    - namespace: 'kube-system'
+      server: '*'
+  sourceRepos:
+    - '*'
+{{- end -}}

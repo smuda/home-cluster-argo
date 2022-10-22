@@ -1,30 +1,35 @@
-{{ if .Values.ingressNginx.use }}
+{{ if .Values.addons.use }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ingress-nginx
+  name: addons-start
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "0"
   finalizers:
 {{ .Values.argo.finalizers | toYaml | indent 4 }}
 spec:
   destination:
-    namespace: ingress-nginx
+    namespace: argocd
     server: https://kubernetes.default.svc
   project: {{ .Values.argo.project }}
   source:
     helm:
       version: v3
-      releaseName: ingress-nginx
+      releaseName: addons-start
       valueFiles:
         - {{ .Values.values_file }}
-    path: ingress-nginx/
+      parameters:
+        - name: values_file
+          value: {{ .Values.values_file }}
+        - name: argo.target_revision
+          value: {{ .Values.argo.target_revision }}
+    path: cluster-addons/_start/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:
     syncOptions:
-      - CreateNamespace=true
+      - CreateNamespace=false
     automated:
       prune: true
       selfHeal: true

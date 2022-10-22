@@ -1,0 +1,20 @@
+{{ if .Values.registry.addCA }}
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: "add-configmap-for-registry-cas"
+spec:
+  serviceAccountRef:
+    name: "{{ .Values.openshiftConfig.serviceAccount.name }}"
+  patches:
+    master:
+      targetObjectRef:
+        apiVersion: config.openshift.io/v1
+        kind: Image
+        name: cluster
+      patchTemplate: |
+        spec:
+        additionalTrustedCA:
+          name: registry-cas
+      patchType: application/merge-patch+json
+{{- end -}}

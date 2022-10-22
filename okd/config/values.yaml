@@ -15,3 +15,5 @@ openshiftConfig:
         - "AllbergKonsult"
 machineConfigPools:
   patchLabels: true
+registry:
+  addCA: true

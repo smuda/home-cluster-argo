@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  name: mcp-worker-pause-job
+spec:
+  template:
+    spec:
+      containers:
+        - image: registry.redhat.io/openshift4/ose-cli:v4.4
+          command:
+            - /bin/bash
+            - -c
+            - |
+{{- range .Values.machineConfigPools }}
+              echo ""
+              echo "Make sure there isn't already an update taking place"
+              oc wait machineconfigpool/{{ . }} --for condition=updated --timeout 600s || exit 1
+              echo ""
+              echo -n "Pause the MCP {{ . }} to not reboot in the middle of ArgoCD work."
+              echo $(oc patch --type=merge --patch='{"spec":{"paused":true}}' machineconfigpool/{{ . }} || exit 1)
+{{- end }}
+              echo "Sleep for ${SLEEP} seconds."
+              sleep ${SLEEP}
+              echo "DONE"
+          imagePullPolicy: IfNotPresent
+          name: mcp-worker-pause-job
+          env:
+            - name: SLEEP
+              value: "10"
+      restartPolicy: Never
+      serviceAccount: mcp-sync-job-sa
+      serviceAccountName: mcp-sync-job-sa

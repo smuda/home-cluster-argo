@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  name: mcp-worker-resume-job
+spec:
+  template:
+    spec:
+      containers:
+        - image: registry.redhat.io/openshift4/ose-cli:v4.4
+          command:
+            - /bin/bash
+            - -c
+            - |
+{{- range .Values.machineConfigPools }}
+              echo ""
+              echo -n "Unpause the MCP {{ . }}."
+              echo $(oc patch --type=merge --patch='{"spec":{"paused":false}}' machineconfigpool/{{ . }} || exit 1)
+{{ end }}
+              echo "Sleep for ${SLEEP} seconds."
+              sleep ${SLEEP}
+              echo "DONE"
+          imagePullPolicy: Always
+          name: mcp-worker-resume-job
+          env:
+            - name: SLEEP
+              value: "5"
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      serviceAccount: mcp-sync-job-sa
+      serviceAccountName: mcp-sync-job-sa
+      terminationGracePeriodSeconds: 30

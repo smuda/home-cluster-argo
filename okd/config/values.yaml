@@ -13,6 +13,8 @@ openshiftConfig:
       organizations:
         - "AyoyAB"
         - "AllbergKonsult"
+monitoring:
+  enableUserWorkload: true
 machineConfigPools:
   patchLabels: true
 registry:

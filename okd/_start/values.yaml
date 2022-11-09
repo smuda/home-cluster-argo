@@ -20,10 +20,16 @@ csrAutoApprover:
 garbageCollector:
   use: false
   podSecurityLevel: privileged
+
+hashicorpVaultConfigOperator:
+  use: true
+  podSecurityLevel: restricted
+
 keda:
   use: true
   namespace: openshift-keda
   podSecurityLevel: restricted
+
 machineConfigs:
   use: true
   podSecurityLevel: restricted

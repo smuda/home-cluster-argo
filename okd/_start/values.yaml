@@ -16,6 +16,11 @@ complianceOperator:
 garbageCollector:
   use: false
   podSecurityLevel: privileged
+
+hashicorpVaultConfigOperator:
+  use: true
+  podSecurityLevel: restricted
+
 machineConfigs:
   use: true
   podSecurityLevel: restricted

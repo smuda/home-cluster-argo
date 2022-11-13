@@ -1,3 +1,4 @@
+{{- $root := . -}}
 {{- if .Values.system.chrony.enabled -}}
 {{- range $mcpName := .Values.machineConfigPools }}
 apiVersion: machineconfiguration.openshift.io/v1
@@ -13,8 +14,8 @@ spec:
     storage:
       files:
         - contents:
-            compression: gzip
-            source: data:;base64,H4sIAAAAAAAC/2SSwW7cPAyE73oKArkkh8h/8N96C7ZF20sRJJsH0Eq0zawsCiSdhfP0hbSbNkGv9sznmaGv4FkR6nrIFEFRXlEURuEFbEaozNkXq55lgir8gtG8u4KHjEERIhelhAIvTIXK9McD17NZ1S/DcDqd/EfK0KR+tiXfeNelip8EQIdV1Jw7J/u1f/gc6+uP3YN3yqtETCQwyFqGOAuX7TbNsTbjI0aW1NNIMIRgcJopzv2Jbmq4QMwcjzAFKjpkVkUFowW9S0KjjZQRhtcgQ6bDBT/0N41/nzOf/oUZwwFBDWvFBFS6YiRRA5sFEdaagqG6K6ARyBR4HBUNSCEHmVDA5lDgDhQjl+TdEo7YeHDn/4P/26e/lXDICEeUghl0Kz0bvQUjLsDjuTSGfNvaXIJdP+53N96JxWZomKeKkcYNes/IxcL5gEfcFEaWvntYbcZiFDvcuyNu513Q4mUT3wwdGF7bsZ7OhFASROYjoXpXTNO61H6sz4s243c02N//vH3e797naO6MoV5m+PA/Xua2N0jBwiEoeteUitHeQGiabXje7z42TCQYjWXrtTJPvbN6l3n6G4mn90i/AwAA//+ZANDxEQMAAA==
+            {{- $filecontent := $root.Files.Get "files/system/chrony.conf" }}
+            source: "data:;base64,{{ $filecontent | b64enc }}"
           mode: 420
           overwrite: true
           path: /etc/chrony.conf

@@ -25,9 +25,12 @@ system:
   chrony:
     enabled: true
   extensions:
-    usbGuard: false # Package usbguard does not exist for FCOS
+    usbGuard: false # Extensions does not exist for FCOS.
   timezone:
     enabled: true
+
+security:
+  usbGuard: true # Installs usbguard for FCOS.
 
 machineConfigPools:
   - master

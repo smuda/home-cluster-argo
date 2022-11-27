@@ -2,10 +2,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: okd-machine-configs
+  name: okd-pre-machine-configs
   namespace: {{ .Values.argo.apps_namespace }}
   annotations:
-    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/sync-wave: "4"
   finalizers:
 {{ .Values.argo.finalizers | toYaml | indent 4 }}
 spec:
@@ -16,15 +16,15 @@ spec:
   source:
     helm:
       version: v3
-      releaseName: okd-machine-configs
+      releaseName: okd-machine-pre-configs
       valueFiles:
         - {{ .Values.values_file }}
-    path: okd/machine-configs/
+    path: okd/machine-pre-configs/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:
     syncOptions:
-      - CreateNamespace=false
+      - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true

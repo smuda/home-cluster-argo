@@ -3,6 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: addons
+  namespace: {{ .Values.argo.apps_namespace }}
 spec:
   clusterResourceWhitelist:
     - group: '*'

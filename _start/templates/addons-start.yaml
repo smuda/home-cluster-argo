@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: addons-start
-  namespace: argocd
+  namespace: {{ .Values.argo.apps_namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "0"
   finalizers:
@@ -24,6 +24,8 @@ spec:
           value: {{ .Values.values_file }}
         - name: argo.target_revision
           value: {{ .Values.argo.target_revision }}
+        - name: argo.apps_namespace
+          value: {{ .Values.argo.apps_namespace }}
     path: cluster-addons/_start/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}

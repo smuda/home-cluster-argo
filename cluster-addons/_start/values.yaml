@@ -5,6 +5,7 @@ argo:
   target_revision: main
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  apps_namespace: argocd
 
 cert_manager:
   use: true

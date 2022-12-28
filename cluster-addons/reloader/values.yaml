@@ -6,8 +6,6 @@ upstream:
     reloadStrategy: annotations
     readOnlyRootFileSystem: true
     deployment:
-      image:
-        name: registry.okd4.example.com:5010/stakater/reloader
       resources:
         requests:
           cpu: "10m"

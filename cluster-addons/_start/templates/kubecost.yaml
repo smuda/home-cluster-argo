@@ -1,30 +1,28 @@
-{{ if .Values.sealedSecrets.use }}
+{{ if .Values.kubecost.use }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sealed-secrets
+  name: kubecost
   namespace: {{ .Values.argo.apps_namespace }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
   finalizers:
 {{ .Values.argo.finalizers | toYaml | indent 4 }}
 spec:
   destination:
-    namespace: {{ .Values.sealedSecrets.namespace }}
+    namespace: addon-kubecost
     server: https://kubernetes.default.svc
   project: {{ .Values.argo.project }}
   source:
     helm:
       version: v3
-      releaseName: sealed-secrets
+      releaseName: kubecost
       valueFiles:
         - {{ .Values.values_file }}
-    path: cluster-addons/sealed-secrets/
+    path: cluster-addons/kubecost/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:
     syncOptions:
-      - CreateNamespace=false
+      - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true

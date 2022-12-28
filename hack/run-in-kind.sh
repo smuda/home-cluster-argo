@@ -61,9 +61,34 @@ kubectl \
   || exit 1
 
 echo ""
+echo "Prepare for sealed-secrets"
+kubectl \
+  --kubeconfig "${KUBECONFIG}" \
+  apply -f "${SCRIPT_DIR}/sealed-secrets-secret.yml" \
+  || exit 1
+
+echo ""
 echo "Install application"
 helm --kubeconfig "${KUBECONFIG}" \
   --namespace=argocd \
   upgrade -i start start \
   -f start/values-kind.yaml \
   --set "targetRevision=${GIT_REVISION}"
+
+echo ""
+echo "Wait for ingress-nginx"
+while ! kubectl \
+ --kubeconfig "${KUBECONFIG}" \
+ --namespace=addon-ingress-nginx \
+  wait deployment ingress-nginx-upstream-controller \
+  --for condition=Available=True \
+  --timeout=120s
+do
+  echo "Try again"
+  sleep 5
+done
+
+echo ""
+ARGO_PWD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+
+echo "You can now login to argo with https://argocd.example.com using admin and ${ARGO_PWD}"

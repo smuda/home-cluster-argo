@@ -1,3 +1,6 @@
+quota:
+  use: false
+
 nfs-subdir-external-provisioner:
   resources:
     requests:

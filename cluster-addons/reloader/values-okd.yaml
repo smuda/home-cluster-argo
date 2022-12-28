@@ -12,3 +12,5 @@ upstream:
       enabled: true
     deployment:
       securityContext: false
+      image:
+        name: registry.okd4.example.com:5010/stakater/reloader

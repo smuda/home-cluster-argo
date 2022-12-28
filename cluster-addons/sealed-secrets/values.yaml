@@ -1,6 +1,4 @@
 sealed-secrets:
-  image:
-    registry: registry.okd4.example.com:5010
   fullnameOverride: sealed-secrets-controller
   serviceAccount:
     create: true

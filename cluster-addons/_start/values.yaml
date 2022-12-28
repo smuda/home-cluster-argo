@@ -10,15 +10,19 @@ argo:
 cert_manager:
   use: true
 
-reloader:
-  use: true
-
 ingressNginx:
   use: true
 
-sealedSecrets:
+kubecost:
   use: true
 
 pvProviders:
   nfs:
     use: true
+
+reloader:
+  use: true
+
+sealedSecrets:
+  use: true
+  namespace: kube-system

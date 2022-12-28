@@ -1,0 +1,29 @@
+{{ if .Values.kubecost.use }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubecost
+  namespace: {{ .Values.argo.apps_namespace }}
+  finalizers:
+{{ .Values.argo.finalizers | toYaml | indent 4 }}
+spec:
+  destination:
+    namespace: addon-kubecost
+    server: https://kubernetes.default.svc
+  project: {{ .Values.argo.project }}
+  source:
+    helm:
+      version: v3
+      releaseName: kubecost
+      valueFiles:
+        - {{ .Values.values_file }}
+    path: cluster-addons/kubecost/
+    repoURL: https://github.com/smuda/home-cluster-argo.git
+    targetRevision: {{ .Values.argo.target_revision }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
+{{ end }}

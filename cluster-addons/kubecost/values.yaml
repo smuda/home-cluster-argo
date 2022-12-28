@@ -1,0 +1,47 @@
+upstream:
+  kubecostToken: "YXNkZkBhc2RmLmNvbQ==xm343yadf98"
+
+  kubecostProductConfigs:
+    currencyCode: SEK
+    clusterProfile: development
+
+  pricingCsv:
+    enabled: false
+    location:
+      provider: "AWS"
+      region: "eu-north-1"
+
+  kubecostFrontend:
+    resources:
+      requests:
+        cpu: "10m"
+        memory: "55Mi"
+      limits:
+      #  cpu: "100m"
+        memory: "256Mi"
+
+  kubecostModel:
+    resources:
+      requests:
+        cpu: "200m"
+        memory: "55Mi"
+      limits:
+      #  cpu: "800m"
+        memory: "256Mi"
+
+  ingress:
+    enabled: true
+  networkPolicy:
+    enabled: false
+  podSecurityPolicy:
+    enabled: false # Doesn't work for really new K8s
+
+  prometheus:
+    server:
+      resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+      limits:
+      #  cpu: 500m
+        memory: 512Mi

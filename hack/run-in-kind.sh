@@ -61,6 +61,13 @@ kubectl \
   || exit 1
 
 echo ""
+echo "Prepare for sealed-secrets"
+kubectl \
+  --kubeconfig "${KUBECONFIG}" \
+  apply -f "${SCRIPT_DIR}/sealed-secrets-secret.yml" \
+  || exit 1
+
+echo ""
 echo "Install application"
 helm --kubeconfig "${KUBECONFIG}" \
   --namespace=argocd \

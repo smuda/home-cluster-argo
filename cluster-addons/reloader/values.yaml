@@ -1,3 +1,6 @@
+quota:
+  use: false
+
 upstream:
   reloader:
     reloadStrategy: annotations

@@ -1,3 +1,6 @@
 pvProviders:
   nfs:
     use: false
+
+sealedSecrets:
+  namespace: addon-sealed-secrets

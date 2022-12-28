@@ -25,3 +25,4 @@ reloader:
 
 sealedSecrets:
   use: true
+  namespace: kube-system

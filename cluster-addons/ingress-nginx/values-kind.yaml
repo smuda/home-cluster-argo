@@ -12,6 +12,9 @@ upstream:
     admissionWebhooks:
       enabled: false
 
+    extraArgs:
+      enable-ssl-passthrough: ""
+
     service:
       type: NodePort
       nodePorts:

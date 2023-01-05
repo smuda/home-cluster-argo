@@ -1,3 +1,6 @@
+global:
+  grafana:
+    {}
 rbac:
   create: true
   pspEnabled: true

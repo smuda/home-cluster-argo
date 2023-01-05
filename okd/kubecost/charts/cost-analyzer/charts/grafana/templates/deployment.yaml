@@ -112,8 +112,8 @@ spec:
 {{- end}}
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        {{- if .Values.grafana.containerSecurityContext }}
-          {{- toYaml .Values.grafana.containerSecurityContext | nindent 10 }}
+        {{- if .Values.containerSecurityContext }}
+          {{- toYaml .Values.containerSecurityContext | nindent 10 }}
         {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:

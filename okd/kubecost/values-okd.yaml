@@ -1,0 +1,186 @@
+cost-analyzer:
+  # Set to true to allow OCP create a route for Kubecost automatically
+  route:
+    enabled: true
+    annotations: {}
+    # Add custom dns URL for your route.
+    # Example:
+    host: kubecost.apps.okd4.example.com
+
+  # Security Context settings for Redhat OpenShift cluster:
+  kubecostProductConfigs:
+    clusterName: okd4.example.com
+  kubecostDeployment:
+    podSecurityContext:
+      seccompProfile:
+        type: RuntimeDefault
+      runAsNonRoot: true
+  kubecostModel:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+      capabilities:
+        drop:
+          - ALL
+  kubecostFrontend:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+      capabilities:
+        drop:
+          - ALL
+  kubecostNetworkCosts:
+    securityContext: {}
+    containerSecurityContext: {}
+
+  prometheus:
+    nodeExporter:
+      enabled: false
+    kubeStateMetrics:
+      enabled: false
+    kube-state-metrics:
+      disabled: true
+    podSecurityPolicy:
+      enabled: false
+    server:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 300Mi
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+        capabilities:
+          drop:
+              - ALL
+    sidecarContainers:
+      containerSecurityContext:
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
+    configmapReload:
+      prometheus:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        image:
+          repository: registry.okd4.example.com:5010/jimmidyson/configmap-reload
+        containerSecurityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
+  grafana:
+    rbac:
+      pspEnabled: false
+    grafana:
+      containerSecurityContext:
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
+    initContainers:
+      containerSecurityContext:
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
+    sidecar:
+      containerSecurityContext:
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
+  thanos:
+    thanosstore:
+      containerSecurityContext:
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
+    thanosqueryfrontend:
+      containerSecurityContext:
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
+    thanosquery:
+      containerSecurityContext:
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
+    thanoscompact:
+      containerSecurityContext:
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+              - ALL
+
+  networkCosts:
+    enabled: false # if enabling network costs, also set the given cloud provider to true
+    config:
+      services:
+        amazon-web-services: false
+        google-cloud-services: false
+        azure-cloud-services: false
+
+  global:
+    grafana:
+      enabled: false
+      proxy: false

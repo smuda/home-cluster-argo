@@ -1,0 +1,19 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: cost-analyzer
+    app.kubernetes.io/instance: kubecost
+    app.kubernetes.io/name: cost-analyzer
+  name: kubecost-cost-analyzer
+spec:
+  host: kubecost.apps.okd4.example.com
+  port:
+    targetPort: 9090
+  tls:
+    termination: edge
+  to:
+    kind: Service
+    name: kubecost-cost-analyzer
+    weight: 100
+  wildcardPolicy: None

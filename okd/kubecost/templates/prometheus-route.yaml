@@ -1,0 +1,19 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: prometheus
+    app.kubernetes.io/instance: prometheus
+    app.kubernetes.io/name: prometheus
+  name: prometheus
+spec:
+  host: prometheus.kubecost.apps.okd4.example.com
+  port:
+    targetPort: 9090
+  tls:
+    termination: edge
+  to:
+    kind: Service
+    name: kubecost-prometheus-server
+    weight: 100
+  wildcardPolicy: None

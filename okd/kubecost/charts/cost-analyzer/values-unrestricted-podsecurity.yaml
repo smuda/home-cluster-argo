@@ -1,0 +1,53 @@
+kubecostDeployment:
+  podSecurityContext:
+    # capabilities:
+    #   drop:
+    #   - ALL
+    fsGroup: 1000980000
+    runAsGroup: 1000980000
+    runAsUser: 1000980000
+    # runAsNonRoot: true
+    # allowPrivilegeEscalation: false
+kubecostModel:
+  containerSecurityContext: {}
+kubecostFrontend:
+  containerSecurityContext: {}
+kubecostNetworkCosts:
+  podSecurityContext: {}
+  containerSecurityContext: {}
+prometheus:
+  server:
+    # securityContext:
+    #   runAsUser: 1001
+    containerSecurityContext:
+      securityContext: 
+        runAsNonRoot: true
+  sidecarContainers:
+    containerSecurityContext:
+      securityContext: {}
+  configmapReload:
+    containerSecurityContext:
+      securityContext: {}
+grafana:
+  grafana:
+    containerSecurityContext:
+      securityContext: {}
+  initContainers:
+    containerSecurityContext:
+      securityContext: {}
+  sidecar:
+    containerSecurityContext:
+      securityContext: {}
+thanos:
+  thanosstore:
+    containerSecurityContext:
+      securityContext: {}
+  thanosqueryfrontend:
+    containerSecurityContext:
+      securityContext: {}
+  thanosquery:
+    containerSecurityContext:
+      securityContext: {}
+  thanoscompact:
+    containerSecurityContext:
+      securityContext: {}

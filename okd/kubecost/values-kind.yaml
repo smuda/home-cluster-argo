@@ -1,0 +1,18 @@
+upstream:
+  persistentVolume:
+    enabled: false
+
+  kubecostFrontend:
+    imagePullPolicy: IfNotPresent
+
+  sigV4Proxy:
+    imagePullPolicy: IfNotPresent
+
+  kubecostModel:
+    imagePullPolicy: IfNotPresent
+
+  networkCosts:
+    imagePullPolicy: IfNotPresent
+
+  clusterController:
+    imagePullPolicy: IfNotPresent

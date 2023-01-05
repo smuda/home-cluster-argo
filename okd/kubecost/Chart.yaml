@@ -1,0 +1,15 @@
+apiVersion: v2
+name: kubecost
+description: A Helm chart for Kubernetes
+
+type: application
+
+version: 0.1.0
+
+appVersion: "1.98.0"
+
+dependencies:
+  # https://github.com/kubecost/openshift-helm-chart/releases
+  - name: cost-analyzer
+    version: "*"
+    repository: "file://./charts/cost-analyzer"

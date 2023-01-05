@@ -13,5 +13,7 @@ catalogSources:
   use: true
 complianceOperator:
   use: true
+kubecost:
+  use: true
 machineConfigs:
   use: true

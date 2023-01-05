@@ -1,0 +1,3 @@
+cost-analyzer:
+  serviceMonitor: # the kubecost included prometheus uses scrapeConfigs and does not support service monitors. The following options assume an existing prometheus that supports serviceMonitors.
+    enabled: true

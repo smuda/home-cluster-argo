@@ -1,0 +1,29 @@
+{{ if .Values.garbageCollector.use }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: garbage-collector
+  namespace: {{ .Values.argo.apps_namespace }}
+  finalizers:
+{{ .Values.argo.finalizers | toYaml | indent 4 }}
+spec:
+  destination:
+    namespace: okd-garbage-collector
+    server: https://kubernetes.default.svc
+  project: {{ .Values.argo.project }}
+  source:
+    helm:
+      version: v3
+      releaseName: garbage-collector
+      valueFiles:
+        - {{ .Values.values_file }}
+    path: okd/garbage-collector/
+    repoURL: https://github.com/smuda/home-cluster-argo.git
+    targetRevision: {{ .Values.argo.target_revision }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
+{{ end }}

@@ -7,11 +7,14 @@ argo:
     - resources-finalizer.argocd.argoproj.io
   apps_namespace: argocd
 
-patchOperator:
-  use: true
+
 catalogSources:
   use: true
 complianceOperator:
   use: true
+garbageCollector:
+  use: true
 machineConfigs:
+  use: true
+patchOperator:
   use: true

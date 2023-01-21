@@ -1,2 +1,4 @@
 ingressNginx:
   use: false
+kubecost:
+  use: false

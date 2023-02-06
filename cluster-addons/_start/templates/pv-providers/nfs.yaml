@@ -24,7 +24,7 @@ spec:
     targetRevision: {{ .Values.argo.target_revision }}
   syncPolicy:
     syncOptions:
-      - CreateNamespace=false
+      - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true

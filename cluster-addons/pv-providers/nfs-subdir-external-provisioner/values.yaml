@@ -1,7 +1,7 @@
 quota:
   use: false
 
-nfs-subdir-external-provisioner:
+upstream:
   resources:
     requests:
       cpu: 100m
@@ -14,4 +14,6 @@ nfs-subdir-external-provisioner:
   storageClass:
     name: nfs-provider
     defaultClass: true
-
+  serviceAccount:
+    create: true
+    name: nfs-pod-provisioner-sa

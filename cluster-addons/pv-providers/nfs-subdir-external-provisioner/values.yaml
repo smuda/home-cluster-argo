@@ -12,6 +12,7 @@ upstream:
     server: 192.168.60.20
     path: /kube-volumes/nfs
   storageClass:
+    pathPattern: "${.PVC.namespace}/pvc-${.PVC.name}"
     name: nfs-provider
     defaultClass: true
   serviceAccount:

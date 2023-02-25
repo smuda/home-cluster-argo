@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: cluster-admins
-  namespace: {{ .Values.argo.apps_namespace }}
+  namespace: {{ .Values.argo.common.apps_namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "0"
   finalizers:
@@ -17,11 +17,12 @@ spec:
     helm:
       version: v3
       releaseName: cluster-admins
-      valueFiles:
-        - {{ .Values.values_file }}
+      {{- if .Values.argo.common.valueFiles }}
+      valueFiles: {{ .Values.argo.common.valueFiles | toYaml | nindent 8 }}
+      {{- end }}
     path: cluster-admins/
     repoURL: https://github.com/smuda/home-cluster-argo.git
-    targetRevision: {{ .Values.argo.target_revision }}
+    targetRevision: {{ .Values.argo.common.target_revision }}
   syncPolicy:
     syncOptions:
       - CreateNamespace=true

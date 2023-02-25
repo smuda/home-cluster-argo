@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: okd-start
-  namespace: {{ .Values.argo.apps_namespace }}
+  namespace: {{ .Values.argo.common.apps_namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "0"
   finalizers:
@@ -17,18 +17,14 @@ spec:
     helm:
       version: v3
       releaseName: okd-start
-      valueFiles:
-        - {{ .Values.values_file }}
+      {{- if .Values.argo.common.valueFiles }}
+      valueFiles: {{ .Values.argo.common.valueFiles | toYaml | nindent 8 }}
+      {{- end }}
       parameters:
-        - name: values_file
-          value: {{ .Values.values_file }}
-        - name: argo.target_revision
-          value: {{ .Values.argo.target_revision }}
-        - name: argo.apps_namespace
-          value: {{ .Values.argo.apps_namespace }}
+        {{- include "template.helmParameters" (dict "prefix" "argo.common" "data" .Values.argo.common) | indent 8 }}
     path: okd/_start/
     repoURL: https://github.com/smuda/home-cluster-argo.git
-    targetRevision: {{ .Values.argo.target_revision }}
+    targetRevision: {{ .Values.argo.common.target_revision }}
   syncPolicy:
     syncOptions:
       - CreateNamespace=false

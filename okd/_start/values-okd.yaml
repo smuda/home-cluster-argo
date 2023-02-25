@@ -1,0 +1,4 @@
+argo:
+  common:
+    valueFiles:
+      - values-okd.yaml

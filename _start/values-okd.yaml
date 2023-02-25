@@ -1,4 +1,7 @@
-values_file: values-okd.yaml
+argo:
+  common:
+    valueFiles:
+      - values-okd.yaml
 
 okd:
   use: true

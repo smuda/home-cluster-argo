@@ -15,7 +15,7 @@ spec:
       valueFiles:
         - values-kind.yaml
       parameters:
-        - name: argo.target_revision
+        - name: argo.common.target_revision
           value: {{ .Values.targetRevision }}
     path: _start/
     repoURL: https://github.com/smuda/home-cluster-argo.git

@@ -1,11 +1,12 @@
-values_file: values.yaml
-
 argo:
   project: default
-  target_revision: main
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-  apps_namespace: argocd
+  common:
+    valueFiles:
+      - values.yaml
+    target_revision: main
+    finalizers:
+      - resources-finalizer.argocd.argoproj.io
+    apps_namespace: argocd
 
 addons:
   use: true

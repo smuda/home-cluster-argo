@@ -1,1 +1,4 @@
-values_file: values-kind.yaml
+argo:
+  common:
+    valueFiles:
+      -  values-kind.yaml

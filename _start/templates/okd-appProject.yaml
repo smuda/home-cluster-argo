@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: okd
-  namespace: {{ .Values.argo.apps_namespace }}
+  namespace: {{ .Values.argo.common.apps_namespace }}
 spec:
   clusterResourceWhitelist:
     - group: '*'

@@ -9,7 +9,7 @@ points for example to `reloader` and `cert-manager`.
 
 # Value-files
 
-The "start" helm chart takes a value, `values_file`,
+The "start" helm chart takes an array value, `argo.common.valueFiles`,
 which is propagates to all the other charts.
 
 This is useful for adopting for example OKD specific stuff,

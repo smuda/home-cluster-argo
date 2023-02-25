@@ -6,14 +6,19 @@ argo:
     finalizers:
       - resources-finalizer.argocd.argoproj.io
     apps_namespace: argocd
+    enableLabelManagement: true
 
 catalogSources:
   use: true
 complianceOperator:
   use: true
+  podSecurityLevel: privileged
 garbageCollector:
   use: false
+  podSecurityLevel: privileged
 machineConfigs:
   use: true
+  podSecurityLevel: restricted
 patchOperator:
   use: true
+  podSecurityLevel: restricted

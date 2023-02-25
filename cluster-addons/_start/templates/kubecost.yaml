@@ -28,4 +28,11 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    {{- if .Values.argo.common.enableLabelManagement }}
+    managedNamespaceMetadata:
+      labels: # The labels to set on the application namespace
+        pod-security.kubernetes.io/audit: {{ .Values.kubecost.podSecurityLevel }}
+        pod-security.kubernetes.io/enforce: {{ .Values.kubecost.podSecurityLevel }}
+        pod-security.kubernetes.io/warn: {{ .Values.kubecost.podSecurityLevel }}
+    {{- end }}
 {{ end }}

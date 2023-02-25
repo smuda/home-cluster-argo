@@ -7,6 +7,7 @@ argo:
     finalizers:
       - resources-finalizer.argocd.argoproj.io
     apps_namespace: argocd
+    enableLabelManagement: true
 
 addons:
   use: true

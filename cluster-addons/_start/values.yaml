@@ -6,23 +6,30 @@ argo:
     finalizers:
       - resources-finalizer.argocd.argoproj.io
     apps_namespace: argocd
+    enableLabelManagement: true
 
 cert_manager:
   use: true
+  podSecurityLevel: restricted
 
 ingressNginx:
   use: true
+  podSecurityLevel: baseline
 
 kubecost:
   use: true
+  podSecurityLevel: privileged
 
 pvProviders:
   nfs:
     use: true
+    podSecurityLevel: privileged
 
 reloader:
   use: true
+  podSecurityLevel: baseline
 
 sealedSecrets:
   use: true
   namespace: kube-system
+  podSecurityLevel: restricted

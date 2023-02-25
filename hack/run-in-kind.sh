@@ -1,6 +1,7 @@
 #!/bin/bash
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-KUBECONFIG=~/.kube/home-cluster-argo
+CLUSTER_NAME=home-cluster
+KUBECONFIG=~/.kube/${CLUSTER_NAME}-argo
 
 pushd "${SCRIPT_DIR}" \
   || exit 1
@@ -9,7 +10,7 @@ touch "${KUBECONFIG}" || exit 1
 
 echo ""
 echo "Delete cluster if it exists"
-kind delete cluster --name home-cluster \
+kind delete cluster --name "${CLUSTER_NAME}" \
   || exit 1
 
 echo ""
@@ -20,7 +21,7 @@ echo ""
 echo "Create cluster"
 kind create cluster \
   --config="${SCRIPT_DIR}/kind.yaml" \
-  --name home-cluster \
+  --name "${CLUSTER_NAME}" \
   --kubeconfig "${KUBECONFIG}" \
   --wait 120s \
   || exit 1
@@ -50,14 +51,17 @@ kubectl --kubeconfig "${KUBECONFIG}" \
 
 echo ""
 echo "Wait for argocd to start"
-DEPLOYMENTS=$(kubectl --kubeconfig "${KUBECONFIG}" -n argocd get deploy -o json | jq -r '.items[].metadata.name' | tr '\n' ' ')
+DEPLOYMENTS=$(kubectl \
+  --kubeconfig "${KUBECONFIG}" \
+  -n argocd \
+  get deploy -o json | jq -r '.items[].metadata.name' | tr '\n' ' ')
 
 kubectl \
  --kubeconfig "${KUBECONFIG}" \
  --namespace=argocd \
   wait deployment ${DEPLOYMENTS} \
   --for condition=Available=True \
-  --timeout=120s \
+  --timeout=180s \
   || exit 1
 
 echo ""
@@ -69,7 +73,8 @@ kubectl \
 
 echo ""
 echo "Install application"
-helm --kubeconfig "${KUBECONFIG}" \
+helm \
+  --kubeconfig "${KUBECONFIG}" \
   --namespace=argocd \
   upgrade -i start start \
   -f start/values-kind.yaml \
@@ -89,6 +94,8 @@ do
 done
 
 echo ""
-ARGO_PWD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+ARGO_PWD=$(kubectl --kubeconfig "${KUBECONFIG}" \
+  -n argocd \
+  get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
-echo "You can now login to argo with https://argocd.example.com using admin and ${ARGO_PWD}"
+echo "You can now login to argo with https://argocd.example.com (127.0.0.1) using admin and ${ARGO_PWD}"

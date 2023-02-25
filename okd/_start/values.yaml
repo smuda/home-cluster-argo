@@ -12,7 +12,7 @@ catalogSources:
 complianceOperator:
   use: true
 garbageCollector:
-  use: true
+  use: false
 machineConfigs:
   use: true
 patchOperator:

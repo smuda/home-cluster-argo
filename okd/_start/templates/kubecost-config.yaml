@@ -1,0 +1,33 @@
+{{ if .Values.kubecost.use }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: okd-kubecost-config
+  namespace: {{ .Values.argo.common.apps_namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "11"
+{{- if .Values.argo.common.finalizers }}
+  finalizers: {{ .Values.argo.common.finalizers | toYaml | nindent 4 }}
+{{- end }}
+spec:
+  destination:
+    namespace: okd-kubecost
+    server: https://kubernetes.default.svc
+  project: {{ .Values.argo.project }}
+  source:
+    helm:
+      version: v3
+      releaseName: kubecost-config
+      {{- if .Values.argo.common.valueFiles }}
+      valueFiles: {{ .Values.argo.common.valueFiles | toYaml | nindent 8 }}
+      {{- end }}
+    path: okd/kubecost-config/
+    repoURL: https://github.com/smuda/home-cluster-argo.git
+    targetRevision: {{ .Values.argo.common.target_revision }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=false
+    automated:
+      prune: false
+      selfHeal: false
+{{ end }}

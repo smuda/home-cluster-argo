@@ -1,0 +1,11 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: kubecost
+spec:
+  channel: {{ .Values.version }}
+  installPlanApproval: Automatic
+  name: kubecost
+  source: community-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: kubecost.v{{ .Values.version }}

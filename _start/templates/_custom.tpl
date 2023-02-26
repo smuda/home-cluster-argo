@@ -21,6 +21,9 @@ Usage:
 - name: {{ .prefix }}
         {{- if kindIs "string" .data }}
   value: "{{ .data }}"
+  forceString: true
+        {{- else if kindIs "bool" .data }}
+  value: "{{ .data }}"
         {{- else }}
   value: {{ .data }}
         {{- end }}

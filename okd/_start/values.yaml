@@ -20,6 +20,9 @@ csrAutoApprover:
 garbageCollector:
   use: false
   podSecurityLevel: privileged
+kubecost:
+  use: true
+  podSecurityLevel: privileged
 machineConfigs:
   use: true
   podSecurityLevel: restricted

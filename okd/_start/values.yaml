@@ -24,6 +24,9 @@ keda:
   use: true
   namespace: openshift-keda
   podSecurityLevel: restricted
+kubecost:
+  use: true
+  podSecurityLevel: privileged
 machineConfigs:
   use: true
   podSecurityLevel: restricted

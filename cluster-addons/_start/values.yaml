@@ -36,7 +36,7 @@ metricsServer:
 
 openPolicyAgent:
   use: true
-  podSecurityLevel: baseline
+podSecurityLevel: restricted
 
 prometheus:
   use: false

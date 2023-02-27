@@ -3,27 +3,36 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: open-policy-agent
-  namespace: argocd
-  finalizers:
-{{ .Values.argo.finalizers | toYaml | indent 4 }}
+  namespace: {{ .Values.argo.common.apps_namespace }}
+{{- if .Values.argo.common.finalizers }}
+  finalizers: {{ .Values.argo.common.finalizers | toYaml | nindent 4 }}
+{{- end }}
 spec:
   destination:
-    namespace: gatekeeper-system
+    namespace: addon-gatekeeper-system
     server: https://kubernetes.default.svc
   project: {{ .Values.argo.project }}
   source:
     helm:
       version: v3
       releaseName: gatekeeper
-      valueFiles:
-        - {{ .Values.values_file }}
+      {{- if .Values.argo.common.valueFiles }}
+      valueFiles: {{ .Values.argo.common.valueFiles | toYaml | nindent 8 }}
+      {{- end }}
     path: cluster-addons/open-policy-agent-gatekeeper/
     repoURL: https://github.com/smuda/home-cluster-argo.git
-    targetRevision: {{ .Values.argo.target_revision }}
+    targetRevision: {{ .Values.argo.common.target_revision }}
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true
+    {{- if .Values.argo.common.enableLabelManagement }}
+    managedNamespaceMetadata:
+      labels: # The labels to set on the application namespace
+        pod-security.kubernetes.io/audit: {{ .Values.openPolicyAgent.podSecurityLevel }}
+        pod-security.kubernetes.io/enforce: {{ .Values.openPolicyAgent.podSecurityLevel }}
+        pod-security.kubernetes.io/warn: {{ .Values.openPolicyAgent.podSecurityLevel }}
+    {{- end }}
 {{ end }}

@@ -1,0 +1,13 @@
+argo-cd:
+  dex:
+    enabled: false
+  server:
+    config:
+      repositories: |
+        - type: helm
+          name: argo-cd
+          url: https://argoproj.github.io/argo-helm
+  configs:
+    secret:
+      # This is really `password` bcrypt hashed
+      argocdServerAdminPassword: $2a$10$atlthaDW9TadP0OduJCBruNQLEcoYzOFfgjRU5cwUjf3dDjbj2qIu

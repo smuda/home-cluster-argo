@@ -44,10 +44,10 @@ kubectl --kubeconfig "${KUBECONFIG}" \
 
 echo ""
 echo "Install argocd"
-kubectl --kubeconfig "${KUBECONFIG}" \
-  apply -n argocd \
-  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml \
-  || exit 1
+helm --kubeconfig "${KUBECONFIG}" \
+   install -n argocd \
+   argocd ./argo-install \
+   || exit 1
 
 echo ""
 echo "Wait for argocd to start"
@@ -98,4 +98,4 @@ ARGO_PWD=$(kubectl --kubeconfig "${KUBECONFIG}" \
   -n argocd \
   get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
-echo "You can now login to argo with https://argocd.example.com (127.0.0.1) using admin and ${ARGO_PWD}"
+echo "You can now login to argo with https://argocd.example.com (127.0.0.1) using admin and ${ARGO_PWD:-password}"

@@ -1,0 +1,19 @@
+apiVersion: policy.cert-manager.io/v1alpha1
+kind: CertificateRequestPolicy
+metadata:
+  name: apps-okd4-example-com
+spec:
+  allowed:
+    commonName:
+      value: "*"
+      required: true
+    dnsNames:
+      values:
+        - "*.okd4.example.com"
+        - "*.svc"
+    usages:
+      - "server auth"
+      - "client auth"
+  selector:
+    # Select all IssuerRef
+    issuerRef: {}

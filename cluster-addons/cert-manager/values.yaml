@@ -6,6 +6,9 @@ quota:
 # Dependency values
 upstream:
   nameOverride: cert-manager
+  extraArgs:
+    # Disable standard approver, use policy approver instead
+    - "--controllers=*,-certificaterequests-approver"
   installCRDs: true
   namespace: addon-cert-manager
   image:

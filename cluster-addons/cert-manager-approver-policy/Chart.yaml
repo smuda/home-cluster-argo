@@ -1,0 +1,14 @@
+apiVersion: v2
+name: cert-manager-install
+description: Install cert-manager-approver-policy
+
+type: application
+
+version: 1.0.0
+
+dependencies:
+  # https://github.com/cert-manager/approver-policy/releases
+  - name: cert-manager-approver-policy
+    version: v0.6.2
+    alias: upstream
+    repository: https://charts.jetstack.io

@@ -1,3 +1,6 @@
+kubecost:
+  use: false
+
 pvProviders:
   nfs:
     use: false

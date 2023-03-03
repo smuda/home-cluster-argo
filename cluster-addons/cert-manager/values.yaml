@@ -5,6 +5,7 @@ quota:
 
 # Dependency values
 upstream:
+  nameOverride: cert-manager
   installCRDs: true
   namespace: addon-cert-manager
   image:

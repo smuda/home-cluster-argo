@@ -6,8 +6,6 @@ type: application
 
 version: 1.0.0
 
-appVersion: "4.0.17"
-
 dependencies:
   # https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/releases
   - name: nfs-subdir-external-provisioner

@@ -6,8 +6,6 @@ type: application
 
 version: 1.0.0
 
-appVersion: "1.100.0"
-
 dependencies:
   # https://github.com/kubecost/cost-analyzer-helm-chart/releases
   - name: cost-analyzer

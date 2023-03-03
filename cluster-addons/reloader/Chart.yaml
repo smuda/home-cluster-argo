@@ -6,8 +6,6 @@ type: application
 
 version: 0.1.0
 
-appVersion: "0.0.126"
-
 dependencies:
   # https://github.com/stakater/Reloader/releases
   - name: reloader

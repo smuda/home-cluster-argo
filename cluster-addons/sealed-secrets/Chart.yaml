@@ -6,8 +6,6 @@ type: application
 
 version: 1.0.0
 
-appVersion: "2.7.1"
-
 dependencies:
   # https://github.com/bitnami-labs/sealed-secrets/releases
   - name: sealed-secrets

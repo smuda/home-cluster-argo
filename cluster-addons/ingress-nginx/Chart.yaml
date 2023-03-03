@@ -6,8 +6,6 @@ type: application
 
 version: 1.0.0
 
-appVersion: "4.4.0"
-
 dependencies:
   # https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/CHANGELOG.md
   - name: ingress-nginx

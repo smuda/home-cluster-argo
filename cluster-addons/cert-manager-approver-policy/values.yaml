@@ -1,0 +1,11 @@
+upstream:
+  nameOverride: cert-manager-approver-policy
+  resources:
+    # -- Kubernetes pod memory resource requests for approver-policy.
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    # -- Kubernetes pod resource limits for approver-policy.
+    limits:
+      cpu: 100m
+      memory: 128Mi

@@ -33,3 +33,13 @@ rules:
     verbs:
       - list
       - watch
+  # The patch operator wants this. For what? I don't know.
+  - apiGroups:
+      - config.openshift.io
+    resources:
+      - images
+    verbs:
+      - get
+      - list
+      - patch
+      - watch

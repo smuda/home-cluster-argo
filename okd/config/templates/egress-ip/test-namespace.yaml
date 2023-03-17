@@ -1,0 +1,6 @@
+{{- if and .Values.egressIp.use .Values.egressIp.testNamespace }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.egressIp.testNamespace }}
+{{- end }}

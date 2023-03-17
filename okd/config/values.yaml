@@ -19,3 +19,17 @@ machineConfigPools:
   patchLabels: true
 registry:
   addCA: true
+
+egressIp:
+  use: true
+  clusterRoleName: egressip-patcher
+  serviceAccount: egressip-patcher
+  testNamespace: egressip-test
+  hosts:
+    - name: worker1.okd4.example.com
+      subnets:
+        - 192.168.60.0/24
+  namespaces:
+    - namespace: egressip-test
+      egressIps:
+        - 192.168.60.190

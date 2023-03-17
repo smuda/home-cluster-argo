@@ -1,0 +1,25 @@
+{{ if .Values.egressIp.use }}
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: egressip-netnamespaces
+  annotations:
+    argocd.argoproj.io/sync-wave: "10" # Need to be after patch operator
+spec:
+  serviceAccountRef:
+    name: {{ .Values.egressIp.serviceAccount }}
+  patches:
+    {{- range .Values.egressIp.namespaces }}
+    namespace-{{ .namespace }}:
+      targetObjectRef:
+        apiVersion: network.openshift.io/v1
+        kind: NetNamespace
+        name: {{ .namespace }}
+      patchTemplate: |
+        egressIPs:
+        {{- range .egressIps }}
+          - {{ . }}
+        {{- end }}
+      patchType: application/merge-patch+json
+    {{- end }}
+{{- end }}

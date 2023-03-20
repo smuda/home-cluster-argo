@@ -2,6 +2,8 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
   name: github-okd-oauth-provider
+  annotations:
+    argocd.argoproj.io/sync-wave: "10" # Need to be after patch operator
 spec:
   serviceAccountRef:
     name: "{{ .Values.openshiftConfig.serviceAccount.name }}"

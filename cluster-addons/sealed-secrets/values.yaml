@@ -6,6 +6,22 @@ sealed-secrets:
     create: true
     clusterRole: true
   resources:
-    limits:
+    requests:
       cpu: 150m
       memory: 256Mi
+    limits:
+      memory: 256Mi
+  podSecurityContext:
+    enabled: true
+    seccompProfile:
+      type: "RuntimeDefault"
+  containerSecurityContext:
+    enabled: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+  livenessProbe:
+    initialDelaySeconds: 1
+  readinessProbe:
+    initialDelaySeconds: 1

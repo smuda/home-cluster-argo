@@ -6,8 +6,10 @@ sealed-secrets:
     create: true
     clusterRole: true
   resources:
-    limits:
+    requests:
       cpu: 150m
+      memory: 256Mi
+    limits:
       memory: 256Mi
   podSecurityContext:
     enabled: true

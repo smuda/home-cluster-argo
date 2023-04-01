@@ -21,3 +21,7 @@ sealed-secrets:
     capabilities:
       drop:
         - ALL
+  livenessProbe:
+    initialDelaySeconds: 1
+  readinessProbe:
+    initialDelaySeconds: 1

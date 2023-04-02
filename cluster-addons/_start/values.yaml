@@ -25,7 +25,7 @@ kubecost:
 
 pvProviders:
   nfs:
-    use: true
+    use: false
     podSecurityLevel: privileged
 
 reloader:

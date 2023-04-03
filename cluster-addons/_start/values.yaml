@@ -27,6 +27,8 @@ pvProviders:
   nfs:
     use: false
     podSecurityLevel: privileged
+  csiDriverNFS:
+    use: true
 
 reloader:
   use: true

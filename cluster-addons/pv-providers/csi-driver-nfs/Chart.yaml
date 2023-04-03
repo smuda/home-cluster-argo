@@ -1,0 +1,14 @@
+apiVersion: v2
+name: csi-driver-nfs
+description: A Helm chart which installs the NFS subdirectory external provisioner
+
+type: application
+
+version: 1.0.0
+
+dependencies:
+  # https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/releases
+  - name: csi-driver-nfs
+    version: v4.2.0
+    repository: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
+    alias: upstream

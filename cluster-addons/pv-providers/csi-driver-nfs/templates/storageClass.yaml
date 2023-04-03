@@ -16,3 +16,6 @@ reclaimPolicy: Delete
 volumeBindingMode: Immediate
 mountOptions:
   - nfsvers=4.1
+  - hard # forcing reconnect if NFS server is down
+  #- sec=sys # Specifies the type of security to utilize when authenticating an NFS connection.
+            #Its default setting is sec=sys, which uses local UNIX UIDs and GIDs by using AUTH_SYS to authenticate NFS operations.

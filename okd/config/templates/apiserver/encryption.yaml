@@ -1,0 +1,22 @@
+{{ if .Values.api.use }}
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: api-encryption
+  annotations:
+    argocd.argoproj.io/sync-wave: "10" # Need to be after patch operator
+spec:
+  serviceAccountRef:
+    name: {{ .Values.api.serviceAccount }}
+  patches:
+    encryption:
+      targetObjectRef:
+        apiVersion: config.openshift.io/v1
+        kind: APIServer
+        name: cluster
+      patchTemplate: |
+        spec:
+          encryption:
+            type: aescbc
+      patchType: application/merge-patch+json
+{{- end }}

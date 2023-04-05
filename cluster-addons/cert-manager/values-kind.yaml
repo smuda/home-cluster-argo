@@ -1,4 +1,4 @@
 upstream:
   prometheus:
     servicemonitor:
-      enabled: false
+      enabled: true

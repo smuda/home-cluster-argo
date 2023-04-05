@@ -1,0 +1,16 @@
+storageClass:
+  server: 192.168.60.20
+  share: /kube-volumes/nfs
+
+createSccBinding: false
+
+upstream:
+  controller:
+    runOnControlPlane: true
+    replicas: 1
+
+  serviceAccount:
+    create: true
+
+  rbac:
+    name: nfs # Is used to create the serviceAccount name.

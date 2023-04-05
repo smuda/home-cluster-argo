@@ -1,0 +1,21 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-csi
+  annotations:
+    "storageclass.kubernetes.io/is-default-class": "true"
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: {{ .Values.storageClass.server }}
+  share: {{ .Values.storageClass.share }}
+  subdir: "${pvc.metadata.namespace}/pvc-${pvc.metadata.name}"
+  # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
+  # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
+  # csi.storage.k8s.io/provisioner-secret-namespace: "default"
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+mountOptions:
+  - nfsvers=4.1
+  - hard # forcing reconnect if NFS server is down
+  #- sec=sys # Specifies the type of security to utilize when authenticating an NFS connection.
+            #Its default setting is sec=sys, which uses local UNIX UIDs and GIDs by using AUTH_SYS to authenticate NFS operations.

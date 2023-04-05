@@ -1,0 +1,17 @@
+{{- if .Values.createSccBinding -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: nfs-provisioner
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:openshift:scc:hostmount-anyuid
+subjects:
+  - kind: ServiceAccount
+    name: csi-{{ .Values.upstream.rbac.name }}-controller-sa
+    namespace: {{ .Release.Namespace }}
+  - kind: ServiceAccount
+    name: csi-{{ .Values.upstream.rbac.name }}-node-sa
+    namespace: {{ .Release.Namespace }}
+{{- end -}}

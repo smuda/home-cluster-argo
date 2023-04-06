@@ -5,6 +5,7 @@ kind: KubeletConfig
 metadata:
   name: "protect-kernel-defaults-{{ $mcpName }}"
   annotations:
+    complianceascode.io/node-role: "{{ $mcpName }}"
     # This has to be applied after 99-kubelet-enable-protect-kernel-sysctl
     # https://access.redhat.com/solutions/5957791
     argocd.argoproj.io/sync-wave: "9"

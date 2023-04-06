@@ -4,6 +4,8 @@ apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
 metadata:
   name: "enable-streaming-connections-{{ $mcpName }}"
+  annotations:
+    complianceascode.io/node-role: "{{ $mcpName }}"
 spec:
   machineConfigPoolSelector:
     matchLabels:

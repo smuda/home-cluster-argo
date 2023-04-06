@@ -4,6 +4,8 @@ apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
 metadata:
   name: "cipher-suites-{{ $mcpName }}"
+  annotations:
+    complianceascode.io/node-role: "{{ $mcpName }}"
 spec:
   machineConfigPoolSelector:
     matchLabels:

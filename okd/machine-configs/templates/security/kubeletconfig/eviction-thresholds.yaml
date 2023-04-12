@@ -15,11 +15,13 @@ spec:
     evictionMaxPodGracePeriod: 120s
     evictionSoft:
       imagefs.available: 15%
+      imagefs.inodesFree: 5%
       memory.available: 500Mi
       nodefs.available: 10%
       nodefs.inodesFree: 5%
     evictionHard:
       imagefs.available: 10%
+      imagefs.inodesFree: 4%
       memory.available: 200Mi
       nodefs.available: 5%
       nodefs.inodesFree: 4%

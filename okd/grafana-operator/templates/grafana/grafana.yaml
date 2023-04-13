@@ -1,0 +1,116 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: {{ .Release.Name}}-grafana-oauth
+  labels:
+    dashboards: "grafana"
+spec:
+  config:
+    log:
+      mode: "console"
+      level: "warn"
+    auth:
+      disable_login_form: "True"
+      disable_signout_menu: "False"
+      # The lifetime (days) an authenticated user can be inactive before being required to login at next visit. Default is 7 days.
+      login_maximum_inactive_lifetime_duration: "1h"
+      # The maximum lifetime (days) an authenticated user can be logged in since login time before being required to login. Default is 30 days.
+      login_maximum_lifetime_duration: "1d"
+      # How often should auth tokens be rotated for authenticated users when being active. The default is each 10 minutes.
+      token_rotation_interval_minutes: "10"
+    #auth.anonymous:
+    #  enabled: "True"
+    security:
+      admin_user: "admin"
+      {{- if .Values.grafana.secretPassword }}
+      admin_password: {{ .Values.grafana.secretPassword | quote }}
+      {{- else }}
+      admin_password: {{ randAlphaNum 24 | quote }}
+      {{- end }}
+    auth.proxy:
+      enabled: "True"
+      enable_login_token: "True"
+      header_property: username
+      header_name: X-Forwarded-User
+      auto_sign_up: "True"
+    users:
+      allow_sign_up: "False"
+      auto_assign_org: "True"
+      auto_assign_org_role: "Admin"
+  deployment:
+    spec:
+      template:
+        spec:
+          serviceAccount: {{ .Release.Name}}-grafana-sa
+          serviceAccountName: {{ .Release.Name}}-grafana-sa
+          containers:
+            - args:
+                - '-provider=openshift'
+                - '-pass-basic-auth=false'
+                - '-https-address=:9091'
+                - '-http-address='
+                - '-email-domain=*'
+                - '-upstream=http://localhost:3000'
+                - '-openshift-sar={"resource": "namespaces", "verb": "get"}'
+                - '-openshift-delegate-urls={"/": {"resource": "namespaces", "verb": "get"}}'
+                - '-tls-cert=/etc/tls/private/tls.crt'
+                - '-tls-key=/etc/tls/private/tls.key'
+                - '-client-secret-file=/var/run/secrets/kubernetes.io/serviceaccount/token'
+                - '-cookie-secret-file=/etc/proxy/secrets/session_secret'
+                - '-openshift-service-account={{ .Release.Name}}-grafana-sa'
+                - '-openshift-ca=/etc/pki/tls/cert.pem'
+                - '-openshift-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
+                - '-openshift-ca=/etc/grafana-configmaps/ocp-injected-certs/ca-bundle.crt'
+                - '-skip-auth-regex=^/metrics'
+              image: 'quay.io/openshift/origin-oauth-proxy'
+              name: proxy
+              ports:
+                - containerPort: 9091
+                  name: https
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 250Mi
+                limits:
+                  memory: 250Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - "ALL"
+                runAsNonRoot: true
+              volumeMounts:
+                - mountPath: /etc/tls/private
+                  name: secret-grafana-tls
+                  readOnly: false
+                - mountPath: /etc/proxy/secrets
+                  name: secret-grafana-proxy
+                  readOnly: false
+                - mountPath: /etc/grafana-configmaps/ocp-injected-certs
+                  name: ocp-injected-certs
+                  readOnly: true
+          volumes:
+            - name: secret-grafana-tls
+              secret:
+                secretName: {{ .Release.Name}}-grafana-tls
+            - name: secret-grafana-proxy
+              secret:
+                secretName: {{ .Release.Name}}-grafana-proxy
+            - name: ocp-injected-certs
+              configMap:
+                name: {{ .Release.Name}}-ocp-injected-certs
+  service:
+    metadata:
+      annotations:
+        service.beta.openshift.io/serving-cert-secret-name: {{ .Release.Name}}-grafana-tls
+    spec:
+      ports:
+        - name: https
+          port: 9091
+          protocol: TCP
+          targetPort: https
+  serviceAccount:
+    metadata:
+      annotations:
+        serviceaccounts.openshift.io/oauth-redirectreference.primary: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"{{ .Release.Name}}-grafana-access"}}'
+  route: {}

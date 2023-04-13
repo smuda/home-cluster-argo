@@ -1,0 +1,24 @@
+{{ if .Values.networkpolicy.use }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-egress-operator-to-apiserver
+spec:
+  policyTypes:
+  - Egress
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/name: operator
+  egress:
+    - ports:
+        - port: 6443
+          protocol: TCP
+      to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-kube-apiserver
+          podSelector:
+            matchLabels:
+              app: openshift-kube-apiserver
+{{ end }}

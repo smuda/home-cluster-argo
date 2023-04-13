@@ -1,0 +1,49 @@
+quota:
+  use: true
+  hard:
+    requests.cpu: "2"
+    requests.memory: 8Gi
+    limits.memory: 8Gi
+
+grafana:
+  hostname: grafana.apps.okd4.example.com
+  secretPassword: gurka123
+  includeDashboards: false
+  
+networkpolicy:
+  use: true
+  allowViaRoute: true
+  ingressCidrs:
+    - 192.168.60.0/24
+
+operator:
+#  namespaceScope: true
+#  watchNamespaces: okd-grafana-operator
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 1
+      memory: 256Mi
+
+  serviceAccount:
+    name: "operator-grafana-operator"
+
+  podSecurityContext:
+    seccompProfile:
+      type: "RuntimeDefault"
+
+  securityContext:
+    allowPrivilegeEscalation: false
+
+  kubeRbacProxy:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 1
+        memory: 128Mi
+    securityContext:
+      allowPrivilegeEscalation: false

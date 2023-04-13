@@ -1,0 +1,23 @@
+{{ if .Values.networkpolicy.use }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-egress-grafana-to-thanos
+spec:
+  policyTypes:
+  - Egress
+  podSelector:
+    matchLabels:
+      app: {{ .Release.Name }}-grafana-oauth
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-monitoring
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/component: query-layer
+              app.kubernetes.io/instance: thanos-querier
+              app.kubernetes.io/name: thanos-query
+              app.kubernetes.io/part-of: openshift-monitoring
+{{ end }}

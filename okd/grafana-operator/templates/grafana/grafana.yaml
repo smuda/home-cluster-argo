@@ -5,6 +5,8 @@ metadata:
   labels:
     dashboards: "grafana"
 spec:
+  client:
+    preferIngress: false
   config:
     log:
       mode: "console"

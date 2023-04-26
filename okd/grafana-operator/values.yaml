@@ -12,7 +12,7 @@ grafana:
   
 networkpolicy:
   use: true
-  allowViaRoute: true
+  allowViaRoute: false
   ingressCidrs:
     - 192.168.60.0/24
 

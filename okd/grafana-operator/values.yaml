@@ -8,7 +8,7 @@ quota:
 grafana:
   hostname: grafana.apps.okd4.example.com
   secretPassword: gurka123
-  includeDashboards: false
+  includeDashboards: true
   
 networkpolicy:
   use: true

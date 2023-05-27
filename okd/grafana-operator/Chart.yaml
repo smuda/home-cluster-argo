@@ -4,10 +4,10 @@ description: A Helm chart for Kubernetes
 
 type: application
 
-version: 5.0.0-rc2
+version: 5.0.0-rc3
 
 dependencies:
   - name: grafana-operator
-    version: v5.0.0-rc2
+    version: v5.0.0-rc3
     repository: oci://ghcr.io/grafana-operator/helm-charts
     alias: operator

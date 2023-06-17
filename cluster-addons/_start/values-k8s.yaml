@@ -1,5 +1,3 @@
-kubecost:
-  use: false
 
 prometheus:
   use: true

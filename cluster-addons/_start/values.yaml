@@ -23,7 +23,7 @@ ingressNginx:
   podSecurityLevel: baseline
 
 kubecost:
-  use: true
+  use: false
   podSecurityLevel: privileged
 
 prometheus:

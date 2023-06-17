@@ -26,6 +26,10 @@ kubecost:
   use: true
   podSecurityLevel: privileged
 
+prometheus:
+  use: false
+  podSecurityLevel: baseline
+
 pvProviders:
   nfs:
     use: false

@@ -1,6 +1,10 @@
 kubecost:
   use: false
 
+prometheus:
+  use: true
+  podSecurityLevel: privileged
+
 pvProviders:
   nfs:
     use: false

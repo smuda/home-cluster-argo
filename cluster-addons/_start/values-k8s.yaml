@@ -1,5 +1,8 @@
 kubecost:
   use: false
 
+prometheus:
+  use: true
+
 sealedSecrets:
   namespace: addon-sealed-secrets

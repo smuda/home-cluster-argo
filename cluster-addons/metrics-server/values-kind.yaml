@@ -1,0 +1,3 @@
+upstream:
+  args:
+    - "--kubelet-insecure-tls"

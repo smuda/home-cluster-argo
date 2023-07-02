@@ -26,6 +26,10 @@ kubecost:
   use: false
   podSecurityLevel: privileged
 
+metricsServer:
+  use: false
+  podSecurityLevel: privileged
+
 prometheus:
   use: false
   podSecurityLevel: baseline

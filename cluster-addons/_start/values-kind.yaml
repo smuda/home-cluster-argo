@@ -1,6 +1,9 @@
 kubecost:
   use: false
 
+metricsServer:
+  use: true
+
 prometheus:
   use: true
   podSecurityLevel: privileged

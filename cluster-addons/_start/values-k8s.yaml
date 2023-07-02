@@ -1,3 +1,5 @@
+metricsServer:
+  use: true
 
 prometheus:
   use: true

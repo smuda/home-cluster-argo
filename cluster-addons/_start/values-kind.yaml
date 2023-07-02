@@ -8,6 +8,8 @@ prometheus:
 pvProviders:
   nfs:
     use: false
+  csiDriverNFS:
+    use: false
 
 sealedSecrets:
   namespace: addon-sealed-secrets

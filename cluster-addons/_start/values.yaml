@@ -43,7 +43,7 @@ pvProviders:
 
 reloader:
   use: true
-  podSecurityLevel: baseline
+  podSecurityLevel: restricted
 
 sealedSecrets:
   use: true

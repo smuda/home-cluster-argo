@@ -1,3 +1,6 @@
+cert_manager:
+  use: false
+
 ingressNginx:
   use: false
 kubecost:

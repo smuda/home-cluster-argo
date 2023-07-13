@@ -12,6 +12,9 @@ cert_manager:
   use: true
   podSecurityLevel: restricted
 
+cert_manager_config:
+  use: true
+
 cert_manager_approver_policy:
   use: true
 

@@ -10,6 +10,8 @@ argo:
 
 catalogSources:
   use: true
+certManager:
+  use: true
 complianceOperator:
   use: true
   podSecurityLevel: privileged

@@ -1,0 +1,6 @@
+upstream:
+  deployment:
+    securityContext: false
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop: [ "ALL" ]

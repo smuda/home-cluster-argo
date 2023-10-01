@@ -1,8 +1,17 @@
 kubecost:
   use: false
 
+metricsServer:
+  use: true
+
+prometheus:
+  use: true
+  podSecurityLevel: privileged
+
 pvProviders:
   nfs:
+    use: false
+  csiDriverNFS:
     use: false
 
 sealedSecrets:

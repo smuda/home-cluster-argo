@@ -23,8 +23,16 @@ ingressNginx:
   podSecurityLevel: baseline
 
 kubecost:
-  use: true
+  use: false
   podSecurityLevel: privileged
+
+metricsServer:
+  use: false
+  podSecurityLevel: privileged
+
+prometheus:
+  use: false
+  podSecurityLevel: baseline
 
 pvProviders:
   nfs:
@@ -35,7 +43,7 @@ pvProviders:
 
 reloader:
   use: true
-  podSecurityLevel: baseline
+  podSecurityLevel: restricted
 
 sealedSecrets:
   use: true

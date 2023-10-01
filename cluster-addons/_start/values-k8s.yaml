@@ -1,0 +1,8 @@
+metricsServer:
+  use: true
+
+prometheus:
+  use: true
+
+sealedSecrets:
+  namespace: addon-sealed-secrets

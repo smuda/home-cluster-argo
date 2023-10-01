@@ -1,1 +1,4 @@
 targetRevision: main
+
+ingress:
+  hostname: argocd.example.com

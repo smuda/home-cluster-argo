@@ -1,0 +1,7 @@
+argo:
+  common:
+    valueFiles:
+      - values-k8s.yaml
+
+clusterAdmins:
+  use: false

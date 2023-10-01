@@ -3,5 +3,3 @@ cert_manager:
 
 ingressNginx:
   use: false
-kubecost:
-  use: false

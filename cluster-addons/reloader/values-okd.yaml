@@ -1,10 +1,3 @@
-quota:
-  use: true
-  hard:
-    requests.cpu: "1"
-    requests.memory: 1Gi
-    limits.memory: 1Gi
-
 upstream:
   isOpenshift: true
   reloader:
@@ -12,5 +5,3 @@ upstream:
       enabled: true
     deployment:
       securityContext: false
-      image:
-        name: registry.okd4.example.com:5010/stakater/reloader

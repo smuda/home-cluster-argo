@@ -97,5 +97,8 @@ echo ""
 ARGO_PWD=$(kubectl --kubeconfig "${KUBECONFIG}" \
   -n argocd \
   get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+ARGO_HOST=$(kubectl --kubeconfig "${KUBECONFIG}" \
+  -n argocd \
+  get ingress argocd-server-ingress -o json | jq -r '.spec.rules[0].host')
 
-echo "You can now login to argo with https://argocd.example.com (127.0.0.1) using admin and ${ARGO_PWD:-password}"
+echo "You can now login to argo with https://${ARGO_HOST} using admin and ${ARGO_PWD:-password}"

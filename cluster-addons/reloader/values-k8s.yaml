@@ -1,6 +1,13 @@
 upstream:
-  deployment:
-    securityContext: false
-    allowPrivilegeEscalation: false
-    capabilities:
-      drop: [ "ALL" ]
+  reloader:
+    deployment:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - "ALL"

@@ -1,0 +1,9 @@
+hostLocal:
+  enabled: false
+  definition:
+    name: hostlocal-macvlan
+
+whereabouts:
+  enabled: true
+  definition:
+    name: whereabouts-ipvlan

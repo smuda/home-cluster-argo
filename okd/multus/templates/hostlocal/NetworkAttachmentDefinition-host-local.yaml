@@ -1,7 +1,8 @@
+{{ if .Values.hostLocal.enabled }}
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
-  name: macvlan-conf
+  name: {{ .Values.hostLocal.definition.name }}
 spec:
   config: '{
       "cniVersion": "0.3.0",
@@ -24,3 +25,4 @@ spec:
         "gateway": "192.168.61.1"
       }
     }'
+{{- end -}}

@@ -1,0 +1,21 @@
+{{- if .Values.hostLocal.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hostlocal
+spec:
+  selector:
+    matchLabels:
+      app: hostlocal
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: "{{ .Values.hostLocal.definition.name }}"
+      labels:
+        app: hostlocal
+    spec:
+      containers:
+        - name: samplepod
+          command: [ "/bin/ash", "-c", "trap : TERM INT; apk add curl && sleep infinity & wait" ]
+          image: registry.okd4.example.com:5010/library/alpine:latest
+{{- end -}}

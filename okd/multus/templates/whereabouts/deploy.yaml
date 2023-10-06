@@ -1,0 +1,32 @@
+{{- if .Values.whereabouts.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whereabouts
+spec:
+  selector:
+    matchLabels:
+      app: whereabouts
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: "{{ .Values.whereabouts.definition.name }}"
+      labels:
+        app: whereabouts
+    spec:
+      containers:
+        - name: samplepod
+          #command: [ "/bin/sh", "-c", "trap : TERM INT; apk add curl && sleep infinity & wait" ]
+          #image: registry.okd4.example.com:5010/library/alpine:latest
+          command: [ "/bin/sh", "-c", "trap : TERM INT; sleep infinity & wait" ]
+          image: registry.okd4.example.com:5010/curlimages/curl:latest
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+{{- end -}}

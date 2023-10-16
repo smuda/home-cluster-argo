@@ -1,2 +1,5 @@
+cert_manager:
+  use: true
+
 ingressNginx:
   use: false

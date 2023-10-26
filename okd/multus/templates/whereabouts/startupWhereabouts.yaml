@@ -1,0 +1,32 @@
+{{ if .Values.whereabouts.enabled }}
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: "enable-whereabouts-daemonset"
+  namespace: openshift-config
+spec:
+  serviceAccountRef:
+    name: "{{ .Values.openshiftConfig.serviceAccount.name }}"
+  patches:
+    master:
+      targetObjectRef:
+        apiVersion: operator.openshift.io/v1
+        kind: Network
+        name: cluster
+      patchTemplate: |
+        spec:
+          additionalNetworks:
+            - name: whereabouts-shim
+              namespace: openshift-network-operator
+              rawCNIConfig: |-
+                {
+                 "name": "whereabouts-shim",
+                 "cniVersion": "0.3.1",
+                 "type": "bridge",
+                 "ipam": {
+                   "type": "whereabouts"
+                 }
+                }
+              type: Raw
+      patchType: application/merge-patch+json
+{{- end -}}

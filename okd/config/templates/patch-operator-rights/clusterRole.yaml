@@ -43,3 +43,14 @@ rules:
       - list
       - patch
       - watch
+  # To setup multus whereabouts
+  - apiGroups:
+      - operator.openshift.io
+    resources:
+      - networks
+    verbs:
+      - get
+      - list
+      - watch
+      - patch
+      - update

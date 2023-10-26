@@ -7,3 +7,10 @@ whereabouts:
   enabled: true
   definition:
     name: whereabouts-ipvlan
+
+
+openshiftConfig:
+  namespace: openshift-config
+  serviceAccount:
+    name: patch-operator-config # This is supposed to match the service account created in
+                                # okd/config/templates/patch-operator-rights/serviceAccount.yaml

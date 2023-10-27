@@ -1,0 +1,63 @@
+{{- if .Values.whereabouts.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: "{{ .Values.whereabouts.definition.name }}"
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: samplepod
+          #command: [ "/bin/sh", "-c", "trap : TERM INT; apk add curl && sleep infinity & wait" ]
+          #image: registry.okd4.example.com:5010/library/alpine:latest
+          command:
+            - nginx
+            - -g
+            - "daemon off;"
+          #image: registry.okd4.example.com:5010/library/nginx:1.25.3-bookworm
+          image: registry.redhat.io/rhel9/nginx-120:1-126.1697636645
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+            - containerPort: 8443
+              name: https
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - mountPath: /var/cache/nginx
+              name: cache
+            #- mountPath: /etc/nginx/conf.d
+            #  name: nginx-config
+            - mountPath: /var/run/
+              name: var-run
+      nodeSelector:
+        "kubernetes.io/hostname": master2.okd4.example.com
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+        - name: cache
+          emptyDir:
+            sizeLimit: 1Gi
+        - name: nginx-config
+          configMap:
+            name: nginx
+            optional: false
+        - name: var-run
+          emptyDir:
+            sizeLimit: 1Gi
+{{- end -}}

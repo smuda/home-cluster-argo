@@ -61,10 +61,13 @@ kubectl --kubeconfig "${KUBECONFIG}" \
 
 echo ""
 echo "Install argocd"
+helm dependency update \
+  ./argo-install \
+  || exit 1
 helm --kubeconfig "${KUBECONFIG}" \
-   install -n argocd \
-   argocd ./argo-install \
-   || exit 1
+  install -n argocd \
+  argocd ./argo-install \
+  || exit 1
 
 echo ""
 echo "Wait for argocd to start"

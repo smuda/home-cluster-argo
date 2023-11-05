@@ -16,5 +16,6 @@ upstream:
   alertmanager:
     ingress:
       enabled: true
+      ingressClassName: nginx
       hosts:
         - alert-manager.apps.k8s1.example.com

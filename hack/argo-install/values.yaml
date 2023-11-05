@@ -1,6 +1,10 @@
 argo-cd:
   dex:
     enabled: false
+  controller:
+    env:
+      - name: ARGOCD_SYNC_WAVE_DELAY
+        value: "10"
   server:
     config:
       repositories: |

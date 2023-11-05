@@ -8,5 +8,5 @@ rules:
     verbs: ["use"]
     # Name of the CertificateRequestPolicies to be used.
     resourceNames:
-     - "apps-okd4-example-com"
-
+      - "apps-okd4-example-com"
+      - "self-signed-ca"

@@ -84,12 +84,15 @@ kubectl \
   --timeout=180s \
   || exit 1
 
-echo ""
-echo "Prepare for sealed-secrets"
-kubectl \
-  --kubeconfig "${KUBECONFIG}" \
-  apply -f "${SCRIPT_DIR}/sealed-secrets-secret.yml" \
-  || exit 1
+SEALED_FILE="${SCRIPT_DIR}/sealed-secrets-secret.yml"
+if test -f "${SEALED_FILE}"; then
+  echo ""
+  echo "Prepare for sealed-secrets"
+  kubectl \
+    --kubeconfig "${KUBECONFIG}" \
+    apply -f "${SEALED_FILE}" \
+    || exit 1
+fi
 
 echo ""
 echo "Install application"
@@ -116,7 +119,7 @@ done
 echo ""
 ARGO_PWD=$(kubectl --kubeconfig "${KUBECONFIG}" \
   -n argocd \
-  get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+  get secret argocd-secret -o jsonpath="{.data.'admin.password'}" | base64 -d)
 ARGO_HOST=$(kubectl --kubeconfig "${KUBECONFIG}" \
   -n argocd \
   get ingress argocd-server-ingress -o json | jq -r '.spec.rules[0].host')

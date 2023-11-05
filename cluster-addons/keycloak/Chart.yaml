@@ -1,0 +1,14 @@
+apiVersion: v2
+name: keycloak-install
+description: Install keycloak
+
+type: application
+
+version: 1.0.0
+
+dependencies:
+  # https://hub.docker.com/r/bitnamicharts/keycloak/tags
+  - name: keycloak
+    version: 17.2.1
+    alias: upstream
+    repository: oci://registry-1.docker.io/bitnamicharts

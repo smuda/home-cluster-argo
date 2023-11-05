@@ -1,0 +1,5 @@
+realmConfigFile: config/realm-k8s.yaml
+
+upstream:
+  ingress:
+    hostname: keycloak.apps.k8s1.example.com

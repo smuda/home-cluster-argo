@@ -1,0 +1,52 @@
+namespace: addon-keycloak
+
+quota:
+  use: false
+
+# Dependency values
+upstream:
+  ingress:
+    enabled: true
+
+  keycloakConfigCli:
+    enabled: true
+    existingConfigmap: realm-config-cli
+    resources:
+      requests:
+        cpu: 100m
+        memory: 700Mi
+      limits:
+        memory: 700Mi
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+    prometheusRule:
+      enabled: true
+
+  nameOverride: keycloak
+
+  networkPolicy:
+    enabled: true
+
+  postgresql:
+    primary:
+      resources:
+        requests:
+          cpu: 250m
+          memory: 256Mi
+        limits:
+          memory: 256Mi
+    networkPolicy:
+      enabled: true
+
+  resources:
+    requests:
+      cpu: 30m
+      memory: 600Mi
+    limits:
+      memory: 600Mi
+
+  tls:
+    enabled: false

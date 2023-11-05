@@ -1,0 +1,10 @@
+{{- if .Values.upstream.keycloakConfigCli.existingConfigmap }}
+{{- $configFile := .Values.realmConfigFile | required ".Values.realmConfigFile is required." -}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: realm-config-cli
+data:
+{{- ($.Files.Glob $configFile).AsConfig | nindent 2 }}
+{{- end }}

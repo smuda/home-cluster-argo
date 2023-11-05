@@ -1,0 +1,15 @@
+realmConfigFile: config/realm-kind.yaml
+
+upstream:
+  ingress:
+    hostname: keycloak.apps.127.0.0.1.nip.io
+
+  postgresql:
+    primary:
+      persistentVolumeClaimRetentionPolicy:
+        enabled: true
+        whenDeleted: Delete
+    readReplicas:
+      persistentVolumeClaimRetentionPolicy:
+        enabled: true
+        whenDeleted: Delete

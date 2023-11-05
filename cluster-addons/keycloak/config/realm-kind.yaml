@@ -1,0 +1,52 @@
+realm: master
+displayName: My KIND realm
+clients:
+  - clientId: kubernetes
+    name: kubernetes
+    description: kubernetes
+    enabled: true
+    clientAuthenticatorType: openid-connect
+    secret: my-special-client-secret
+    redirectUris:
+      - "*"
+    webOrigins:
+      - "*"
+    protocolMappers:
+      - name: BranchCodeMapper
+        protocol: openid-connect
+        protocolMapper: oidc-usermodel-attribute-mapper
+        consentRequired: false
+        config:
+          aggregate.attrs: false
+          userinfo.token.claim: true
+          multivalued: false
+          user.attribute: branch
+          id.token.claim: false
+          access.token.claim: true
+          claim.name: branch
+          jsonType.label: String
+groups:
+  - name: SMUDA Group
+    attributes:
+      my-added-attribute:
+        - my added attribute value
+
+    realmRoles:
+      - my_realm_role
+    clientRoles:
+      kubernetes:
+        - my_client_role
+    subGroups:
+      - name: My SubGroup
+roles:
+  client:
+    kubernetes:
+      - name: my_client_role
+        description: My kubernetes role
+        composite: false
+        clientRole: true
+  realm:
+    - name: my_realm_role
+      description: My realm role
+      composite: false
+      clientRole: false

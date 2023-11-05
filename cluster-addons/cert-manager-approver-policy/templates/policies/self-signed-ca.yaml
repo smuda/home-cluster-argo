@@ -1,0 +1,17 @@
+apiVersion: policy.cert-manager.io/v1alpha1
+kind: CertificateRequestPolicy
+metadata:
+  name: self-signed-ca
+spec:
+  allowed:
+    commonName:
+      value: "*"
+    isCA: true
+  selector:
+    issuerRef:
+      group: cert-manager.io
+      kind: Issuer
+      name: lab-self-signed-issuer
+    namespace:
+      matchNames:
+        - addon-cert-manager

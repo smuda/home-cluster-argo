@@ -3,6 +3,23 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 CLUSTER_NAME=home-cluster
 KUBECONFIG=~/.kube/${CLUSTER_NAME}-argo
 
+echo "Verify binaries exist"
+if ! command -v jq &> /dev/null
+then
+    echo "jq could not be found"
+    exit 1
+fi
+if ! command -v kind &> /dev/null
+then
+    echo "kind could not be found"
+    exit 1
+fi
+if ! command -v kubectl &> /dev/null
+then
+    echo "kubectl could not be found"
+    exit 1
+fi
+
 pushd "${SCRIPT_DIR}" \
   || exit 1
 

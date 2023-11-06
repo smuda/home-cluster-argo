@@ -2,6 +2,7 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 CLUSTER_NAME=home-cluster
 KUBECONFIG=~/.kube/${CLUSTER_NAME}-argo
+PRE_LOAD_IMAGES_FILE=${SCRIPT_DIR}/preload.txt
 
 echo "Verify binaries exist"
 if ! command -v jq &> /dev/null
@@ -34,6 +35,15 @@ echo ""
 GIT_REVISION=$(git rev-parse --abbrev-ref HEAD)
 echo "Current git branch is ${GIT_REVISION}"
 
+if test -f "${PRE_LOAD_IMAGES_FILE}"; then
+  echo ""
+  echo "Pull images that we know will be needed from docker.io (minimizing re-pulls)"
+  while read -r p; do
+    docker pull  "$p" \
+      || exit 1
+  done <"${PRE_LOAD_IMAGES_FILE}"
+fi
+
 echo ""
 echo "Create cluster"
 kind create cluster \
@@ -52,6 +62,16 @@ do
   echo "Try again"
   sleep 5
 done
+
+if test -f "${PRE_LOAD_IMAGES_FILE}"; then
+  echo ""
+  echo "Preload images that we know will be needed from docker.io (minimizing re-pulls)"
+  while read -r p; do
+    kind --name "${CLUSTER_NAME}" \
+      load docker-image "$p" \
+      || exit 1
+  done <"${PRE_LOAD_IMAGES_FILE}"
+fi
 
 echo ""
 echo "Create argocd namespace"

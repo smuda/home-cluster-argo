@@ -1,0 +1,5 @@
+docker.io/bitnami/keycloak:22.0.5-debian-11-r0
+docker.io/bitnami/postgresql:16.0.0-debian-11-r13
+docker.io/bitnami/sealed-secrets-controller:v0.24.0
+docker.io/kindest/kindnetd:v20230511-dc714da8
+docker.io/kindest/local-path-provisioner:v20230511-dc714da8

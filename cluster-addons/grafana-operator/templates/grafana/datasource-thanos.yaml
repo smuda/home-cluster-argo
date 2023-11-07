@@ -1,3 +1,4 @@
+{{ if .Values.isOpenshift }}
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
@@ -23,3 +24,4 @@ spec:
     orgId: 1
     type: prometheus
     url: 'https://thanos-querier.openshift-monitoring.svc.cluster.local:9091'
+{{- end }}

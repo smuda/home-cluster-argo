@@ -5,11 +5,15 @@ quota:
     requests.memory: 8Gi
     limits.memory: 8Gi
 
+isOpenshift: false
+
 grafana:
   hostname: grafana.apps.okd4.example.com
-  secretPassword: gurka123
+  secretPassword: password
   includeDashboards: true
-  
+  dashboardPath: grafana-dashboards-k8s
+  ingressClassName: nginx
+
 networkpolicy:
   use: true
   allowViaRoute: false
@@ -18,8 +22,7 @@ networkpolicy:
 
 operator:
   image:
-    repository: quay.io/weisdd/grafana-operator
-    tag: v5.0.0-goroutine-leak
+    tag: v5.4.2
 #  namespaceScope: true
 #  watchNamespaces: okd-grafana-operator
   resources:

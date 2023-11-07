@@ -1,0 +1,20 @@
+{{ if and .Values.networkpolicy.use (not .Values.isOpenshift) }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-egress-grafana-to-prometheus
+spec:
+  policyTypes:
+  - Egress
+  podSelector:
+    matchLabels:
+      app: {{ .Release.Name }}-grafana
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: addon-prometheus
+          podSelector:
+            matchLabels:
+              prometheus: prometheus-kube-prometheus-prometheus
+{{ end }}

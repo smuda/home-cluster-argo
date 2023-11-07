@@ -1,3 +1,4 @@
+{{ if .Values.isOpenshift }}
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
@@ -15,3 +16,4 @@ spec:
     name: {{ .Release.Name}}-grafana-oauth-service
     weight: 100
   wildcardPolicy: None
+{{- end }}

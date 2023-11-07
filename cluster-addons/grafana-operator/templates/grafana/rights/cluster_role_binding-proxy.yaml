@@ -1,3 +1,4 @@
+{{ if .Values.isOpenshift }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -22,3 +23,4 @@ subjects:
   - kind: ServiceAccount
     name: {{ .Release.Name}}-grafana-sa
     namespace: {{ .Release.Namespace }}
+{{- end }}

@@ -1,14 +1,14 @@
-{{ if and .Values.networkpolicy.use .Values.isOpenshift }}
+{{ if and .Values.networkpolicy.use (not .Values.isOpenshift) }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ .Release.Name }}-ingress-grafana-route
+  name: {{ .Release.Name }}-ingress-grafana-ingress
 spec:
   policyTypes:
   - Ingress
   podSelector:
     matchLabels:
-      app: {{ .Release.Name }}-grafana-oauth
+      app: {{ .Release.Name }}-grafana
   ingress:
     - ports:
         - port: 9091

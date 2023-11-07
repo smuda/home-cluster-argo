@@ -1,0 +1,3 @@
+grafana:
+  hostname: grafana.apps.k8s1.example.com
+  

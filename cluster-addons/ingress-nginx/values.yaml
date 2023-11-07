@@ -1,3 +1,9 @@
 upstream:
+  controller:
+    resources:
+      requests:
+        memory: 150Mi
+      limits:
+        memory: 200Mi
   metrics:
     enabled: true

@@ -18,9 +18,6 @@ complianceOperator:
 garbageCollector:
   use: false
   podSecurityLevel: privileged
-grafanaOperator:
-  use: true
-  podSecurityLevel: restricted
 machineConfigs:
   use: true
   podSecurityLevel: restricted

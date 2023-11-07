@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: okd-grafana-operator
+  name: grafana-operator
   namespace: {{ .Values.argo.common.apps_namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "10"
@@ -11,7 +11,7 @@ metadata:
 {{- end }}
 spec:
   destination:
-    namespace: okd-grafana-operator
+    namespace: addon-grafana-operator
     server: https://kubernetes.default.svc
   project: {{ .Values.argo.project }}
   source:
@@ -21,7 +21,7 @@ spec:
       {{- if .Values.argo.common.valueFiles }}
       valueFiles: {{ .Values.argo.common.valueFiles | toYaml | nindent 8 }}
       {{- end }}
-    path: okd/grafana-operator/
+    path: cluster-addons/grafana-operator/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.common.target_revision }}
   syncPolicy:

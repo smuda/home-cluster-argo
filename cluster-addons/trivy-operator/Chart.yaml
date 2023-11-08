@@ -1,0 +1,14 @@
+apiVersion: v2
+name: trivy-operator-install
+description: A Helm chart for Kubernetes
+
+type: application
+
+version: 1.0.0
+
+dependencies:
+  # https://github.com/stakater/Reloader/releases
+  - name: trivy-operator
+    version: 0.18.4
+    alias: upstream
+    repository: https://aquasecurity.github.io/helm-charts/

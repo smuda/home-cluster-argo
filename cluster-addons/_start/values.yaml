@@ -49,3 +49,7 @@ sealedSecrets:
   use: true
   namespace: kube-system
   podSecurityLevel: restricted
+
+trivy:
+  use: true
+  podSecurityLevel: restricted

@@ -12,6 +12,8 @@ upstream:
       ingressClassName: nginx
       hosts:
         - prometheus.apps.k8s1.example.com
+    prometheusSpec:
+      serviceMonitorSelectorNilUsesHelmValues: false
 
   alertmanager:
     ingress:

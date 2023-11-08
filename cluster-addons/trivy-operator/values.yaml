@@ -1,0 +1,29 @@
+upstream:
+  fullnameOverride: trivy-operator
+
+  operator:
+    metricsVulnIdEnabled: true
+
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 200Mi
+    limits:
+      memory: 300Mi
+
+  serviceMonitor:
+    enabled: true
+
+  trivy:
+    ignoreUnfixed: true
+
+  trivyOperator:
+    scanJobPodTemplatePodSecurityContext:
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault

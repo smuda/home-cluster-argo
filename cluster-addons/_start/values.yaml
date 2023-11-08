@@ -18,6 +18,10 @@ cert_manager_config:
 cert_manager_approver_policy:
   use: true
 
+grafanaOperator:
+  use: true
+  podSecurityLevel: restricted
+
 ingressNginx:
   use: true
   podSecurityLevel: baseline

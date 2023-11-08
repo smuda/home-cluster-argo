@@ -1,0 +1,55 @@
+quota:
+  use: true
+  hard:
+    requests.cpu: "2"
+    requests.memory: 8Gi
+    limits.memory: 8Gi
+
+isOpenshift: false
+
+grafana:
+  hostname: grafana.apps.okd4.example.com
+  secretPassword: password
+  includeDashboards: true
+  dashboardPath: grafana-dashboards-k8s
+  ingressClassName: nginx
+
+networkpolicy:
+  use: true
+  allowViaRoute: false
+  ingressCidrs:
+    - 192.168.60.0/24
+
+operator:
+  image:
+    tag: v5.4.2
+#  namespaceScope: true
+#  watchNamespaces: okd-grafana-operator
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 1
+      memory: 256Mi
+
+  serviceAccount:
+    name: "operator-grafana-operator"
+
+  podSecurityContext:
+    seccompProfile:
+      type: "RuntimeDefault"
+
+  securityContext:
+    allowPrivilegeEscalation: false
+
+  kubeRbacProxy:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 1
+        memory: 128Mi
+    securityContext:
+      allowPrivilegeEscalation: false

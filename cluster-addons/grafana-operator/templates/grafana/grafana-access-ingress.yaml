@@ -1,0 +1,21 @@
+{{ if not .Values.isOpenshift }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  name: {{ .Release.Name}}-grafana-access
+spec:
+  ingressClassName: {{ .Values.grafana.ingressClassName }}
+  rules:
+    - host: {{ .Values.grafana.hostname }}
+      http:
+        paths:
+          - backend:
+              service:
+                name: {{ .Release.Name}}-grafana-service
+                port:
+                  name: grafana
+            path: /
+            pathType: Prefix
+{{- end }}

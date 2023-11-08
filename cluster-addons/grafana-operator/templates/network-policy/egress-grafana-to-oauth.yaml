@@ -1,0 +1,29 @@
+{{ if and .Values.networkpolicy.use .Values.isOpenshift }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-egress-grafana-to-oauth
+spec:
+  policyTypes:
+  - Egress
+  podSelector:
+    matchLabels:
+      app: {{ .Release.Name }}-grafana-oauth
+  egress:
+    # Oauth discovery
+    - to:
+        - ipBlock:
+            cidr: 172.30.0.1/32
+      ports:
+        - port: 443
+          protocol: TCP
+    # OAUTH via route
+    - to:
+        {{- range .Values.networkpolicy.ingressCidrs }}
+        - ipBlock:
+            cidr: {{ . }}
+        {{- end }}
+      ports:
+        - port: 443
+          protocol: TCP
+{{ end }}

@@ -1,0 +1,34 @@
+{{ if .Values.networkpolicy.use }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-egress-operator-to-grafana
+spec:
+  policyTypes:
+  - Egress
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/name: operator
+  egress:
+    {{ if .Values.networkpolicy.allowViaRoute }}
+    # Grafana via route
+    - to:
+        {{- range .Values.networkpolicy.ingressCidrs }}
+        - ipBlock:
+            cidr: {{ . }}
+        {{- end }}
+      ports:
+        - port: 443
+          protocol: TCP
+    {{ else }}
+    # Grafana via service
+    - to:
+        - podSelector:
+            matchLabels:
+              app: {{ .Release.Name }}-grafana-oauth
+      ports:
+        - port: 3000
+          protocol: TCP
+    {{ end }}
+{{ end }}

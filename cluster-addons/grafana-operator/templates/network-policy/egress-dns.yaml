@@ -1,0 +1,16 @@
+{{ if .Values.networkpolicy.use }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name}}-egress-dns
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+  egress:
+    - ports:
+        - port: 5353
+          protocol: TCP
+        - port: 5353
+          protocol: UDP
+{{ end }}

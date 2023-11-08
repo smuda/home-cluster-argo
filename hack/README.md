@@ -9,7 +9,7 @@ oc get pod -A -o json \
   | uniq \
   | sort \
   | grep docker.io \
-  | grep -v docker.io/kindest |
+  | grep -v docker.io/kindest \
   > ./hack/preload.txt
 ```
 

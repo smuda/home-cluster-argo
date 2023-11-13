@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: cert-manager
+  name: default
 spec:
   {{ with .Values.quota.hard -}}
   hard:

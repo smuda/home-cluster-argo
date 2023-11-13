@@ -12,9 +12,9 @@ upstream:
   resources:
     requests:
       cpu: 10m
-      memory: 200Mi
+      memory: 600Mi
     limits:
-      memory: 300Mi
+      memory: 1024Mi
 
   serviceMonitor:
     enabled: true

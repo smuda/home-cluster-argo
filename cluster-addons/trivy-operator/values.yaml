@@ -2,6 +2,7 @@ upstream:
   fullnameOverride: trivy-operator
 
   operator:
+    logDevMode: true
     metricsVulnIdEnabled: true
     scanJobsConcurrentLimit: 3 # Limit to three concurrent jobs. Default is 10.
 

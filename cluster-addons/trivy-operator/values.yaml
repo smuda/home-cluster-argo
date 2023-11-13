@@ -2,6 +2,7 @@ upstream:
   fullnameOverride: trivy-operator
 
   operator:
+    logDevMode: true
     metricsVulnIdEnabled: true
 
   podSecurityContext:

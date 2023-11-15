@@ -30,8 +30,4 @@ spec:
       {{- else }}
       admin_password: {{ randAlphaNum 24 | quote }}
       {{- end }}
-  service:
-    metadata:
-      annotations:
-        service.beta.openshift.io/serving-cert-secret-name: {{ .Release.Name}}-grafana-tls
 {{- end }}

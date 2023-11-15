@@ -1,5 +1,4 @@
-{{- if and (.Capabilities.APIVersions.Has "grafana.integreatly.org/v1beta1")
-           .Values.grafana.includeDashboards -}}
+{{- if and (.Capabilities.APIVersions.Has "grafana.integreatly.org/v1beta1") -}}
 {{ range $path, $index :=  .Files.Glob "grafana-dashboards-common/**.json" }}
 ---
 apiVersion: grafana.integreatly.org/v1beta1

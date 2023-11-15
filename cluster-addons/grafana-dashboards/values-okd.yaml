@@ -1,0 +1,3 @@
+isOpenshift: true
+
+dashboardPath: grafana-dashboards-okd

@@ -1,3 +1,4 @@
+{{- if .Values.isOpenshift }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -15,3 +16,4 @@ rules:
       - authorization.k8s.io
     resources:
       - subjectaccessreviews
+{{- end }}

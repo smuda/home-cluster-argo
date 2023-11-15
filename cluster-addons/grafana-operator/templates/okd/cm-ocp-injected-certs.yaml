@@ -4,5 +4,5 @@ kind: ConfigMap
 metadata:
   labels:
     config.openshift.io/inject-trusted-cabundle: "true"
-  name: {{ .Release.Name}}-ocp-injected-certs
+  name: ocp-injected-certs
 {{- end }}

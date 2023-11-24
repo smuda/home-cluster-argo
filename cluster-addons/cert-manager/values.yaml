@@ -1,5 +1,9 @@
 namespace: addon-cert-manager
 
+global:
+  leaderElection:
+    namespace: addon-cert-manager
+
 quota:
   use: false
 

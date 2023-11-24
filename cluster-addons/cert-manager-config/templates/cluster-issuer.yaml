@@ -4,4 +4,4 @@ metadata:
   name: lab-cluster-issuer
 spec:
   ca:
-    secretName: root-secret
+    secretName: {{ .Values.rootSecretName }}

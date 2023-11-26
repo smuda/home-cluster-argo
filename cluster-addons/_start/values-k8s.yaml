@@ -1,3 +1,6 @@
+grafanaOperator:
+  use: false
+
 metricsServer:
   use: true
 

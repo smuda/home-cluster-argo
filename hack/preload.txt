@@ -1,2 +1,2 @@
-docker.io/bitnami/sealed-secrets-controller:v0.24.0
+docker.io/bitnami/sealed-secrets-controller:v0.24.3
 docker.io/grafana/grafana:9.1.6

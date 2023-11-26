@@ -9,3 +9,6 @@ prometheus:
 
 sealedSecrets:
   namespace: addon-sealed-secrets
+
+trivy:
+  use: false

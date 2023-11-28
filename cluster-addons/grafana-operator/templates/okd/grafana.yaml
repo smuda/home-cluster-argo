@@ -12,6 +12,7 @@ spec:
         serviceaccounts.openshift.io/oauth-redirectreference.primary: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"grafana-instance-route"}}'
   route:
     spec:
+      host: {{ .Values.grafana.hostname }}
       port:
         targetPort: https
       tls:
@@ -59,7 +60,12 @@ spec:
               ports:
                 - containerPort: 9091
                   name: https
-              resources: { }
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 100Mi
+                limits:
+                  memory: 200Mi
               volumeMounts:
                 - mountPath: /etc/tls/private
                   name: grafana-tls

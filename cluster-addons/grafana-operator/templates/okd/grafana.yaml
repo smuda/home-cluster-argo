@@ -4,7 +4,7 @@ kind: Grafana
 metadata:
   name: grafana-instance
   labels:
-    dashboards: {{ .Release.Namespace }}
+    dashboards: grafana
 spec:
   serviceAccount:
     metadata:

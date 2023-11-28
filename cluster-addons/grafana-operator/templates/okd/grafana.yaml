@@ -8,6 +8,7 @@ metadata:
 spec:
   serviceAccount:
     metadata:
+      name: grafana-instance-ss
       annotations:
         serviceaccounts.openshift.io/oauth-redirectreference.primary: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"grafana-instance-route"}}'
   route:

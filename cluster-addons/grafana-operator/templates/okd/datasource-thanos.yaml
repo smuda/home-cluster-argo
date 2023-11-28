@@ -26,6 +26,6 @@ spec:
     - targetPath: "secureJsonData.httpHeaderValue1"
       valueFrom:
         secretKeyRef:
-          name: "grafana-sa-token"
+          name: "{{ .Release.Name }}-grafana-sa-token"
           key: "token"
 {{- end }}

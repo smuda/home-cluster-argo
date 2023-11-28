@@ -104,4 +104,11 @@ spec:
       enable_login_token: "True"
       header_property: "username"
       header_name: "X-Forwarded-User"
+    security:
+      admin_user: "admin"
+      {{- if .Values.grafana.secretPassword }}
+      admin_password: {{ .Values.grafana.secretPassword | quote }}
+      {{- else }}
+      admin_password: {{ randAlphaNum 24 | quote }}
+      {{- end }}
 {{- end }}

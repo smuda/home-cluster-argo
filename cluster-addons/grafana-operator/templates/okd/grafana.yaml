@@ -3,9 +3,8 @@ apiVersion: grafana.integreatly.org/v1beta1
 kind: Grafana
 metadata:
   name: grafana-instance
-  namespace: grafana
   labels:
-    dashboards: "grafana"
+    dashboards: {{ .Release.Namespace }}
 spec:
   serviceAccount:
     metadata:

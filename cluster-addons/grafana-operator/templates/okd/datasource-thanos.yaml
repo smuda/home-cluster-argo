@@ -22,4 +22,10 @@ spec:
     orgId: 1
     type: prometheus
     url: 'https://thanos-querier.openshift-monitoring.svc.cluster.local:9091'
+  valuesFrom:
+    - targetPath: "secureJsonData.httpHeaderValue1"
+      valueFrom:
+        secretKeyRef:
+          name: "grafana-sa-token"
+          key: "token"
 {{- end }}

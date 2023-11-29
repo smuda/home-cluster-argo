@@ -3,3 +3,6 @@ upstream:
     scanJobPodTemplatePodSecurityContext:
       RunAsUser: 10000
       RunAsGroup: 10000
+
+  operator:
+    scanJobsConcurrentLimit: 3 # Limit to three concurrent jobs. Default is 10.

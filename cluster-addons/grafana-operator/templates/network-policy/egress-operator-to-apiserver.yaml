@@ -21,4 +21,10 @@ spec:
           podSelector:
             matchLabels:
               app: openshift-kube-apiserver
+    # Special IP for detection of platform
+    - ports:
+        - port: 443
+      to:
+        - ipBlock:
+            cidr: 10.96.0.1/32
 {{ end }}

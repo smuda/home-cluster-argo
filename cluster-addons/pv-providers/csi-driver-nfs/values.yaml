@@ -14,3 +14,5 @@ upstream:
 
   rbac:
     name: nfs # Is used to create the serviceAccount name.
+  externalSnapshotter:
+    enabled: true

@@ -29,7 +29,7 @@ spec:
       - CreateNamespace=true
     automated:
       prune: true
-      selfHeal: false
+      selfHeal: true
     {{- if .Values.argo.common.enableLabelManagement }}
     managedNamespaceMetadata:
       labels: # The labels to set on the application namespace

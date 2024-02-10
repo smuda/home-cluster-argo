@@ -4,7 +4,6 @@ kind: ClusterRoleBinding
 metadata:
   name: grafana-proxy
 roleRef:
-  kind: ClusterRole
   name: grafana-proxy
 subjects:
   - kind: ServiceAccount

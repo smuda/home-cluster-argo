@@ -1,0 +1,9 @@
+{{- if .Values.kataConfig.use }}
+apiVersion: kataconfiguration.openshift.io/v1
+kind: KataConfig
+metadata:
+  name: cluster-kataconfig
+spec:
+  checkNodeEligibility: false
+  logLevel: info
+{{- end -}}

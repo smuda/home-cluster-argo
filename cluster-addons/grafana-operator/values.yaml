@@ -21,6 +21,7 @@ networkpolicy:
     - 192.168.60.0/24
 
 operator:
+  fullnameOverride: grafana-operator
 #  namespaceScope: true
 #  watchNamespaces: okd-grafana-operator
   resources:

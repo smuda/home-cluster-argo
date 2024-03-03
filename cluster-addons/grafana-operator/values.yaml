@@ -21,8 +21,6 @@ networkpolicy:
     - 192.168.60.0/24
 
 operator:
-  image:
-    tag: v5.4.2
 #  namespaceScope: true
 #  watchNamespaces: okd-grafana-operator
   resources:

@@ -1,0 +1,17 @@
+{{- if .Values.subscription.use -}}
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: sandboxed-containers-operator
+spec:
+  channel: stable
+  installPlanApproval: Automatic
+  name: sandboxed-containers-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: sandboxed-containers-operator.v1.5.2
+  config:
+    env:
+      - name: SANDBOXED_CONTAINERS_EXTENSION
+        value: kata-containers
+{{- end -}}

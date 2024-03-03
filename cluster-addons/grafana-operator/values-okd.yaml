@@ -1,4 +1,4 @@
 isOpenshift: true
 
-grafana:
-  dashboardPath: grafana-dashboards-okd
+operator:
+  isOpenShift: true

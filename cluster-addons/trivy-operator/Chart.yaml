@@ -7,7 +7,7 @@ type: application
 version: 1.0.0
 
 dependencies:
-  # https://github.com/stakater/Reloader/releases
+  # https://github.com/aquasecurity/trivy-operator/releases
   - name: trivy-operator
     version: 0.18.4
     alias: upstream

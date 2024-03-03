@@ -2,7 +2,7 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: {{ .Release.Name}}-thanos
+  name: {{ .Release.Name }}-thanos
 spec:
   instanceSelector:
     matchLabels:

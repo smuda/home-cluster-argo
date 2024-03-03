@@ -1,0 +1,29 @@
+{{ if and .Values.networkpolicy.use .Values.isOpenshift }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-egress-grafana-to-apiserver
+spec:
+  policyTypes:
+  - Egress
+  podSelector:
+    matchLabels:
+      app: grafana-instance
+  egress:
+    - ports:
+        - port: 6443
+          protocol: TCP
+      to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-kube-apiserver
+          podSelector:
+            matchLabels:
+              app: openshift-kube-apiserver
+    # Special IP for detection of platform
+    - ports:
+        - port: 443
+      to:
+        - ipBlock:
+            cidr: 10.96.0.1/32
+{{ end }}

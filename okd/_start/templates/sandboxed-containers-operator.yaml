@@ -1,0 +1,38 @@
+{{ if .Values.sandboxedContainersOperator.use }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sandboxed-containers-operator
+  namespace: {{ .Values.argo.common.apps_namespace }}
+{{- if .Values.argo.common.finalizers }}
+  finalizers: {{ .Values.argo.common.finalizers | toYaml | nindent 4 }}
+{{- end }}
+spec:
+  destination:
+    namespace: openshift-sandboxed-containers-operator
+    server: https://kubernetes.default.svc
+  project: {{ .Values.argo.project }}
+  source:
+    helm:
+      version: v3
+      releaseName: garbage-collector
+      {{- if .Values.argo.common.valueFiles }}
+      valueFiles: {{ .Values.argo.common.valueFiles | toYaml | nindent 8 }}
+      {{- end }}
+    path: okd/sandboxed-containers-operator/
+    repoURL: https://github.com/smuda/home-cluster-argo.git
+    targetRevision: {{ .Values.argo.common.target_revision }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
+    {{- if .Values.argo.common.enableLabelManagement }}
+    managedNamespaceMetadata:
+      labels: # The labels to set on the application namespace
+        pod-security.kubernetes.io/audit: {{ .Values.sandboxedContainersOperator.podSecurityLevel }}
+        pod-security.kubernetes.io/enforce: {{ .Values.sandboxedContainersOperator.podSecurityLevel }}
+        pod-security.kubernetes.io/warn: {{ .Values.sandboxedContainersOperator.podSecurityLevel }}
+    {{- end }}
+{{ end }}

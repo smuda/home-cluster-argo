@@ -1,0 +1,12 @@
+{{- if .Values.operatorgroup.use -}}
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  labels:
+    app.kubernetes.io/instance: sandboxed-containers-operator
+  name: openshift-sandboxed-containers-operator
+spec:
+  targetNamespaces:
+    - {{ .Release.Namespace }}
+  upgradeStrategy: Default
+{{- end -}}

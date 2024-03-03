@@ -30,3 +30,8 @@ machineConfigs:
 patchOperator:
   use: true
   podSecurityLevel: restricted
+sandboxedContainersOperator:
+  use: false
+  podSecurityLevel: privileged
+sandboxedContainersConfig:
+  use: false

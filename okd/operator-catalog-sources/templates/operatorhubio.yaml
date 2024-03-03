@@ -1,0 +1,10 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: operatorhubio-catalog
+  namespace: openshift-marketplace
+spec:
+  displayName: OperatorHub.io
+  publisher: OperatorHub.io
+  sourceType: grpc
+  image: quay.io/operatorhubio/catalog:latest

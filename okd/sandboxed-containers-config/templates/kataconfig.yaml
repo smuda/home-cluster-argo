@@ -5,5 +5,9 @@ metadata:
   name: cluster-kataconfig
 spec:
   checkNodeEligibility: false
+  enablePeerPods: false
+  kataConfigPoolSelector:
+    matchLabels:
+      pools.operator.machineconfiguration.openshift.io/kata-oc: ""
   logLevel: info
 {{- end -}}

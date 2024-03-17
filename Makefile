@@ -7,3 +7,6 @@ start-kind:
 
 stop-kind:
 	kind delete cluster --name home-cluster
+
+update-lock:
+	find . -name Chart.lock | xargs dirname | xargs -n 1 helm dep update

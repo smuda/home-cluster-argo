@@ -1,0 +1,40 @@
+kind: MachineConfig
+apiVersion: machineconfiguration.openshift.io/v1
+metadata:
+  name: 99-master-certificate-approve-systemd-service
+  labels:
+    machineconfiguration.openshift.io/role: master
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    systemd:
+      units:
+        - name: csr-approve.service
+          enabled: true
+          contents: |
+            [Unit]
+              Description=This script approves pending certificates
+              [Service]
+              ExecStart=/etc/scripts/csr-approve.sh
+              [Install]
+              WantedBy=multi-user.target
+        - name: csr-approve.timer
+          enabled: true
+          contents: |
+            [Unit]
+              Description=Run csr-approve.service every 5 minutes
+              [Timer]
+              OnCalendar=*:0/5
+              Unit=csr-approve.service
+              [Install]
+              WantedBy=timers.target
+    storage:
+      files:
+        - filesystem: root
+          path: "/etc/scripts/csr-approve.sh"
+          contents:
+            source: data:text/plain;charset=utf-8;base64,{{ .Files.Get "scripts/csr-approve.sh" | b64enc }}
+            verification: {}
+          mode: 0755
+          overwrite: true

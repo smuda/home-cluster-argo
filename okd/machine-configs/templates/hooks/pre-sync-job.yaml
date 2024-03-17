@@ -19,7 +19,7 @@ spec:
               echo "Make sure there isn't already an update taking place"
               oc wait machineconfigpool/{{ . }} --for condition=updated --timeout 600s || exit 1
               echo ""
-              echo -n "Pause the MCP {{ . }} to not reboot in the middle of ArgoCD work."
+              echo -n "Pause the MCP {{ . }} to not reboot in the middle of ArgoCD work. "
               echo $(oc patch --type=merge --patch='{"spec":{"paused":true}}' machineconfigpool/{{ . }} || exit 1)
 {{- end }}
               echo "Sleep for ${SLEEP} seconds."

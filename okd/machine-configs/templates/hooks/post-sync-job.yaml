@@ -16,7 +16,7 @@ spec:
             - |
 {{- range .Values.machineConfigPools }}
               echo ""
-              echo -n "Unpause the MCP {{ . }}."
+              echo -n "Unpause the MCP {{ . }}. "
               echo $(oc patch --type=merge --patch='{"spec":{"paused":false}}' machineconfigpool/{{ . }} || exit 1)
 {{ end }}
               echo "Sleep for ${SLEEP} seconds."

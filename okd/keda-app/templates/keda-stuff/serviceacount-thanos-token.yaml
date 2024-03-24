@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.triggerAuthentication.secretName }}
+  annotations:
+    kubernetes.io/service-account.name: {{ .Values.triggerAuthentication.saName }}
+type: kubernetes.io/service-account-token

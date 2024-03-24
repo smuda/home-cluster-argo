@@ -1,5 +1,5 @@
 apiVersion: v2
-name: okd-compliance-operator
+name: okd-cert-manager
 description: A Helm chart for Kubernetes
 
 type: application

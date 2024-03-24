@@ -1,0 +1,3 @@
+triggerAuthentication:
+  saName: thanos
+  secretName: thanos

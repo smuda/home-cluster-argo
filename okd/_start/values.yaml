@@ -20,6 +20,10 @@ csrAutoApprover:
 garbageCollector:
   use: false
   podSecurityLevel: privileged
+keda:
+  use: true
+  namespace: openshift-keda
+  podSecurityLevel: restricted
 machineConfigs:
   use: true
   podSecurityLevel: restricted

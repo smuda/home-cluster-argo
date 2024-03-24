@@ -9,6 +9,8 @@ quota:
 
 # Dependency values
 upstream:
+  deploymentAnnotations:
+    reloader.stakater.com/auto: "true"
   nameOverride: cert-manager
   extraArgs:
     # Disable standard approver, use policy approver instead
@@ -38,6 +40,8 @@ upstream:
 
 ### webhook ###
   webhook:
+    deploymentAnnotations:
+      reloader.stakater.com/auto: "true"
     image:
       repository: quay.io/jetstack/cert-manager-webhook
     containerSecurityContext:
@@ -57,6 +61,8 @@ upstream:
 
 ### cainjector ###
   cainjector:
+    deploymentAnnotations:
+      reloader.stakater.com/auto: "true"
     image:
       repository: quay.io/jetstack/cert-manager-cainjector
     containerSecurityContext:

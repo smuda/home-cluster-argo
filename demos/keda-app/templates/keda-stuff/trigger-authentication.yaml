@@ -1,0 +1,12 @@
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: thanos
+spec:
+  secretTargetRef:
+    - parameter: bearerToken
+      name: {{ .Values.triggerAuthentication.secretName }}
+      key: token
+    - parameter: ca
+      name: {{ .Values.triggerAuthentication.secretName }}
+      key: ca.crt

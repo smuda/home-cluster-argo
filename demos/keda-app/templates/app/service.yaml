@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: app
+spec:
+  clusterIP: 172.30.77.111
+  clusterIPs:
+    - 172.30.77.111
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: keda
+  sessionAffinity: None
+  type: ClusterIP

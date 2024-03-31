@@ -1,0 +1,40 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: app
+  annotations:
+    placeholder: placeholder
+    #autoscaling.keda.sh/paused-replicas: "0"
+    #autoscaling.keda.sh/paused: "true"
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1 # Default
+    kind: Deployment    # Default
+    name: app
+  cooldownPeriod: 30    # Default 300
+  pollingInterval: 5    # Default 30
+  minReplicaCount: 1    # Default 0
+  maxReplicaCount: 50   # Default 100
+  triggers:
+    - type: prometheus
+      authenticationRef:
+        name: thanos
+        kind: TriggerAuthentication
+      metadata:
+        serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9092
+        namespace: {{ .Release.Namespace }}
+        metricName: http_requests_total
+        threshold: "{{ .Values.scaledObject.threshold }}"
+        query: 2 * {{ .Values.scaledObject.threshold }} + sum(rate(http_requests_total [10s]))
+        authModes: bearer
+        ignoreNullValues: "false"
+        unsafeSsl: "false"
+  advanced:
+    horizontalPodAutoscalerConfig: # Optional. Section to specify HPA related options
+      behavior: # Optional. Use to modify HPA's scaling behavior
+        scaleDown:
+          stabilizationWindowSeconds: 15
+          policies:
+            - type: Percent
+              value: 100
+              periodSeconds: 15

@@ -1,0 +1,13 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: app
+spec:
+  host: app-keda-app.apps.okd4.example.com
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: app
+    weight: 100
+  wildcardPolicy: None

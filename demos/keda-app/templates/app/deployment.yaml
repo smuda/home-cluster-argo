@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  selector:
+    matchLabels:
+      app: keda
+  template:
+    metadata:
+      labels:
+        app: keda
+    spec:
+      containers:
+        - name: nginx
+          image: ghcr.io/allbergkonsult/k8s-minimal-app:main
+          args:
+            - "-delay-ready=30"
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /readyz
+            periodSeconds: 2
+          startupProbe:
+            httpGet:
+              port: 8080
+              path: /readyz
+            periodSeconds: 2
+            timeoutSeconds: 60
+            failureThreshold: 60
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

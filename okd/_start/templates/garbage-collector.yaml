@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: garbage-collector
+  name: okd-garbage-collector
   namespace: {{ .Values.argo.common.apps_namespace }}
 {{- if .Values.argo.common.finalizers }}
   finalizers: {{ .Values.argo.common.finalizers | toYaml | nindent 4 }}

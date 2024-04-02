@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: operator-catalog-sources
+  name: okd-operator-catalog-sources
   namespace: {{ .Values.argo.common.apps_namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "0"

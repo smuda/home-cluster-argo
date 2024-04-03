@@ -14,6 +14,7 @@ spec:
             - /bin/bash
             - -c
             - |
+              set -eux
 {{- range .Values.machineConfigPools }}
               echo ""
               echo "Make sure there isn't already an update taking place"
@@ -30,6 +31,7 @@ spec:
           env:
             - name: SLEEP
               value: "10"
-      restartPolicy: Never
+      restartPolicy: OnFailure
       serviceAccount: mcp-sync-job-sa
       serviceAccountName: mcp-sync-job-sa
+  backoffLimit: 20

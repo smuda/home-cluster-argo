@@ -6,11 +6,17 @@ spec:
   allowed:
     commonName:
       value: "*"
-      required: true
+      required: false
     dnsNames:
       values:
         - "*.okd4.example.com"
         - "*.svc"
+        - "*.svc.cluster.local"
+    subject:
+      organizationalUnits:
+        required: false
+        values:
+          - "*"
     usages:
       - "server auth"
       - "client auth"

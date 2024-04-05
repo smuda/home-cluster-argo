@@ -111,5 +111,5 @@ spec:
       admin_password: {{ randAlphaNum 24 | quote }}
       {{- end }}
     users:
-      auto_assign_org_role: Editor
+      auto_assign_org_role: Admin
 {{- end }}

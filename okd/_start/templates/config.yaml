@@ -27,5 +27,5 @@ spec:
       - CreateNamespace=false
     automated:
       prune: true
-      selfHeal: false
+      selfHeal: true
 {{ end }}

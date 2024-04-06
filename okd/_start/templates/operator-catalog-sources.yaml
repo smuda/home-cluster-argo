@@ -26,5 +26,6 @@ spec:
     targetRevision: {{ .Values.argo.common.target_revision }}
   syncPolicy:
     automated:
-      selfHeal: false
+      prune: true
+      selfHeal: true
 {{ end }}

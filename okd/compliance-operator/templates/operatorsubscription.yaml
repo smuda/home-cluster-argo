@@ -9,3 +9,4 @@ spec:
   name: compliance-operator
   source: compliance-operator
   sourceNamespace: openshift-marketplace
+  startingCSV: patch-operator.v1.4.0

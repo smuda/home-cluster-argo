@@ -8,3 +8,4 @@ spec:
   name: patch-operator
   source: community-operators
   sourceNamespace: openshift-marketplace
+  startingCSV: patch-operator.v0.1.9

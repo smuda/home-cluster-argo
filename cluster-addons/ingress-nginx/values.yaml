@@ -1,9 +1,11 @@
 upstream:
   controller:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
     resources:
       requests:
         memory: 200Mi
       limits:
         memory: 250Mi
-  metrics:
-    enabled: true

@@ -1,0 +1,3 @@
+jaeger-operator:
+  image:
+    repository:  registry.okd4.example.com:5010/jaegertracing/jaeger-operator

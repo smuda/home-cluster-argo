@@ -1,6 +1,9 @@
 ingressNginx:
   use: false
 
+jaeger:
+  use: true
+
 kubecost:
   use: false
 

@@ -1,0 +1,14 @@
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
+metadata:
+  name: simplest
+spec:
+  strategy: allinone
+  ingress:
+    enabled: true
+    {{- with .Values.jaeger.hosts }}
+    hosts: {{ . | toYaml | nindent 6 }}
+    {{- end }}
+    ingressClassName: {{ .Values.jaeger.ingressClassName }}
+  allInOne:
+    image: {{ .Values.jaeger.allInOne.image }}:{{.Values.jaeger.allInOne.tag }}

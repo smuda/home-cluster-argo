@@ -1,0 +1,9 @@
+# Placeholder
+
+jaeger:
+  hosts:
+    - jaeger.apps.127.0.0.1.nip.io
+  ingressClassName: nginx
+  allInOne:
+    image: jaegertracing/all-in-one
+    tag: 1.57.0

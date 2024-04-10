@@ -7,3 +7,24 @@ nodes:
         hostPort: 80
       - containerPort: 30443
         hostPort: 443
+kubeadmConfigPatches:
+  - |-
+    kind: ClusterConfiguration
+    # configure controller-manager bind address
+    controllerManager:
+      extraArgs:
+        # configure controller metrics bind address
+        bind-address: 0.0.0.0
+    etcd:
+      local:
+        extraArgs:
+          # configure etcd metrics bind address
+          listen-metrics-urls: http://0.0.0.0:2381
+    # configure scheduler bind address
+    scheduler:
+      extraArgs:
+        bind-address: 0.0.0.0  #Disable localhost binding
+  - |-
+    kind: KubeProxyConfiguration
+    # configure proxy metrics bind address
+    metricsBindAddress: 0.0.0.0

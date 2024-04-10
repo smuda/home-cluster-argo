@@ -1,0 +1,23 @@
+{{- if .Capabilities.APIVersions.Has "grafana.integreatly.org/v1beta1" -}}
+{{ range $path, $index :=  .Files.Glob "grafanadashboards/**.json" }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: {{ base $path }}
+spec:
+  allowCrossNamespaceImport: true
+  resyncPeriod: 30s
+  instanceSelector:
+    matchLabels:
+      dashboards: "grafana"
+  folder: keptn
+  datasources:
+    - inputName: "DS_PROMETHEUS"
+      datasourceName: "Prometheus"
+    - inputName: "DS_OPENSHIFT"
+      datasourceName: "Prometheus"
+  json: >
+{{ $.Files.Get $path | indent 4 }}
+{{ end }}
+{{ end }}

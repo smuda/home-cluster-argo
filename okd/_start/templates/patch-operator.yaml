@@ -34,5 +34,7 @@ spec:
         pod-security.kubernetes.io/audit: {{ .Values.patchOperator.podSecurityLevel }}
         pod-security.kubernetes.io/enforce: {{ .Values.patchOperator.podSecurityLevel }}
         pod-security.kubernetes.io/warn: {{ .Values.patchOperator.podSecurityLevel }}
+      annotations:
+        keptn.sh/lifecycle-toolkit: enabled
     {{- end }}
 {{ end }}

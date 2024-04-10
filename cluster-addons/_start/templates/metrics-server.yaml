@@ -36,5 +36,7 @@ spec:
         pod-security.kubernetes.io/audit: {{ .Values.metricsServer.podSecurityLevel }}
         pod-security.kubernetes.io/enforce: {{ .Values.metricsServer.podSecurityLevel }}
         pod-security.kubernetes.io/warn: {{ .Values.metricsServer.podSecurityLevel }}
+      annotations:
+        keptn.sh/lifecycle-toolkit: enabled
     {{- end }}
 {{ end }}

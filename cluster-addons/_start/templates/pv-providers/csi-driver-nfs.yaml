@@ -37,5 +37,7 @@ spec:
         pod-security.kubernetes.io/audit: {{ .Values.pvProviders.nfs.podSecurityLevel }}
         pod-security.kubernetes.io/enforce: {{ .Values.pvProviders.nfs.podSecurityLevel }}
         pod-security.kubernetes.io/warn: {{ .Values.pvProviders.nfs.podSecurityLevel }}
+      annotations:
+        keptn.sh/lifecycle-toolkit: enabled
     {{- end }}
 {{ end }}

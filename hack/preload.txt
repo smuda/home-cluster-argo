@@ -1,3 +1,11 @@
+docker.io/bitnami/sealed-secrets-controller:0.26.3
+docker.io/grafana/grafana:9.5.17
+ghcr.io/grafana/grafana-operator:v5.9.1
+ghcr.io/keptn/certificate-operator:v2.1.1
+ghcr.io/keptn/lifecycle-operator:v0.9.2
+ghcr.io/keptn/metrics-operator:v0.9.3
+ghcr.io/keptn/scheduler:v0.9.2
+ghcr.io/stakater/reloader:v1.0.98
 jaegertracing/all-in-one:1.52.0
 jaegertracing/jaeger-operator:1.52.0
 public.ecr.aws/docker/library/redis:7.2.4-alpine

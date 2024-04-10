@@ -4,6 +4,9 @@ ingressNginx:
 jaeger:
   use: true
 
+keptn:
+  use: true
+
 kubecost:
   use: false
 

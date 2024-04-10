@@ -30,6 +30,10 @@ jaeger:
   use: false
   podSecurityLevel: privileged
 
+keptn:
+  use: false
+  podSecurityLevel: privileged
+
 kubecost:
   use: false
   podSecurityLevel: privileged

@@ -36,5 +36,7 @@ spec:
         pod-security.kubernetes.io/audit: {{ .Values.ingressNginx.podSecurityLevel }}
         pod-security.kubernetes.io/enforce: {{ .Values.ingressNginx.podSecurityLevel }}
         pod-security.kubernetes.io/warn: {{ .Values.ingressNginx.podSecurityLevel }}
+      annotations:
+        keptn.sh/lifecycle-toolkit: enabled
     {{- end }}
 {{ end }}

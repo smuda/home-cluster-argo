@@ -1,0 +1,33 @@
+resources:
+  - all.yaml
+patches:
+  - target:
+      kind: Deployment
+      name: certificate-operator
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/containers/0/securityContext/runAsUser
+      - op: remove
+        path: /spec/template/spec/containers/0/securityContext/runAsGroup
+  - target:
+      kind: Deployment
+      name: lifecycle-operator
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/containers/0/securityContext/runAsUser
+      - op: remove
+        path: /spec/template/spec/containers/0/securityContext/runAsGroup
+  - target:
+      kind: Deployment
+      name: metrics-operator
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/containers/0/securityContext/runAsUser
+      - op: remove
+        path: /spec/template/spec/containers/0/securityContext/runAsGroup
+  - target:
+      kind: Deployment
+      name: scheduler
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/containers/0/securityContext/runAsUser

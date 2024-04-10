@@ -37,5 +37,7 @@ spec:
         pod-security.kubernetes.io/audit: {{ .Values.grafanaOperator.podSecurityLevel }}
         pod-security.kubernetes.io/enforce: {{ .Values.grafanaOperator.podSecurityLevel }}
         pod-security.kubernetes.io/warn: {{ .Values.grafanaOperator.podSecurityLevel }}
+      annotations:
+        keptn.sh/lifecycle-toolkit: enabled
     {{- end }}
 {{ end }}

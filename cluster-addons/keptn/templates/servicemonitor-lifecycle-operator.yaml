@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: lifecycle-operator
+  labels:
+    prometheus: default
+spec:
+  endpoints:
+    - interval: 60s
+      path: /metrics
+      scrapeTimeout: 30s
+      targetPort: 2222
+  jobLabel: cert-manager
+  selector:
+    matchLabels:
+      control-plane: lifecycle-operator

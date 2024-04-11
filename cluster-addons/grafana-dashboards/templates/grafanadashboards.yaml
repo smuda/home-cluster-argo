@@ -8,6 +8,7 @@ kind: GrafanaDashboard
 metadata:
   name: {{ base $path }}
 spec:
+  allowCrossNamespaceImport: true
   resyncPeriod: 30s
   instanceSelector:
     matchLabels:

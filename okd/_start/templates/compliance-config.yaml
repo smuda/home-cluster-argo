@@ -26,15 +26,8 @@ spec:
     targetRevision: {{ .Values.argo.common.target_revision }}
   syncPolicy:
     syncOptions:
-      - CreateNamespace=true
+      - CreateNamespace=false
     automated:
       prune: true
       selfHeal: true
-    {{- if .Values.argo.common.enableLabelManagement }}
-    managedNamespaceMetadata:
-      labels: # The labels to set on the application namespace
-        pod-security.kubernetes.io/audit: {{ .Values.complianceOperator.podSecurityLevel }}
-        pod-security.kubernetes.io/enforce: {{ .Values.complianceOperator.podSecurityLevel }}
-        pod-security.kubernetes.io/warn: {{ .Values.complianceOperator.podSecurityLevel }}
-    {{- end }}
 {{ end }}

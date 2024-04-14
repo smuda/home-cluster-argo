@@ -20,6 +20,8 @@ networkpolicy:
     - 192.168.60.0/24
 
 operator:
+  additionalLabels:
+    app.kubernetes.io/part-of: grafana
   fullnameOverride: grafana-operator
 #  namespaceScope: true
 #  watchNamespaces: okd-grafana-operator

@@ -1,0 +1,24 @@
+{{- if and (.Capabilities.APIVersions.Has "grafana.integreatly.org/v1beta1") -}}
+{{ range $path, $index :=  .Files.Glob "grafana-dashboards-common/argo-**.json" }}
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: {{ base $path }}
+  annotations:
+    argocd.argoproj.io/sync-options: ServerSideApply=true
+spec:
+  resyncPeriod: 30s
+  instanceSelector:
+    matchLabels:
+      dashboards: "grafana"
+  folder: Argo
+  datasources:
+    - inputName: "DS_PROMETHEUS"
+      datasourceName: "Prometheus"
+    - inputName: "DS_OPENSHIFT"
+      datasourceName: "Prometheus"
+  json: >
+{{ $.Files.Get $path | indent 4 }}
+{{ end }}
+{{ end }}

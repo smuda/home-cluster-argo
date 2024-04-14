@@ -1,16 +1,36 @@
 argo-cd:
   dex:
     enabled: false
+    metrics:
+      enabled: true
   controller:
     env:
       - name: ARGOCD_SYNC_WAVE_DELAY
         value: "10"
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+  redis:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+  repoServer:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
   server:
     config:
       repositories: |
         - type: helm
           name: argo-cd
           url: https://argoproj.github.io/argo-helm
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
   configs:
     secret:
       # This is really `password` bcrypt hashed

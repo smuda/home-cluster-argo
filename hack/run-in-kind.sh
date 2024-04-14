@@ -123,6 +123,23 @@ helm \
   -f start/values-kind.yaml \
   --set "targetRevision=${GIT_REVISION}"
 
+echo "Wait for prometheus CRD installation"
+while ! kubectl \
+  --kubeconfig "${KUBECONFIG}" \
+  wait --for condition=established --timeout=300s \
+  crd/servicemonitors.monitoring.coreos.com
+do
+  echo "Try again"
+  sleep 5
+done
+
+echo ""
+echo "Install argocd again, which means we will get metrics"
+helm --kubeconfig "${KUBECONFIG}" \
+  upgrade -n argocd \
+  argocd ./argo-install \
+  || exit 1
+
 echo ""
 echo "Wait for ingress-nginx"
 while ! kubectl \

@@ -5,6 +5,7 @@ kind: GrafanaDatasource
 metadata:
   name: {{ .Release.Name}}-prometheus
 spec:
+  resyncPeriod: 30s
   instanceSelector:
     matchLabels:
       dashboards: "grafana"

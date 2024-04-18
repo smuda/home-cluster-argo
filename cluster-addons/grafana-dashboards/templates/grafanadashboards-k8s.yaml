@@ -8,7 +8,8 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: ServerSideApply=true
 spec:
-  resyncPeriod: 30s
+  allowCrossNamespaceImport: true
+  resyncPeriod: 180s
   instanceSelector:
     matchLabels:
       dashboards: "grafana"

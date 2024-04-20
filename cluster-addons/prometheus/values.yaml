@@ -9,7 +9,7 @@ upstream:
   prometheus:
     ingress:
       enabled: true
-      ingressClassName: nginx
+      ingressClassName: ingress-traefik
       hosts:
         - prometheus.apps.k8s1.example.com
     prometheusSpec:
@@ -18,6 +18,6 @@ upstream:
   alertmanager:
     ingress:
       enabled: true
-      ingressClassName: nginx
+      ingressClassName: ingress-traefik
       hosts:
         - alert-manager.apps.k8s1.example.com

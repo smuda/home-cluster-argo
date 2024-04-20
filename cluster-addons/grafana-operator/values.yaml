@@ -11,7 +11,7 @@ grafana:
   hostname: grafana.apps.okd4.example.com
   secretPassword: password
   includeDashboards: true
-  ingressClassName: nginx
+  ingressClassName: ingress-traefik
 
 networkpolicy:
   use: true

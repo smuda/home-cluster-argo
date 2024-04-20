@@ -4,5 +4,5 @@ sealed-secrets:
   namespace: kube-system
   keyrenewperiod: 8760h # A year. Not really renewing in a kind cluster
   ingress:
-    ingressClassName: nginx
+    ingressClassName: ingress-traefik
     enabled: true

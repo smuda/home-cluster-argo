@@ -9,16 +9,10 @@ metadata:
 {{- end }}
 spec:
   destination:
-    namespace: addon-kubecost
+    namespace: addon-ls24
     server: https://kubernetes.default.svc
   project: {{ .Values.argo.project }}
   source:
-    #helm:
-    #  version: v3
-    #  releaseName: kubecost
-    #  {{- if .Values.argo.common.valueFiles }}
-    #  valueFiles: {{ .Values.argo.common.valueFiles | toYaml | nindent 8 }}
-    #  {{- end }}
     path: cluster-addons/ls24/waf
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.common.target_revision }}

@@ -1,0 +1,19 @@
+upstream:
+  ingressClass:
+    name: nginx
+
+  fullnameOverride: ingress-traefik
+
+  metrics:
+    prometheus:
+      serviceMonitor:
+        service:
+          enabled: true
+        additionalLabels:
+          prometheus: default
+
+  ports:
+    web:
+      nodePort: 30080
+    websecure:
+      nodePort: 30443

@@ -26,6 +26,10 @@ ingressNginx:
   use: true
   podSecurityLevel: baseline
 
+ingressTraefik:
+  use: false
+  podSecurityLevel: baseline
+
 kubecost:
   use: false
   podSecurityLevel: privileged

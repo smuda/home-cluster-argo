@@ -4,6 +4,9 @@ kubecost:
 ingressNginx:
   use: false
 
+ingressTraefik:
+  use: true
+
 metricsServer:
   use: true
 

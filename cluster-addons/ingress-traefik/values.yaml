@@ -14,11 +14,11 @@ upstream:
         additionalLabels:
           prometheus: default
 
-  #ports:
-    #web:
-    #  nodePort: 30080
-    #websecure:
-    #  nodePort: 30443
+  ports:
+    web:
+      nodePort: 30080
+    websecure:
+      nodePort: 30443
 
   service:
-    type: ClusterIP
+    type: NodePort

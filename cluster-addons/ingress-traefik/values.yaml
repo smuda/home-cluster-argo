@@ -14,7 +14,7 @@ upstream:
         additionalLabels:
           prometheus: default
 
-  ports:
+  #ports:
     #web:
     #  nodePort: 30080
     #websecure:

@@ -17,3 +17,5 @@ upstream:
       nodePort: 30080
     websecure:
       nodePort: 30443
+  ingressClass:
+    name: nginx

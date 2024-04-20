@@ -6,6 +6,10 @@ upstream:
   #ingressClass:
   #  name: nginx
 
+  logs:
+    general:
+      level: DEBUG # ERROR
+
   metrics:
     prometheus:
       serviceMonitor:

@@ -3,8 +3,8 @@ upstream:
 
   globalArguments: []
 
-  ingressClass:
-    name: nginx
+  #ingressClass:
+  #  name: nginx
 
   metrics:
     prometheus:

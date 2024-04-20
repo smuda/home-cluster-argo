@@ -1,10 +1,10 @@
 upstream:
-  ingressClass:
-    name: nginx
+  fullnameOverride: ingress-traefik
 
   globalArguments: []
 
-  fullnameOverride: ingress-traefik
+  ingressClass:
+    name: nginx
 
   metrics:
     prometheus:
@@ -14,11 +14,11 @@ upstream:
         additionalLabels:
           prometheus: default
 
-  service:
-    type: NodePort
-
   ports:
-    web:
-      nodePort: 30080
-    websecure:
-      nodePort: 30443
+    #web:
+    #  nodePort: 30080
+    #websecure:
+    #  nodePort: 30443
+
+  service:
+    type: ClusterIP

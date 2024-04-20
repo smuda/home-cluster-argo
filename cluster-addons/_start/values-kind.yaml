@@ -8,7 +8,7 @@ ingressTraefik:
   use: true
 
 ls24:
-  use: false
+  use: true
 
 metricsServer:
   use: true

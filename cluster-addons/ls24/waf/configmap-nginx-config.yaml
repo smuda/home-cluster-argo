@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  default.conf: |
+    upstream app {
+        server 172.17.0.1:8080;
+    }
+    upstream appS {
+        server 172.17.0.1:8443;
+    }
+
+    server {
+    	listen 80 default_server;
+    	listen [::]:80 default_server;
+
+    	server_name _;
+
+    	include snippets/cdn-proxy.conf;
+    	include snippets/trustedtypes-location.conf;
+    	#include snippets/csp-collector.conf;
+
+    	#Block access to user databas
+    	location accounts/accounts.xml
+    	{
+    		return 403;
+    	}
+
+    	location / {
+    		#modsecurity off;
+    		#modsecurity_rules '
+    		#SecRuleRemoveByID 920420
+    		#';
+    		include proxy_params;
+    		include snippets/cdn-rewrite.conf;
+    		include snippets/nonce.conf;
+    		proxy_pass http://app;
+    	}
+    }
+
+    server {
+    	listen 443 ssl;
+    	listen [::]:443 ssl;
+
+    	server_name www.bgp.03.berylia.org;
+
+    	include snippets/cdn-proxy.conf;
+    	include snippets/trustedtypes-location.conf;
+    	#include snippets/csp-collector.conf;
+
+    	ssl_certificate      /etc/nginx/sites-available/www.bgp.03.berylia.org_fullchain.crt;
+    	ssl_certificate_key  /etc/nginx/sites-available/www.bgp.03.berylia.org_key.crt;
+    	include snippets/tls-config.conf;
+
+    	# Allow bypass of JA3-based blocking
+    	if ($http_x_ja3_bypass = "7fadde555e7ac26ebcbf5e048113b2d3") { set $http_ssl_ja3_hash ""; }
+    	# Block Burp Suite
+    	if ($http_ssl_ja3_hash = "62f6a6727fda5a1104d5b147cd82e520") { return 405; }
+    	# Block Burp Suite 
+    	if ($http_ssl_ja3_hash = "d7a2543716f784e8de73ffe3f7f6234b") { return 405; }
+
+    	#Block access to user databas
+    	location accounts/accounts.xml
+    	{
+    		return 403;
+    	}
+
+    	location / {
+    		#modsecurity off;
+    		#modsecurity_rules '
+    		#SecRuleRemoveByID 920420
+    		#';
+
+    		include proxy_params;
+    		include snippets/cdn-rewrite.conf;
+    		include snippets/nonce.conf;
+    		proxy_pass https://appS;
+    	}
+    }

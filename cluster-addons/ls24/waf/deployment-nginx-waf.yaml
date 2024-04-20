@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-waf
+spec:
+  selector:
+    matchLabels:
+      app: nignx-waf
+  template:
+    metadata:
+      labels:
+        app: nignx-waf
+    spec:
+      hostAliases:
+        - ip: 100.100.100.10
+          hostnames:
+            - code.berylia.org
+      containers:
+        - name: nginx
+          image: web.ls24.zetatwo.dev:5000/webproxy:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http
+            - containerPort: 443
+              name: https
+          volumeMounts:
+            - mountPath: /etc/nginx/sites-available/
+              name: config
+            - mountPath: /var/cache/nginx/cdn
+              name: cdn
+            - mountPath: /var/log/nginx
+              name: log
+      volumes:
+        - name: config
+          configMap:
+            name: nginx-config
+            optional: false
+        - name: cdn
+          emptyDir:
+            sizeLimit: 1G
+        - name: log
+          emptyDir:
+            sizeLimit: 1G

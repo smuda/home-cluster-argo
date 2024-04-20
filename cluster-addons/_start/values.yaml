@@ -30,6 +30,10 @@ ingressTraefik:
   use: false
   podSecurityLevel: baseline
 
+ls24:
+  use: false
+  podSecurityLevel: baseline
+
 kubecost:
   use: false
   podSecurityLevel: privileged

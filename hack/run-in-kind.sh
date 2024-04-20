@@ -3,6 +3,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 CLUSTER_NAME=home-cluster
 KUBECONFIG=~/.kube/${CLUSTER_NAME}-argo
 PRE_LOAD_IMAGES_FILE=${SCRIPT_DIR}/preload.txt
+INGRESS_NAME=traefik
 
 echo "Verify binaries exist"
 if ! command -v jq &> /dev/null
@@ -153,18 +154,36 @@ helm --kubeconfig "${KUBECONFIG}" \
   argocd ./argo-install \
   || exit 1
 
-echo ""
-echo "Wait for ingress-nginx"
-while ! kubectl \
- --kubeconfig "${KUBECONFIG}" \
- --namespace=addon-ingress-nginx \
-  wait deployment ingress-nginx-upstream-controller \
-  --for condition=Available=True \
-  --timeout=120s
-do
-  echo "Try again"
-  sleep 5
-done
+
+if [ "${INGRESS_NAME}" == "nginx" ]; then
+  echo ""
+  echo "Wait for ingress-nginx"
+  while ! kubectl \
+    --kubeconfig "${KUBECONFIG}" \
+    --namespace=addon-ingress-nginx \
+    wait deployment ingress-nginx-upstream-controller \
+    --for condition=Available=True \
+    --timeout=120s
+  do
+    echo "Try again"
+    sleep 5
+  done
+fi
+
+if [ "${INGRESS_NAME}" == "traefik" ]; then
+  echo ""
+  echo "Wait for ingress-traefik"
+  while ! kubectl \
+    --kubeconfig "${KUBECONFIG}" \
+    --namespace=addon-ingress-traefik \
+    wait deployment ingress-traefik \
+    --for condition=Available=True \
+    --timeout=120s
+  do
+    echo "Try again"
+    sleep 5
+  done
+fi
 
 echo ""
 ARGO_PWD=$(kubectl --kubeconfig "${KUBECONFIG}" \

@@ -2,6 +2,8 @@ upstream:
   ingressClass:
     name: nginx
 
+  globalArguments: []
+
   fullnameOverride: ingress-traefik
 
   metrics:
@@ -17,5 +19,3 @@ upstream:
       nodePort: 30080
     websecure:
       nodePort: 30443
-  ingressClass:
-    name: nginx

@@ -1,3 +1,4 @@
+{{- if and (.Capabilities.APIVersions.Has "compliance.openshift.io/v1alpha1") -}}
 apiVersion: compliance.openshift.io/v1alpha1
 kind: TailoredProfile
 metadata:
@@ -13,3 +14,4 @@ spec:
     - name: ocp4-var-role-worker
       value: master
       rationale: Set the mcp name for workers
+{{- end -}}

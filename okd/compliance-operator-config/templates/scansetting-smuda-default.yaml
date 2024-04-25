@@ -1,3 +1,4 @@
+{{- if and (.Capabilities.APIVersions.Has "compliance.openshift.io/v1alpha1") -}}
 apiVersion: compliance.openshift.io/v1alpha1
 kind: ScanSetting
 metadata:
@@ -33,3 +34,4 @@ rawResultStorage:
     - effect: NoSchedule
       key: node.kubernetes.io/memory-pressure
       operator: Exists
+{{- end -}}

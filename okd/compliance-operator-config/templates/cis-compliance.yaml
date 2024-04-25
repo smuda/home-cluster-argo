@@ -1,3 +1,4 @@
+{{- if and (.Capabilities.APIVersions.Has "compliance.openshift.io/v1alpha1") -}}
 apiVersion: compliance.openshift.io/v1alpha1
 kind: ScanSettingBinding
 metadata:
@@ -13,3 +14,4 @@ settingsRef:
   name: smuda-default
   kind: ScanSetting
   apiGroup: compliance.openshift.io/v1alpha1
+{{- end -}}

@@ -1,4 +1,4 @@
-{{ if not .Values.isOpenshift }}
+{{- if not .Values.isOpenshift -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

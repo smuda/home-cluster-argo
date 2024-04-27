@@ -1,4 +1,5 @@
 {{ if .Values.machineConfigPools.patchLabels }}
+{{- if and (.Capabilities.APIVersions.Has "redhatcop.redhat.io/v1alpha1") -}}
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
@@ -19,4 +20,5 @@ spec:
           labels: 
             complianceascode.io/node-role: worker
       patchType: application/merge-patch+json
+{{- end -}}
 {{- end -}}

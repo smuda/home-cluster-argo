@@ -4,5 +4,3 @@ metadata:
   name: compliance-operator
   namespace: openshift-compliance
 spec:
-  targetNamespaces:
-    - "{{ .Release.Namespace }}"

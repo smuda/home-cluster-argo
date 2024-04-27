@@ -4,8 +4,6 @@ apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
 metadata:
   name: "eviction-thresholds-{{ $mcpName }}"
-  annotations:
-    complianceascode.io/node-role: "{{ $mcpName }}"
 spec:
   machineConfigPoolSelector:
     matchLabels:

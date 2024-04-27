@@ -1,4 +1,5 @@
 {{ if .Values.egressIp.use }}
+{{- if and (.Capabilities.APIVersions.Has "redhatcop.redhat.io/v1alpha1") -}}
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
@@ -22,4 +23,5 @@ spec:
         {{- end }}
       patchType: application/merge-patch+json
     {{- end }}
+{{- end }}
 {{- end }}

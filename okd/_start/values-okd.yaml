@@ -2,6 +2,3 @@ argo:
   common:
     valueFiles:
       - values-okd.yaml
-
-certManager:
-  use: false

@@ -1,4 +1,5 @@
-{{- if .Values.isOpenshift }}
+{{- if .Values.isOpenshift -}}
+{{- if and (.Capabilities.APIVersions.Has "grafana.integreatly.org/v1beta1") -}}
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
@@ -28,4 +29,5 @@ spec:
         secretKeyRef:
           name: grafana-instance-sa-token
           key: token
+{{- end }}
 {{- end }}

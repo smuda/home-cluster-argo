@@ -1,4 +1,5 @@
 {{ if not .Values.isOpenshift }}
+{{- if and (.Capabilities.APIVersions.Has "grafana.integreatly.org/v1beta1") -}}
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
@@ -16,4 +17,5 @@ spec:
     orgId: 1
     type: prometheus
     url: 'http://prometheus-kube-prometheus-prometheus.addon-prometheus.svc:9090'
+{{- end }}
 {{- end }}

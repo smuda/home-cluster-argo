@@ -10,7 +10,7 @@ spec:
     spec:
       automountServiceAccountToken: true
       containers:
-        - image: registry.redhat.io/openshift4/ose-cli:v4.4
+        - image: registry.redhat.io/openshift4/ose-cli:v4.15
           command:
             - /bin/bash
             - -c

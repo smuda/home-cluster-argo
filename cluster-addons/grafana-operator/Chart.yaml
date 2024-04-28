@@ -7,6 +7,7 @@ type: application
 version: 5.9.0
 
 dependencies:
+  # https://github.com/grafana/grafana-operator/releases
   - name: grafana-operator
     version: v5.9.0
     repository: oci://ghcr.io/grafana/helm-charts

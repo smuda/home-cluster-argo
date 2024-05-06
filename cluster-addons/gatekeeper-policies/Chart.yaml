@@ -1,0 +1,7 @@
+apiVersion: v2
+name: gatekeeper-policies
+description: Install gatekeeper policies
+
+type: application
+
+version: 1.0.0

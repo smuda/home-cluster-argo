@@ -1,0 +1,21 @@
+{{- $processedDict := dict -}}
+{{- range $path, $bytes := .Files.Glob "policies/**" }}
+{{- $name := base (dir $path) }}
+{{- if not (hasKey $processedDict $name) -}}
+{{ $_ := set $processedDict $name "true" }}
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: {{ $name | lower }}
+spec:
+  crd:
+    spec:
+      names:
+        kind: {{ $name }}
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        {{- $.Files.Get (printf "policies/%s/src.rego" $name) | nindent 8 }}
+---
+{{- end }}
+{{- end }}

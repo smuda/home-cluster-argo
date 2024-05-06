@@ -18,6 +18,10 @@ cert_manager_config:
 cert_manager_approver_policy:
   use: true
 
+gatekeeper:
+  use: true
+  podSecurityLevel: restricted
+
 grafanaOperator:
   use: true
   podSecurityLevel: restricted

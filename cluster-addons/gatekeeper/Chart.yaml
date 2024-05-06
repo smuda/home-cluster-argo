@@ -1,0 +1,12 @@
+apiVersion: v2
+name: gatekeeper
+description: Install gatekeeper
+
+type: application
+
+version: 1.0.0
+
+dependencies:
+  - name: gatekeeper
+    version: 3.15.1
+    repository: https://open-policy-agent.github.io/gatekeeper/charts

@@ -40,6 +40,5 @@ violation[msg] {
 container_resources_provided(container) {
 	container.resources.requests.cpu
 	container.resources.requests.memory
-	container.resources.limits.cpu
 	container.resources.limits.memory
 }

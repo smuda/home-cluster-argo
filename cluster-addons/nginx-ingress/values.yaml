@@ -12,3 +12,10 @@ upstream:
         memory: 128Mi
       limits:
         memory: 128Mi
+
+    service:
+      type: NodePort
+      httpPort:
+        nodePort: 30080
+      httpsPort:
+        nodePort: 30443

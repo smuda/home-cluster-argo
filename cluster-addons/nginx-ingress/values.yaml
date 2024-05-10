@@ -19,3 +19,10 @@ upstream:
         nodePort: 30080
       httpsPort:
         nodePort: 30443
+
+  prometheus:
+    create: true
+    service:
+      create: true
+    serviceMonitor:
+      create: true

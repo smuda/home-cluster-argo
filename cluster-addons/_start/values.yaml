@@ -23,7 +23,7 @@ grafanaOperator:
   podSecurityLevel: restricted
 
 ingressNginx:
-  use: true
+  use: false
   podSecurityLevel: baseline
 
 kubecost:
@@ -33,6 +33,10 @@ kubecost:
 metricsServer:
   use: false
   podSecurityLevel: privileged
+
+nginxIngress:
+  use: true
+  podSecurityLevel: baseline
 
 prometheus:
   use: false

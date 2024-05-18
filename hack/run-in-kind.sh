@@ -139,18 +139,50 @@ helm \
 echo "Wait for prometheus CRD installation"
 while ! kubectl \
   --kubeconfig "${KUBECONFIG}" \
-  wait --for condition=established --timeout=300s \
+  wait \
+  --for condition=established \
+  --timeout=300s \
   crd/servicemonitors.monitoring.coreos.com
 do
   echo "Try again"
   sleep 5
 done
 
+echo "Wait for cert-manager CRD installation"
+while ! kubectl \
+  --kubeconfig "${KUBECONFIG}" \
+  wait \
+  --for condition=established \
+  --timeout=300s \
+  crd/certificates.cert-manager.io
+do
+  echo "Try again"
+  sleep 5
+done
+
 echo ""
-echo "Install argocd again, which means we will get metrics"
+echo "Wait for cert-manager to start"
+DEPLOYMENTS=$(kubectl \
+  --kubeconfig "${KUBECONFIG}" \
+  -n addon-cert-manager \
+  get deploy -o json | jq -r '.items[].metadata.name' | tr '\n' ' ')
+
+kubectl \
+ --kubeconfig "${KUBECONFIG}" \
+ --namespace=addon-cert-manager \
+  wait deployment ${DEPLOYMENTS} \
+  --for condition=Available=True \
+  --timeout=180s \
+  || exit 1
+
+echo ""
+echo "Install argocd again, which means we will get metrics and cert-manager certificate"
 helm --kubeconfig "${KUBECONFIG}" \
   upgrade -n argocd \
   argocd ./argo-install \
+  --set argo-cd.server.certificate.enabled=true \
+  --set argo-cd.server.certificate.issuer.kind=ClusterIssuer \
+  --set argo-cd.server.certificate.issuer.name=lab-cluster-issuer \
   || exit 1
 
 echo ""

@@ -1,0 +1,25 @@
+apiVersion: policy.cert-manager.io/v1alpha1
+kind: CertificateRequestPolicy
+metadata:
+  name: 127-0-0-1-nip-io
+spec:
+  allowed:
+    commonName:
+      value: "*"
+      required: false
+    dnsNames:
+      values:
+        - "*.nip.io"
+        - "*.svc"
+        - "*.svc.cluster.local"
+    subject:
+      organizationalUnits:
+        required: false
+        values:
+          - "*"
+    usages:
+      - "server auth"
+      - "client auth"
+  selector:
+    # Select all IssuerRef
+    issuerRef: {}

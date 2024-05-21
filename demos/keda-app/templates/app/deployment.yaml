@@ -12,7 +12,7 @@ spec:
         app: keda
     spec:
       containers:
-        - name: nginx
+        - name: minimal
           image: ghcr.io/allbergkonsult/k8s-minimal-app:main
           args:
             - "-delay-ready=30"

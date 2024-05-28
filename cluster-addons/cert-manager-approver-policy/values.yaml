@@ -1,3 +1,5 @@
+okd4ExampleCom: false
+
 upstream:
   nameOverride: cert-manager-approver-policy
   resources:

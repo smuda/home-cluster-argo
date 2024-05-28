@@ -1,3 +1,4 @@
+{{ if .Values.okd4ExampleCom }}
 apiVersion: policy.cert-manager.io/v1alpha1
 kind: CertificateRequestPolicy
 metadata:
@@ -23,3 +24,4 @@ spec:
   selector:
     # Select all IssuerRef
     issuerRef: {}
+{{ end }}

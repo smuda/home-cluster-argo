@@ -21,6 +21,11 @@ then
     echo "kubectl could not be found"
     exit 1
 fi
+if ! command -v argocd &> /dev/null
+then
+    echo "argocd could not be found"
+    exit 1
+fi
 
 pushd "${SCRIPT_DIR}" \
   || exit 1
@@ -175,6 +180,23 @@ kubectl \
   --for condition=Available=True \
   --timeout=180s \
   || exit 1
+
+echo ""
+echo "Wait for cert-manager to install successfully"
+kubectl config set-context --current --namespace=argocd
+argocd app wait argocd/addon-cert-manager-approver-policy > /dev/null \
+  || exit 1
+while ! argocd app wait argocd/addon-cert-manager-config > /dev/null
+do
+  echo "Try again"
+  sleep 5
+done
+kubectl -n addon-cert-manager delete certificate lab-issuer > /dev/null \
+  || exit 1
+sleep 1
+kubectl delete clusterissuer lab-cluster-issuer \
+  || exit 1
+sleep 1
 
 echo ""
 echo "Install argocd again, which means we will get metrics and cert-manager certificate"

@@ -17,6 +17,9 @@ spec:
       parameters:
         - name: argo.common.target_revision
           value: {{ .Values.targetRevision }}
+        {{- if .Values.helmParameters }}
+        {{- include "template.helmParameters" (dict "prefix" "" "data" .Values.helmParameters) | indent 8 }}
+        {{- end }}
     path: _start/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.targetRevision }}

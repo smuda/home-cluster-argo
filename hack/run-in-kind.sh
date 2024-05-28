@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -eu
+
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 CLUSTER_NAME=home-cluster
 KUBECONFIG=~/.kube/${CLUSTER_NAME}-argo
@@ -140,8 +143,11 @@ helm \
   --namespace=argocd \
   upgrade -i start start \
   -f start/values-kind.yaml \
-  --set "targetRevision=${GIT_REVISION}"
+  --set "targetRevision=${GIT_REVISION}" \
+  --set-string "helmParameters.addons.helmParameters.${INGRESS}.use=true" \
+  || exit 1
 
+echo ""
 echo "Wait for prometheus CRD installation"
 while ! kubectl \
   --kubeconfig "${KUBECONFIG}" \
@@ -154,6 +160,7 @@ do
   sleep 5
 done
 
+echo ""
 echo "Wait for cert-manager CRD installation"
 while ! kubectl \
   --kubeconfig "${KUBECONFIG}" \
@@ -208,18 +215,36 @@ helm --kubeconfig "${KUBECONFIG}" \
   --set argo-cd.server.certificate.issuer.name=lab-cluster-issuer \
   || exit 1
 
-echo ""
-echo "Wait for ingress-nginx"
-while ! kubectl \
- --kubeconfig "${KUBECONFIG}" \
- --namespace=addon-ingress-nginx \
-  wait deployment ingress-nginx-upstream-controller \
-  --for condition=Available=True \
-  --timeout=120s
-do
-  echo "Try again"
-  sleep 5
-done
+
+if [[ ${INGRESS} == "ingressNginx" ]]; then
+  echo ""
+  echo "Wait for ingress-nginx"
+  while ! kubectl \
+   --kubeconfig "${KUBECONFIG}" \
+   --namespace=addon-ingress-nginx \
+    wait deployment ingress-nginx-upstream-controller \
+    --for condition=Available=True \
+    --timeout=120s
+  do
+    echo "Try again"
+    sleep 5
+  done
+fi
+
+if [[ ${INGRESS} == "nginxIngress" ]]; then
+  echo ""
+  echo "Wait for nginx-ingress"
+  while ! kubectl \
+   --kubeconfig "${KUBECONFIG}" \
+   --namespace=addon-nginx-ingress \
+    wait deployment nginx-ingress-upstream-controller \
+    --for condition=Available=True \
+    --timeout=120s
+  do
+    echo "Try again"
+    sleep 5
+  done
+fi
 
 echo ""
 ARGO_PWD=$(kubectl --kubeconfig "${KUBECONFIG}" \
@@ -230,3 +255,4 @@ ARGO_HOST=$(kubectl --kubeconfig "${KUBECONFIG}" \
   get ingress argocd-server -o json | jq -r '.spec.rules[0].host')
 
 echo "You can now login to argo with https://${ARGO_HOST} using admin and ${ARGO_PWD:-password}"
+kubectl config set-context --current --namespace=default

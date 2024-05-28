@@ -22,6 +22,7 @@ spec:
       {{- end }}
       parameters:
         {{- include "template.helmParameters" (dict "prefix" "argo.common" "data" .Values.argo.common) | indent 8 }}
+        {{- include "template.helmParameters" (dict "prefix" "" "data" .Values.addons.helmParameters) | indent 8 }}
     path: cluster-addons/_start/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.common.target_revision }}

@@ -24,6 +24,8 @@ argo-cd:
         enabled: true
 
   server:
+    extraArgs:
+      - "--insecure"
     config:
       repositories: |
         - type: helm
@@ -32,8 +34,6 @@ argo-cd:
     certificate:
       domain: argocd.app.127.0.0.1.nip.io
       enabled: false
-      additionalHosts:
-        - argocd.app.127.0.0.1.nip.io
     ingress:
       enabled: true
       tls: true

@@ -15,7 +15,6 @@ upstream:
   extraArgs:
     # Disable standard approver, use policy approver instead
     - "--controllers=*,-certificaterequests-approver"
-  installCRDs: true
   namespace: addon-cert-manager
   image:
     repository: quay.io/jetstack/cert-manager-controller

@@ -164,6 +164,11 @@ do
 done
 
 echo ""
+echo "Wait for cert-manager to install successfully"
+kubectl config set-context --current --namespace=argocd
+argocd app wait argocd/addon-cert-manager > /dev/null \
+  || exit 1
+echo ""
 echo "Wait for cert-manager to start"
 DEPLOYMENTS=$(kubectl \
   --kubeconfig "${KUBECONFIG}" \
@@ -179,10 +184,10 @@ kubectl \
   || exit 1
 
 echo ""
-echo "Wait for cert-manager to install successfully"
-kubectl config set-context --current --namespace=argocd
+echo "Wait for cert-manager-approver-policy to install successfully"
 argocd app wait argocd/addon-cert-manager-approver-policy > /dev/null \
   || exit 1
+echo "Wait for cert-manager-config to install successfully"
 while ! argocd app wait argocd/addon-cert-manager-config > /dev/null
 do
   echo "Try again"

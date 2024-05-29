@@ -1,0 +1,7 @@
+apiVersion: v2
+name: cert-manager-crds
+description: Install cert-manager and configure cluster issuer
+
+type: application
+
+version: 1.0.0

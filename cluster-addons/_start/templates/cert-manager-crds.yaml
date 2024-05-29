@@ -2,10 +2,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: addon-cert-manager
+  name: addon-cert-manager-crds
   namespace: {{ .Values.argo.common.apps_namespace }}
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "0"
 {{- if .Values.argo.common.finalizers }}
   finalizers: {{ .Values.argo.common.finalizers | toYaml | nindent 4 }}
 {{- end }}
@@ -21,12 +21,12 @@ spec:
       {{- if .Values.argo.common.valueFiles }}
       valueFiles: {{ .Values.argo.common.valueFiles | toYaml | nindent 8 }}
       {{- end }}
-    path: cluster-addons/cert-manager/
+    path: cluster-addons/cert-manager-crds/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.argo.common.target_revision }}
   syncPolicy:
     syncOptions:
-      - CreateNamespace=false
+      - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true

@@ -50,19 +50,9 @@ if test -f "${PRE_LOAD_IMAGES_FILE}"; then
   while read -r image; do
     echo "Checking ${image}"
     # Check if the image exists using Docker manifest inspect
-    docker inspect "$image" > /dev/null 2>&1
-
-    # Get the exit code of the command
-    exit_code=$?
-
-    # Print the result based on the exit code
-    if [ $exit_code -eq 0 ]; then
-      echo "    exists"
-    else
-      echo "    does not exist"
-      docker pull  "$image" \
-        || exit 1
-    fi
+    docker inspect "$image" > /dev/null 2>&1 \
+      || docker pull  "$image" \
+      || exit 1
   done <"${PRE_LOAD_IMAGES_FILE}"
 fi
 

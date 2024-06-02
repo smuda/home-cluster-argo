@@ -9,6 +9,7 @@ quota:
 
 # Dependency values
 upstream:
+  installCRDs: false
   deploymentAnnotations:
     reloader.stakater.com/auto: "true"
   nameOverride: cert-manager

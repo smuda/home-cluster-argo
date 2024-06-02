@@ -17,7 +17,7 @@ spec:
   source:
     helm:
       version: v3
-      releaseName: jaeger
+      releaseName: jaeger-operator
       {{- if .Values.argo.common.valueFiles }}
       valueFiles: {{ .Values.argo.common.valueFiles | toYaml | nindent 8 }}
       {{- end }}

@@ -1,8 +1,7 @@
 
 jaeger:
-  image:
-    repository: registry.okd4.example.com:5010/jaegertracing/all-in-one
-  hosts:
-    - jaeger.apps.okd4.example.com
   allInOne:
     image: registry.okd4.example.com:5010/jaegertracing/all-in-one
+  hosts:
+    - jaeger.apps.okd4.example.com
+  ingressClassName: openshift-default

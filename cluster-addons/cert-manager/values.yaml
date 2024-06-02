@@ -55,9 +55,9 @@ upstream:
     resources:
       requests:
         cpu: 100m
-        memory: 32Mi
+        memory: 96Mi
       limits:
-        memory: 32Mi
+        memory: 96Mi
 
 ### cainjector ###
   cainjector:

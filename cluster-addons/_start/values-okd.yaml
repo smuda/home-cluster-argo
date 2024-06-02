@@ -1,2 +1,5 @@
 ingressNginx:
   use: false
+
+jaeger:
+  use: true

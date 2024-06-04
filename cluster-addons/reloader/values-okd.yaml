@@ -1,6 +1,6 @@
 upstream:
-  isOpenshift: true
   reloader:
+    isOpenshift: true
     serviceMonitor:
       enabled: true
     deployment:

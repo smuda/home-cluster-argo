@@ -13,7 +13,7 @@ catalogSources:
 certManager:
   use: false
 complianceOperator:
-  use: true
+  use: false
   podSecurityLevel: privileged
 csrAutoApprover:
   use: true

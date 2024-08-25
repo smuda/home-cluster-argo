@@ -8,7 +8,7 @@ metadata:
 spec:
   channel: stable
   installPlanApproval: Automatic
-  name: openshift-custom-metrics-autoscaler-operator
-  source: redhat-operators
+  name: keda
+  source: operatorhubio-catalog
   sourceNamespace: openshift-marketplace
-  startingCSV: custom-metrics-autoscaler.v2.15.1-6
+  startingCSV: keda.v2.15.1

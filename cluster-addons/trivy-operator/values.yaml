@@ -22,6 +22,16 @@ upstream:
 
   trivy:
     ignoreUnfixed: true
+    # -- resources resource requests and limits for scan job containers
+    resources:
+      requests:
+        cpu: 100m
+        memory: 300Mi
+        # ephemeralStorage: "2Gi"
+      limits:
+        cpu: 500m
+        memory: 1000Mi
+        # ephemeralStorage: "2Gi"
 
   trivyOperator:
     scanJobPodTemplatePodSecurityContext:

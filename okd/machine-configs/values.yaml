@@ -1,6 +1,6 @@
 machineConfigs:
   enableProtectKernelSysctl:
-    enabled: false # This does not work on Fedora CoreOS.
+    enabled: false # This does not work on Fedora CoreOS, nor RHCOS.
 
 kubeletConfigs:
   enabled: true
@@ -16,10 +16,12 @@ kubeletConfigs:
     enabled: true
   evictionConfig:
     enabled: true
+  evictionSoft:
+    enabled: true
+  evictionHard:
+    enabled: true
   protectKernelDefaults:
-    enabled: false # this is a problem.
-                   # - Cannot join cluster with new nodes.
-                   # - For some reason, it does not trigger mcp reboot.
+    enabled: false # this is a problem for both FCOS and RHCOS.
 
 system:
   chrony:

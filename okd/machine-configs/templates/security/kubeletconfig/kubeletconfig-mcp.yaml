@@ -1,0 +1,64 @@
+{{ if .Values.kubeletConfigs.enabled }}
+{{- range $mcpName := .Values.machineConfigPools }}
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: "mcp-{{ $mcpName }}"
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+      "pools.operator.machineconfiguration.openshift.io/{{ $mcpName }}": ""
+  {{- if $.Values.kubeletConfigs.autosizeReserved.enabled }}
+  autoSizingReserved: true
+  {{- end }}
+  kubeletConfig:
+    {{- if $.Values.kubeletConfigs.eventRecordQPS.enabled }}
+    eventRecordQPS: 5
+    {{- end }}
+    {{- if $.Values.kubeletConfigs.evictionConfig.enabled }}
+    evictionPressureTransitionPeriod: 0s
+    evictionMaxPodGracePeriod: 120
+    {{- end }}
+    {{- if $.Values.kubeletConfigs.evictionSoft.enabled }}
+    evictionSoft:
+      imagefs.available: "15%"
+      imagefs.inodesFree: "5%"
+      memory.available: "500Mi"
+      nodefs.available: "10%"
+      nodefs.inodesFree: "5%"
+    evictionSoftGracePeriod:
+      imagefs.available: "1m30s"
+      imagefs.inodesFree: "1m30s"
+      memory.available: "1m30s"
+      nodefs.available: "1m30s"
+      nodefs.inodesFree: "1m30s"
+    {{- end }}
+    {{- if $.Values.kubeletConfigs.evictionHard.enabled }}
+    evictionHard:
+      imagefs.available: "10%"
+      imagefs.inodesFree: "4%"
+      memory.available: "200Mi"
+      nodefs.available: "5%"
+      nodefs.inodesFree: "4%"
+    {{- end }}
+    {{- if $.Values.kubeletConfigs.makeIPTablesUtilChains.enabled }}
+    makeIPTablesUtilChains: true
+    {{- end }}
+    {{- if $.Values.kubeletConfigs.protectKernelDefaults.enabled }}
+    protectKernelDefaults: true
+    {{- end }}
+    {{- if $.Values.kubeletConfigs.streamingConnectionIdleTimeout.enabled }}
+    streamingConnectionIdleTimeout: 5m0s
+    {{- end }}
+    {{- if $.Values.kubeletConfigs.tlsCipherSuites.enabled }}
+    tlsCipherSuites:
+      - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+      - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+      - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+      - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+      - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+      - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+    {{- end }}
+{{- end }}
+{{- end }}

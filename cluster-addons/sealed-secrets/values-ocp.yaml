@@ -1,0 +1,9 @@
+useTestKey: false # OKD is more production, so I'll insert a key I don't have publicly on github. :-)
+
+sealed-secrets:
+  image:
+    registry: registry.okd4.example.com:5010
+  namespace: kube-system
+  keyrenewperiod: 8760h # A year. Not really renewing in my OKD cluster since I'll reinstall more often.
+  ingress:
+    enabled: true

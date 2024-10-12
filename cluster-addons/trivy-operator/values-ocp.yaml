@@ -1,0 +1,4 @@
+upstream:
+  operator:
+    privateRegistryScanSecretsNames:
+      openshift-config: pull-secret

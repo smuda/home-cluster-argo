@@ -1,0 +1,7 @@
+argo:
+  common:
+    valueFiles:
+      - values-ocp.yaml
+
+okd:
+  use: true

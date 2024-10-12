@@ -33,3 +33,5 @@ machineConfigPools:
   - master
   - worker
 
+security:
+  usbGuard: false

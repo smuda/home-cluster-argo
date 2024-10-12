@@ -1,0 +1,47 @@
+{{- $root := . -}}
+{{- if .Values.security.usbGuard -}}
+{{- range $mcpName := .Values.machineConfigPools }}
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: {{ $mcpName }}
+  name: 80-install-usbguard-{{ $mcpName }}
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    systemd:
+      units:
+        # installing usbguard as a layered package with rpm-ostree
+        # reference: https://docs.fedoraproject.org/en-US/fedora-coreos/os-extensions/
+        - name: rpm-ostree-install-usbguard.service
+          enabled: true
+          contents: |
+            [Unit]
+            Description=Layer usbguard with rpm-ostree
+            Wants=network-online.target
+            After=network-online.target
+            # We run before `zincati.service` to avoid conflicting rpm-ostree
+            # transactions.
+            Before=zincati.service
+            ConditionPathExists=!/var/lib/%N.stamp
+
+            [Service]
+            Type=oneshot
+            RemainAfterExit=yes
+            # This will enable the generic fedora repo during installation and then disable.
+            ExecStartPre=/usr/bin/sh -c "sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/fedora.repo"
+            #ExecStartPost=/usr/bin/sh -c "sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora.repo"
+            # `--allow-inactive` ensures that rpm-ostree does not return an error
+            # if the package is already installed. This is useful if the package is
+            # added to the root image in a future Fedora CoreOS release as it will
+            # prevent the service from failing.
+            ExecStart=/usr/bin/rpm-ostree install -y --apply-live --allow-inactive usbguard
+            ExecStart=/bin/touch /var/lib/%N.stamp
+
+            [Install]
+            WantedBy=multi-user.target
+---
+{{- end -}}
+{{- end -}}

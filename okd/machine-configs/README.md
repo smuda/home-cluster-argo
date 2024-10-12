@@ -1,9 +1,27 @@
 # OKD Machine Configs
 
+# Forcing machine configs
+
+When playing around with machine configs it's very easy to have the node get stuck in
+the update. 
+
+Especially with the kubeletconfig, the problem can be detected by using
+
+```shell
+journalctl -b -u kubelet
+```
+
+After fixing the problematic machine config, you can force the new to
+apply by using
+
+```shell
+sudo touch /run/machine-config-daemon-force
+```
+
 # butane 
 Using `content: inline:` in a machine config does not seem to always work as expected.
 
-Therefore a number of machine configs (especially in the system folder) are generated with `butane`.
+Therefore, a number of machine configs (especially in the system folder) are generated with `butane`.
 However, the resulting template is used for multiple machine config pools, so care must be
 taken when updating the content.
 

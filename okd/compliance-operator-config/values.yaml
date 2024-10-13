@@ -1,4 +1,0 @@
-openshiftConfig:
-  namespace: openshift-config
-  serviceAccount:
-    name: patch-operator

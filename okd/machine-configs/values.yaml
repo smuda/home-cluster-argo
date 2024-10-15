@@ -6,22 +6,47 @@ kubeletConfigs:
   enabled: true
   autosizeReserved:
     enabled: true
+    targetMachineConfigPools:
+      - master
+      - worker
   tlsCipherSuites:
     enabled: true
+    targetMachineConfigPools:
+      - master
+      - worker
   makeIPTablesUtilChains:
     enabled: true
+    targetMachineConfigPools:
+      - master
+      - worker
   streamingConnectionIdleTimeout:
     enabled: true
+    targetMachineConfigPools:
+      - master
+      - worker
   eventRecordQPS:
     enabled: true
+    targetMachineConfigPools:
+      - master
+      - worker
   evictionConfig:
     enabled: true
+    targetMachineConfigPools:
+      - master
+      - worker
   evictionSoft:
     enabled: true
+    targetMachineConfigPools:
+      - master
+      - worker
   evictionHard:
     enabled: true
+    targetMachineConfigPools:
+      - master
+      - worker
   protectKernelDefaults:
     enabled: false # this is a problem for both FCOS and RHCOS.
+    targetMachineConfigPools: []
 
 system:
   chrony:

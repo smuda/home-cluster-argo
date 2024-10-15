@@ -9,18 +9,18 @@ spec:
   machineConfigPoolSelector:
     matchLabels:
       "pools.operator.machineconfiguration.openshift.io/{{ $mcpName }}": ""
-  {{- if $.Values.kubeletConfigs.autosizeReserved.enabled }}
+  {{- if and $.Values.kubeletConfigs.autosizeReserved.enabled  (has $mcpName $.Values.kubeletConfigs.autosizeReserved.targetMachineConfigPools)  }}
   autoSizingReserved: true
   {{- end }}
   kubeletConfig:
-    {{- if $.Values.kubeletConfigs.eventRecordQPS.enabled }}
+    {{- if and $.Values.kubeletConfigs.eventRecordQPS.enabled (has $mcpName $.Values.kubeletConfigs.eventRecordQPS.targetMachineConfigPools) }}
     eventRecordQPS: 5
     {{- end }}
-    {{- if $.Values.kubeletConfigs.evictionConfig.enabled }}
+    {{- if and $.Values.kubeletConfigs.evictionConfig.enabled (has $mcpName $.Values.kubeletConfigs.evictionConfig.targetMachineConfigPools) }}
     evictionPressureTransitionPeriod: 0s
     evictionMaxPodGracePeriod: 120
     {{- end }}
-    {{- if $.Values.kubeletConfigs.evictionSoft.enabled }}
+    {{- if and $.Values.kubeletConfigs.evictionSoft.enabled (has $mcpName $.Values.kubeletConfigs.evictionSoft.targetMachineConfigPools) }}
     evictionSoft:
       imagefs.available: "15%"
       imagefs.inodesFree: "5%"
@@ -34,7 +34,7 @@ spec:
       nodefs.available: "1m30s"
       nodefs.inodesFree: "1m30s"
     {{- end }}
-    {{- if $.Values.kubeletConfigs.evictionHard.enabled }}
+    {{- if and $.Values.kubeletConfigs.evictionHard.enabled (has $mcpName $.Values.kubeletConfigs.evictionHard.targetMachineConfigPools) }}
     evictionHard:
       imagefs.available: "10%"
       imagefs.inodesFree: "4%"
@@ -42,16 +42,16 @@ spec:
       nodefs.available: "5%"
       nodefs.inodesFree: "4%"
     {{- end }}
-    {{- if $.Values.kubeletConfigs.makeIPTablesUtilChains.enabled }}
+    {{- if and $.Values.kubeletConfigs.makeIPTablesUtilChains.enabled (has $mcpName $.Values.kubeletConfigs.makeIPTablesUtilChains.targetMachineConfigPools) }}
     makeIPTablesUtilChains: true
     {{- end }}
-    {{- if $.Values.kubeletConfigs.protectKernelDefaults.enabled }}
+    {{- if and $.Values.kubeletConfigs.protectKernelDefaults.enabled (has $mcpName $.Values.kubeletConfigs.protectKernelDefaults.targetMachineConfigPools) }}
     protectKernelDefaults: true
     {{- end }}
-    {{- if $.Values.kubeletConfigs.streamingConnectionIdleTimeout.enabled }}
+    {{- if and $.Values.kubeletConfigs.streamingConnectionIdleTimeout.enabled (has $mcpName $.Values.kubeletConfigs.streamingConnectionIdleTimeout.targetMachineConfigPools) }}
     streamingConnectionIdleTimeout: 5m0s
     {{- end }}
-    {{- if $.Values.kubeletConfigs.tlsCipherSuites.enabled }}
+    {{- if and $.Values.kubeletConfigs.tlsCipherSuites.enabled (has $mcpName $.Values.kubeletConfigs.tlsCipherSuites.targetMachineConfigPools) }}
     tlsCipherSuites:
       - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
       - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256

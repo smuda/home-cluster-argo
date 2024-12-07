@@ -2,8 +2,8 @@ docker.io/bitnami/sealed-secrets-controller:0.27.0
 docker.io/grafana/grafana:10.4.3
 ghcr.io/grafana/grafana-operator:v5.10.0
 ghcr.io/stakater/reloader:v1.0.115
-public.ecr.aws/docker/library/redis:7.2.4-alpine
-quay.io/argoproj/argocd:v2.11.0
+public.ecr.aws/docker/library/redis:7.4.1-alpine
+quay.io/argoproj/argocd:v2.13.1
 quay.io/jetstack/cert-manager-approver-policy:v0.14.1
 quay.io/jetstack/cert-manager-cainjector:v1.14.5
 quay.io/jetstack/cert-manager-controller:v1.14.5

@@ -10,3 +10,13 @@ stop-kind:
 
 update-lock:
 	find . -name Chart.lock | xargs dirname | xargs -n 1 helm dep update
+
+update-kind-preload:
+	KUBECONFIG=~/.kube/home-cluster-argo \
+	oc get pod -A -o json \
+      | jq -r '.items[].spec.containers[].image' \
+      | grep -v registry.k8s.io \
+      | grep -v docker.io/kindest \
+      | sort \
+      | uniq \
+      > ./hack/preload.txt

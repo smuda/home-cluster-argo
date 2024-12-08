@@ -17,8 +17,6 @@ upstream:
     # Disable standard approver, use policy approver instead
     - "--controllers=*,-certificaterequests-approver"
   namespace: addon-cert-manager
-  image:
-    repository: quay.io/jetstack/cert-manager-controller
   resources:
    requests:
      cpu: 100m
@@ -82,7 +80,7 @@ upstream:
   ### startupapicheck ###
   startupapicheck:
     image:
-      repository: quay.io/jetstack/cert-manager-ctl
+      repository: quay.io/jetstack/cert-manager-startupapicheck
     containerSecurityContext:
       allowPrivilegeEscalation: false
       capabilities:

@@ -8,7 +8,7 @@ spec:
   - Ingress
   podSelector:
     matchLabels:
-      app: grafana-instance
+      app: {{ .Release.Name }}-grafana
   ingress:
     - ports:
         - port: 9091

@@ -165,7 +165,9 @@ done
 
 echo ""
 echo "Wait for cert-manager to install successfully"
+KUBECONFIG=${KUBECONFIG} \
 kubectl config set-context --current --namespace=argocd
+KUBECONFIG=${KUBECONFIG} \
 argocd app wait argocd/addon-cert-manager > /dev/null \
   || exit 1
 echo ""

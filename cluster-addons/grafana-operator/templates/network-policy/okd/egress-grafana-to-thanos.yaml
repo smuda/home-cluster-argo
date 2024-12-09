@@ -8,7 +8,7 @@ spec:
   - Egress
   podSelector:
     matchLabels:
-      app: grafana-instance
+      app: {{ .Release.Name }}-grafana
   egress:
     - to:
         - namespaceSelector:

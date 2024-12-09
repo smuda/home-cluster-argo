@@ -3,6 +3,7 @@ upstream:
 
   operator:
     metricsVulnIdEnabled: true
+    scanJobsConcurrentLimit: 3 # Limit to three concurrent jobs. Default is 10.
 
   podSecurityContext:
     runAsNonRoot: true

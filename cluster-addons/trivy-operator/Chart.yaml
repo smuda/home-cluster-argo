@@ -9,6 +9,6 @@ version: 1.0.0
 dependencies:
   # https://github.com/aquasecurity/trivy-operator/releases
   - name: trivy-operator
-    version: 0.22.0
+    version: 0.25.0
     alias: upstream
     repository: https://aquasecurity.github.io/helm-charts/

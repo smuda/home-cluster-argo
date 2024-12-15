@@ -6,6 +6,7 @@ metadata:
   namespace: {{ .Values.argo.common.apps_namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/compare-options: ServerSideDiff=true
 {{- if .Values.argo.common.finalizers }}
   finalizers: {{ .Values.argo.common.finalizers | toYaml | nindent 4 }}
 {{- end }}

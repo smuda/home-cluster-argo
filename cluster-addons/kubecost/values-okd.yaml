@@ -1,6 +1,1 @@
-upstream:
-  kubecostMetrics:
-    exporter:
-      enabled: true
-      serviceMonitor:
-        enabled: true
+values-ocp.yaml

@@ -10,7 +10,8 @@ profiles:
   - apiGroup: compliance.openshift.io/v1alpha1
     kind: TailoredProfile
     name: smuda-ocp4-cis-node
-  - kind: Profile
+  - apiGroup: compliance.openshift.io/v1alpha1
+    kind: Profile
     name: ocp4-moderate-node
 settingsRef:
   apiGroup: compliance.openshift.io/v1alpha1

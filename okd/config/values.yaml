@@ -21,6 +21,9 @@ registry:
   addCA: true
   restrict: true
 
+ingress:
+  ciphers: true
+
 egressIp:
   use: false
   clusterRoleName: egressip-patcher

@@ -15,8 +15,8 @@ spec:
         name: cluster
       patchTemplate: |
         spec:
-        additionalTrustedCA:
-          name: registry-cas
+          additionalTrustedCA:
+            name: registry-cas
       patchType: application/merge-patch+json
 {{- end -}}
 {{- end -}}

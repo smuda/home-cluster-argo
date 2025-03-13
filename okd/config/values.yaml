@@ -21,7 +21,7 @@ registry:
   addCA: true
 
 egressIp:
-  use: true
+  use: false
   clusterRoleName: egressip-patcher
   serviceAccount: egressip-patcher
   testNamespace: egressip-test

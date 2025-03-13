@@ -19,6 +19,7 @@ machineConfigPools:
   patchLabels: true
 registry:
   addCA: true
+  restrict: true
 
 egressIp:
   use: false

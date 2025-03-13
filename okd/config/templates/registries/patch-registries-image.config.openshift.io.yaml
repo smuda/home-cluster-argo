@@ -1,0 +1,37 @@
+{{ if .Values.registry.restrict }}
+{{- if and (.Capabilities.APIVersions.Has "redhatcop.redhat.io/v1alpha1") -}}
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: "restrict-image-registries"
+spec:
+  serviceAccountRef:
+    name: "{{ .Values.openshiftConfig.serviceAccount.name }}"
+  patches:
+    master:
+      targetObjectRef:
+        apiVersion: config.openshift.io/v1
+        kind: Image
+        name: cluster
+      patchTemplate: |
+        spec:
+          registrySources:
+            allowedRegistries:
+              - docker.io
+              - gcr.io
+              - ghcr.io
+              - mirror.gcr.io
+              - quay.io
+              - registry.k8s.io
+              - registry.okd4.example.com:5010
+              - registry.redhat.io
+          allowedRegistriesForImport:
+            - domainName: quay.io
+              insecure: false
+            - domainName: registry.redhat.io
+              insecure: false
+            - domainName: registry.connect.redhat.com
+              insecure: false
+      patchType: application/merge-patch+json
+{{- end -}}
+{{- end -}}

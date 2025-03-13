@@ -54,3 +54,13 @@ rules:
       - list
       - patch
       - watch
+  # To patch ingress ciphers
+  - apiGroups:
+      - operator.openshift.io
+    resources:
+      - ingresscontrollers
+    verbs:
+      - get
+      - list
+      - patch
+      - watch

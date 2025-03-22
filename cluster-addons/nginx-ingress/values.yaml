@@ -29,3 +29,6 @@ upstream:
       create: true
     serviceMonitor:
       create: true
+
+  serviceInsight:
+    create: true

@@ -2,3 +2,6 @@ argo:
   common:
     valueFiles:
       - values-kind.yaml
+
+clusterAdmins:
+  use: false

@@ -9,6 +9,6 @@ version: 1.0.0
 dependencies:
   # https://github.com/nginxinc/kubernetes-ingress/blob/main/charts/nginx-ingress/Chart.yaml
   - name: nginx-ingress
-    version: 1.4.0
+    version: 2.0.0
     alias: upstream
     repository: oci://ghcr.io/nginxinc/charts

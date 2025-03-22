@@ -6,7 +6,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 CLUSTER_NAME=home-cluster
 KUBECONFIG=~/.kube/${CLUSTER_NAME}-argo
 PRE_LOAD_IMAGES_FILE=${SCRIPT_DIR}/preload.txt
-INGRESS=ingressNginx
+INGRESS=${INGRESS:-ingressNginx}
 
 echo "Verify binaries exist"
 if ! command -v jq &> /dev/null

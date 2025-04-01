@@ -19,6 +19,11 @@ then
     echo "kind could not be found"
     exit 1
 fi
+if ! command -v helm &> /dev/null
+then
+    echo "helm could not be found"
+    exit 1
+fi
 if ! command -v kubectl &> /dev/null
 then
     echo "kubectl could not be found"

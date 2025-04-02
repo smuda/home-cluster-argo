@@ -55,8 +55,8 @@ if test -f "${PRE_LOAD_IMAGES_FILE}"; then
   while read -r image; do
     echo "Checking ${image}"
     # Check if the image exists using Docker manifest inspect
-    docker inspect "$image" > /dev/null 2>&1 \
-      || docker pull  "$image" \
+    docker inspect "${image}" > /dev/null 2>&1 \
+      || docker pull --platform linux/arm64 --platform linux/amd64 "${image}" \
       || exit 1
   done <"${PRE_LOAD_IMAGES_FILE}"
 fi
@@ -81,14 +81,19 @@ do
 done
 
 if test -f "${PRE_LOAD_IMAGES_FILE}"; then
+  mkdir -p tmp
   echo ""
   echo "Preload images that we know will be needed from docker.io (minimizing re-pulls)"
   while read -r p; do
-    kind --name "${CLUSTER_NAME}" \
-      load docker-image "$p" \
-      || exit 1
+    docker save --platform linux/arm64 --platform linux/amd64 "${p}" > tmp/image.tar \
+    || exit 1
+    kind --name "${CLUSTER_NAME}" load image-archive tmp/image.tar \
+    || exit 1
   done <"${PRE_LOAD_IMAGES_FILE}"
 fi
+
+echo "Deleting temporary directory"
+rm -R tmp || echo "Temporary directory might not exist"
 
 echo ""
 echo "Create argocd namespace"

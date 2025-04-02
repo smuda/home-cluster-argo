@@ -2,12 +2,9 @@ docker.io/bitnami/sealed-secrets-controller:0.28.0
 docker.io/grafana/grafana:11.3.0
 ghcr.io/grafana/grafana-operator:v5.17.0
 ghcr.io/stakater/reloader:v1.3.0
-public.ecr.aws/docker/library/redis:7.4.1-alpine
-quay.io/argoproj/argocd:v2.13.1
+public.ecr.aws/docker/library/redis:7.4.2-alpine
+quay.io/argoproj/argocd:v2.14.8
 quay.io/jetstack/cert-manager-approver-policy:v0.19.0
-quay.io/jetstack/cert-manager-cainjector:v1.17.1
-quay.io/jetstack/cert-manager-controller:v1.17.1
-quay.io/jetstack/cert-manager-webhook:v1.17.1
 quay.io/prometheus-operator/prometheus-config-reloader:v0.81.0
 quay.io/prometheus-operator/prometheus-operator:v0.81.0
 quay.io/prometheus/alertmanager:v0.28.1

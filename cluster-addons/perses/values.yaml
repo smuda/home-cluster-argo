@@ -1,0 +1,11 @@
+upstream:
+  sidecar:
+    enabled: true
+  #persistence:
+  #  securityContext:
+  #    allowPrivilegeEscalation: false
+  #    capabilities:
+  #      drop:
+  #        - "ALL"
+  #    runAsNonRoot: true
+  #    seccompProfile: RuntimeDefault

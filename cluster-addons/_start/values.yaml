@@ -46,6 +46,10 @@ prometheus:
   use: false
   podSecurityLevel: baseline
 
+perses:
+  use: false
+  podSecurityLevel: restricted
+
 pvProviders:
   csiDriverNFS:
     use: true

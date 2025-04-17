@@ -34,8 +34,8 @@ spec:
     {{- if .Values.argo.common.enableLabelManagement }}
     managedNamespaceMetadata:
       labels: # The labels to set on the application namespace
-        pod-security.kubernetes.io/audit: {{ .Values.pvProviders.nfs.podSecurityLevel }}
-        pod-security.kubernetes.io/enforce: {{ .Values.pvProviders.nfs.podSecurityLevel }}
-        pod-security.kubernetes.io/warn: {{ .Values.pvProviders.nfs.podSecurityLevel }}
+        pod-security.kubernetes.io/audit: {{ .Values.pvProviders.csiDriverNFS.podSecurityLevel }}
+        pod-security.kubernetes.io/enforce: {{ .Values.pvProviders.csiDriverNFS.podSecurityLevel }}
+        pod-security.kubernetes.io/warn: {{ .Values.pvProviders.csiDriverNFS.podSecurityLevel }}
     {{- end }}
 {{ end }}

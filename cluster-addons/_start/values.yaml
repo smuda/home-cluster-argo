@@ -45,6 +45,7 @@ prometheus:
 pvProviders:
   csiDriverNFS:
     use: true
+    podSecurityLevel: restricted
 
 reloader:
   use: true

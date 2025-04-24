@@ -15,8 +15,9 @@ update-kind-preload:
 	KUBECONFIG=~/.kube/home-cluster-argo \
 	oc get pod -A -o json \
       | jq -r '.items[].spec.containers[].image' \
-      | grep -v registry.k8s.io \
       | grep -v docker.io/kindest \
+      | grep -v -e "registry.k8s.io/kube-" -e "registry.k8s.io/coredns" -e "registry.k8s.io/etcd" \
+      | grep -v -e "registry.k8s.io/ingress-nginx/controller" \
       | sort \
       | uniq \
       > ./hack/preload.txt

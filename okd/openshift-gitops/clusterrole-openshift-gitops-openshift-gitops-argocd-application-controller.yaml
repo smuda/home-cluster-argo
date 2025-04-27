@@ -1,0 +1,50 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: openshift-gitops-openshift-gitops-argocd-application-controller-additional
+rules:
+# Kubernetes resources
+  - apiGroups:
+      - ""
+      - admissionregistration.k8s.io
+      - apiextensions.k8s.io
+      - apps
+      - batch
+      - networking.k8s.io
+    resources:
+      - "*"
+    verbs:
+      - "*"
+
+# Manage ArgoCD itself
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - "*"
+    verbs:
+      - "*"
+
+# Openshift
+  - apiGroups:
+      - compliance.openshift.io
+      - monitoring.coreos.com
+      - route.openshift.io
+    resources:
+      - "*"
+    verbs:
+      - "*"
+
+# Third party ordered by name
+  - apiGroups:
+      - aquasecurity.github.io
+      - bitnami.com
+      - cert-manager.io
+      - grafana.integreatly.org
+      - keda.sh
+      - kro.run
+      - policy.cert-manager.io
+      - redhatcop.redhat.io
+    resources:
+        - "*"
+    verbs:
+        - "*"

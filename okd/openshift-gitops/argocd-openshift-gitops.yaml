@@ -1,0 +1,97 @@
+apiVersion: argoproj.io/v1beta1  # ArgoCD v1alpha1 CRD has been deprecated starting from argocd-operator v0.8.0
+kind: ArgoCD
+metadata:
+  name: openshift-gitops
+  namespace: "openshift-gitops"
+spec:
+  applicationSet:
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 10m
+        memory: 73Mi
+  controller:
+    appSync: 10m  # Sync with git every 10m
+    resources:
+      limits:
+        memory: 2500Mi
+      requests:
+        cpu: 10m
+        memory: 222Mi
+    sharding:
+      enabled: true
+      replicas: 2
+  defaultClusterScopedRoleDisabled: false
+  disableAdmin: true
+  ha:
+    enabled: true
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+  sso:
+    provider: dex
+    dex:
+      openShiftOAuth: true
+      groups:
+        - "system:authenticated"
+        - "system:cluster-admins"
+      resources:
+        limits:
+          memory: 256Mi
+        requests:
+          cpu: 250m
+          memory: 128Mi
+  server:
+    autoscale:
+      enabled: true
+      hpa:
+        maxReplicas: 3
+        minReplicas: 2
+        scaleTargetRef:
+          apiVersion: apps/v1
+          kind: Deployment
+          name: argocd-server
+    env:
+      - name: ARGOCD_SYNC_WAVE_DELAY
+        value: "60"
+    route:
+      enabled: true
+    resources:
+      limits:
+        memory: 321Mi
+      requests:
+        cpu: 125m
+        memory: 224Mi
+  prometheus:
+    enabled: true
+    ingress:
+      enabled: false
+    route:
+      enabled: false
+  rbac:
+    defaultPolicy: 'role:readonly'
+    policy: |
+      g, system:cluster-admins, role:admin
+      g, github-cluster-admins, role:admin
+      g, system:authenticated, role:readonly
+    scopes: '[groups]'
+  redis:
+    image: registry.okd4.example.com:5010/library/redis
+    resources:  # This is only used if ha.enabled is false
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 12m
+        memory: 64Mi
+  repo:
+    replicas: 2
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        cpu: 55m
+        memory: 164Mi

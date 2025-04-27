@@ -27,6 +27,8 @@ keda:
 machineConfigs:
   use: true
   podSecurityLevel: restricted
+openshiftGitOpsOperator:
+  use: true
 patchOperator:
   use: true
   podSecurityLevel: restricted

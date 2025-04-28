@@ -1,3 +1,4 @@
+{{- if and (.Capabilities.APIVersions.Has "kro.run/v1alpha1") -}}
 apiVersion: kro.run/v1alpha1
 kind: ResourceGraphDefinition
 metadata:
@@ -82,3 +83,4 @@ spec:
                         name: ${service.metadata.name} # Use the service name
                         port:
                           number: 80
+{{- end }}

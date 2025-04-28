@@ -1,0 +1,13 @@
+apiVersion: argoproj.io/v1alpha1
+kind: RolloutManager
+metadata:
+  name: openshift-gitops
+spec:
+  ha:
+    enabled: true
+  controllerResources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      memory: 250Mi

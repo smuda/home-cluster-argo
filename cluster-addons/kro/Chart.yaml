@@ -7,8 +7,8 @@ type: application
 version: 0.2.3
 
 dependencies:
-  # https://github.com/kubecost/cost-analyzer-helm-chart/releases
+  # curl -sL https://api.github.com/repos/kro-run/kro/releases/latest | jq -r '.tag_name | ltrimstr("v")'
   - name: kro
-    version: 0.2.3  # curl -sL https://api.github.com/repos/kro-run/kro/releases/latest | jq -r '.tag_name | ltrimstr("v")'
+    version: 0.2.3
     alias: upstream
     repository: oci://ghcr.io/kro-run/kro

@@ -5,7 +5,7 @@ ghcr.io/kro-run/kro/controller:0.2.3
 ghcr.io/stakater/reloader:v1.3.0
 public.ecr.aws/docker/library/redis:7.4.2-alpine
 quay.io/argoproj/argocd:v2.14.8
-quay.io/jetstack/cert-manager-approver-policy:v0.19.0
+quay.io/jetstack/cert-manager-approver-policy:v0.20.0
 quay.io/jetstack/cert-manager-startupapicheck:v1.17.2
 quay.io/jetstack/cert-manager-cainjector:v1.17.2
 quay.io/jetstack/cert-manager-controller:v1.17.2

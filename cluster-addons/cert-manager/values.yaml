@@ -40,8 +40,6 @@ upstream:
   webhook:
     deploymentAnnotations:
       reloader.stakater.com/auto: "true"
-    image:
-      repository: quay.io/jetstack/cert-manager-webhook
     containerSecurityContext:
       allowPrivilegeEscalation: false
       capabilities:
@@ -61,8 +59,6 @@ upstream:
   cainjector:
     deploymentAnnotations:
       reloader.stakater.com/auto: "true"
-    image:
-      repository: quay.io/jetstack/cert-manager-cainjector
     containerSecurityContext:
       allowPrivilegeEscalation: false
       capabilities:
@@ -79,8 +75,6 @@ upstream:
         memory: 256Mi
   ### startupapicheck ###
   startupapicheck:
-    image:
-      repository: quay.io/jetstack/cert-manager-startupapicheck
     containerSecurityContext:
       allowPrivilegeEscalation: false
       capabilities:

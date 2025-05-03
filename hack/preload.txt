@@ -1,6 +1,6 @@
 docker.io/bitnami/sealed-secrets-controller:0.28.0
 docker.io/grafana/grafana:11.3.0
-ghcr.io/grafana/grafana-operator:v5.17.0
+ghcr.io/grafana/grafana-operator:v5.17.1
 ghcr.io/kro-run/kro/controller:0.2.3
 ghcr.io/stakater/reloader:v1.3.0
 public.ecr.aws/docker/library/redis:7.4.2-alpine

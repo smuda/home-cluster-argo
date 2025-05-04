@@ -67,7 +67,7 @@ spec:
         cpu: 125m
         memory: 224Mi
   prometheus:
-    enabled: true
+    enabled: false
     ingress:
       enabled: false
     route:

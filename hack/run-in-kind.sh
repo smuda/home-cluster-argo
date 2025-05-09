@@ -8,6 +8,7 @@ CLUSTER_NAME=home-cluster
 KUBECONFIG=~/.kube/${CLUSTER_NAME}-argo
 PRE_LOAD_IMAGES_FILE=${SCRIPT_DIR}/preload.txt
 INGRESS=${INGRESS:-ingressNginx}
+ARGO_PWD=password
 
 echo "Verify binaries exist"
 if ! command -v jq &> /dev/null
@@ -175,56 +176,6 @@ do
   sleep 5
 done
 
-echo ""
-echo "Wait for cert-manager to install successfully"
-KUBECONFIG=${KUBECONFIG} \
-kubectl config set-context --current --namespace=argocd
-KUBECONFIG=${KUBECONFIG} \
-argocd app wait argocd/addon-cert-manager > /dev/null \
-  || exit 1
-echo ""
-echo "Wait for cert-manager to start"
-DEPLOYMENTS=$(kubectl \
-  --kubeconfig "${KUBECONFIG}" \
-  -n addon-cert-manager \
-  get deploy -o json | jq -r '.items[].metadata.name' | tr '\n' ' ')
-
-kubectl \
- --kubeconfig "${KUBECONFIG}" \
- --namespace=addon-cert-manager \
-  wait deployment ${DEPLOYMENTS} \
-  --for condition=Available=True \
-  --timeout=180s \
-  || exit 1
-
-echo ""
-echo "Wait for cert-manager-approver-policy to install successfully"
-argocd app wait argocd/addon-cert-manager-approver-policy > /dev/null \
-  || exit 1
-echo "Wait for cert-manager-config to install successfully"
-while ! argocd app wait argocd/addon-cert-manager-config > /dev/null
-do
-  echo "Try again"
-  sleep 5
-done
-kubectl -n addon-cert-manager delete certificate lab-issuer > /dev/null \
-  || exit 1
-sleep 1
-kubectl delete clusterissuer lab-cluster-issuer \
-  || exit 1
-sleep 1
-
-echo ""
-echo "Install argocd again, which means we will get metrics and cert-manager certificate"
-helm --kubeconfig "${KUBECONFIG}" \
-  upgrade -n argocd \
-  argocd ./argo-install \
-  --set argo-cd.server.certificate.enabled=true \
-  --set argo-cd.server.certificate.issuer.kind=ClusterIssuer \
-  --set argo-cd.server.certificate.issuer.name=lab-cluster-issuer \
-  || exit 1
-
-
 if [[ ${INGRESS} == "ingressNginx" ]]; then
   echo ""
   echo "Wait for ingress-nginx"
@@ -255,13 +206,83 @@ if [[ ${INGRESS} == "nginxIngress" ]]; then
   done
 fi
 
+
 echo ""
-ARGO_PWD=$(kubectl --kubeconfig "${KUBECONFIG}" \
-  -n argocd \
-  get secret argocd-secret -o jsonpath="{.data.'admin.password'}" | base64 -d)
+echo "Configure argocd cli"
+echo ""
 ARGO_HOST=$(kubectl --kubeconfig "${KUBECONFIG}" \
   -n argocd \
-  get ingress argocd-server -o json | jq -r '.spec.rules[0].host')
+  get ingress argocd-server -o json | jq -r '.spec.rules[0].host') \
+  || exit 1
+
+argocd configure \
+  --kube-context "$(kubectl config current-context)" \
+  --server "${ARGO_HOST}" \
+  || exit 1
+
+echo "Login with argocd cli (password ${ARGO_PWD}"
+argocd login \
+  --insecure \
+  "${ARGO_HOST}" \
+  --grpc-web \
+  --username admin \
+  --password "${ARGO_PWD}" \
+  || exit 1
+
+echo ""
+echo "Wait for cert-manager to install successfully"
+KUBECONFIG=${KUBECONFIG} \
+kubectl config set-context --current --namespace=argocd
+while ! argocd app wait argocd/addon-cert-manager --grpc-web > /dev/null
+do
+  echo "Try again"
+  sleep 5
+done
+
+echo ""
+echo "Wait for cert-manager to start"
+DEPLOYMENTS=$(kubectl \
+  --kubeconfig "${KUBECONFIG}" \
+  -n addon-cert-manager \
+  get deploy -o json | jq -r '.items[].metadata.name' | tr '\n' ' ')
+
+kubectl \
+ --kubeconfig "${KUBECONFIG}" \
+ --namespace=addon-cert-manager \
+  wait deployment ${DEPLOYMENTS} \
+  --for condition=Available=True \
+  --timeout=180s \
+  || exit 1
+
+echo ""
+echo "Wait for cert-manager-approver-policy to install successfully"
+while ! argocd app wait argocd/addon-cert-manager-approver-policy --grpc-web > /dev/null
+do
+  echo "Try again"
+  sleep 5
+done
+echo "Wait for cert-manager-config to install successfully"
+while ! argocd app wait argocd/addon-cert-manager-config --grpc-web > /dev/null
+do
+  echo "Try again"
+  sleep 5
+done
+kubectl -n addon-cert-manager delete certificate lab-issuer > /dev/null \
+  || exit 1
+sleep 1
+kubectl delete clusterissuer lab-cluster-issuer \
+  || exit 1
+sleep 1
+
+echo ""
+echo "Install argocd again, which means we will get metrics and cert-manager certificate"
+helm --kubeconfig "${KUBECONFIG}" \
+  upgrade -n argocd \
+  argocd ./argo-install \
+  --set argo-cd.server.certificate.enabled=true \
+  --set argo-cd.server.certificate.issuer.kind=ClusterIssuer \
+  --set argo-cd.server.certificate.issuer.name=lab-cluster-issuer \
+  || exit 1
 
 echo "You can now login to argo with https://${ARGO_HOST} using admin and ${ARGO_PWD:-password}"
 kubectl config set-context --current --namespace=default

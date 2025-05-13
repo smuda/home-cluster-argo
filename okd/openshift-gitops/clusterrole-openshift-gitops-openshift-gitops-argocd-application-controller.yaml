@@ -26,6 +26,7 @@ rules:
 
 # Openshift
   - apiGroups:
+      - autoscaling.openshift.io
       - compliance.openshift.io
       - monitoring.coreos.com
       - route.openshift.io

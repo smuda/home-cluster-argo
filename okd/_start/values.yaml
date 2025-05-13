@@ -29,6 +29,9 @@ machineConfigs:
   podSecurityLevel: restricted
 openshiftGitOpsOperator:
   use: true
+openshiftVerticalPodAutoscaler:
+  use: true
+  podSecurityLevel: restricted
 patchOperator:
   use: true
   podSecurityLevel: restricted

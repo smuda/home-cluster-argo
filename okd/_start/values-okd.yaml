@@ -5,3 +5,6 @@ argo:
 
 openshiftGitOpsOperator:
   use: false
+
+openshiftVerticalPodAutoscaler:
+  use: false

@@ -3,8 +3,5 @@ argo:
     valueFiles:
       - values-okd.yaml
 
-openshiftGitOpsOperator:
-  use: false
-
 openshiftVerticalPodAutoscaler:
   use: false

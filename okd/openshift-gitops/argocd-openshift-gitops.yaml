@@ -12,17 +12,17 @@ spec:
         cpu: 10m
         memory: 73Mi
   controller:
-    appSync: 10m  # Sync with git every 10m
+    appSync: 10m0s  # Sync with git every 10m
     resources:
       limits:
-        memory: 2500Mi
+        memory: 3500Mi
       requests:
         cpu: 10m
-        memory: 222Mi
+        memory: 3000Mi
     sharding:
       enabled: true
       replicas: 2
-  defaultClusterScopedRoleDisabled: false
+  # defaultClusterScopedRoleDisabled: false
   disableAdmin: true
   ha:
     enabled: true
@@ -41,10 +41,10 @@ spec:
         - "system:cluster-admins"
       resources:
         limits:
-          memory: 256Mi
+          memory: 512Mi
         requests:
           cpu: 250m
-          memory: 128Mi
+          memory: 512Mi
   server:
     autoscale:
       enabled: true
@@ -62,10 +62,10 @@ spec:
       enabled: true
     resources:
       limits:
-        memory: 321Mi
+        memory: 400Mi
       requests:
         cpu: 125m
-        memory: 224Mi
+        memory: 300Mi
   prometheus:
     enabled: false
     ingress:

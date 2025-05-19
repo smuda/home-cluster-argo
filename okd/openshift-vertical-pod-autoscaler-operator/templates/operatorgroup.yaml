@@ -3,4 +3,7 @@ kind: OperatorGroup
 metadata:
   name: openshift-vertical-pod-autoscaler
   namespace: openshift-vertical-pod-autoscaler
-spec: {}
+spec:
+  targetNamespaces:
+  - openshift-vertical-pod-autoscaler
+  upgradeStrategy: Default

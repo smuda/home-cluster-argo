@@ -1,4 +1,4 @@
-{{- if .Capabilities.APIVersions.Has "autoscaling.openshift.io/v1" -}}
+{{- if .Capabilities.APIVersions.Has "autoscaling.openshift.io/v1/VerticalPodAutoscalerController" -}}
 apiVersion: autoscaling.openshift.io/v1
 kind: VerticalPodAutoscalerController
 metadata:

@@ -1,0 +1,22 @@
+{{- if and (.Capabilities.APIVersions.Has "redhatcop.redhat.io/v1alpha1") -}}
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: "allow-upgrade-from-4.18"
+  annotations:
+    argocd.argoproj.io/sync-wave: "10" # Need to be after patch operator
+spec:
+  serviceAccountRef:
+    name: "{{ .Values.openshiftConfig.serviceAccount.name }}"
+  patches:
+    upgrades:
+      targetObjectRef:
+        apiVersion: v1
+        kind: ConfigMap
+        name: admin-acks
+        namespace: openshift-config
+      patchTemplate: |
+        data:
+          ack-4.18-kube-1.32-api-removals-in-4.19: "true"
+      patchType: application/merge-patch+json
+{{- end -}}

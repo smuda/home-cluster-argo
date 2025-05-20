@@ -5,3 +5,6 @@ argo:
 
 okd:
   use: true
+
+openshiftGitOpsOperator:
+  use: true

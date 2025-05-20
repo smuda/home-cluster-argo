@@ -17,3 +17,6 @@ okd:
 
 clusterAdmins:
   use: true
+
+openshiftGitOpsOperator:
+  use: false

@@ -4,6 +4,8 @@ kind: AppProject
 metadata:
   name: addons
   namespace: {{ .Values.argo.common.apps_namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   clusterResourceWhitelist:
     - group: '*'

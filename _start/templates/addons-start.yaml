@@ -5,7 +5,7 @@ metadata:
   name: addons-start
   namespace: {{ .Values.argo.common.apps_namespace }}
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "10"
   finalizers:
 {{ .Values.argo.finalizers | toYaml | indent 4 }}
 spec:

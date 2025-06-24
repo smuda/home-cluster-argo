@@ -16,7 +16,7 @@ cert_manager_config:
   use: true
 
 cert_manager_approver_policy:
-  use: true
+  use: false
 
 grafanaOperator:
   use: true

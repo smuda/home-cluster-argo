@@ -15,7 +15,7 @@ upstream:
   nameOverride: cert-manager
   extraArgs:
     # Disable standard approver, use policy approver instead
-    - "--controllers=*,-certificaterequests-approver"
+    #- "--controllers=*,-certificaterequests-approver"
   namespace: addon-cert-manager
   resources:
    requests:

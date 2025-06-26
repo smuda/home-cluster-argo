@@ -2,6 +2,7 @@
 
 set -eu
 
+KUBE_VERSION=v1.33.1
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 CLUSTER_NAME=home-cluster
 KUBECONFIG=~/.kube/${CLUSTER_NAME}-argo
@@ -67,6 +68,7 @@ kind create cluster \
   --config="${SCRIPT_DIR}/kind.yaml" \
   --name "${CLUSTER_NAME}" \
   --kubeconfig "${KUBECONFIG}" \
+  --image "kindest/node:${KUBE_VERSION}" \
   --wait 120s \
   || exit 1
 

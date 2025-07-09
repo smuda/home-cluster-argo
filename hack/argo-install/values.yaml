@@ -1,5 +1,9 @@
 argo-cd:
 
+  global:
+    networkPolicy:
+      create: true
+
   dex:
     enabled: false
     metrics:

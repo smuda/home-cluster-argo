@@ -53,7 +53,7 @@ echo "Current git branch is ${GIT_REVISION}"
 
 if test -f "${PRE_LOAD_IMAGES_FILE}"; then
   echo ""
-  echo "Pull images that we know will be needed from docker.io (minimizing re-pulls)"
+  echo "Pull images that we know will be needed, especially from docker.io which minimize re-pulls"
   while read -r image; do
     echo "Checking ${image}"
     # Check if the image exists using Docker manifest inspect
@@ -86,7 +86,7 @@ done
 if test -f "${PRE_LOAD_IMAGES_FILE}"; then
   mkdir -p tmp
   echo ""
-  echo "Preload images that we know will be needed from docker.io (minimizing re-pulls)"
+  echo "Preload images that we know will be needed, especially from docker.io which minimize re-pulls"
   while read -r p; do
     docker save --platform linux/arm64 --platform linux/amd64 "${p}" > tmp/image.tar \
     || exit 1
@@ -267,6 +267,7 @@ do
   echo "Try again"
   sleep 5
 done
+echo "Recreate the lab issuer"
 kubectl -n addon-cert-manager delete certificate lab-issuer > /dev/null \
   || exit 1
 sleep 1

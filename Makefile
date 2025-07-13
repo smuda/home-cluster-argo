@@ -19,6 +19,7 @@ update-kind-preload:
       | grep -v docker.io/kindest \
       | grep -v -e "registry.k8s.io/kube-" -e "registry.k8s.io/coredns" -e "registry.k8s.io/etcd" \
       | grep -v -e "registry.k8s.io/ingress-nginx/controller" \
+      | grep -v -e "ghcr.io/kro-run/kro/controller" -e "ghcr.io/stakater/reloader" \
       | sort \
       | uniq \
       >> ./hack/preload.txt

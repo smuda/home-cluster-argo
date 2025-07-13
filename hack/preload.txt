@@ -1,7 +1,7 @@
 quay.io/jetstack/cert-manager-startupapicheck:v1.17.2
 docker.io/bitnami/sealed-secrets-controller:0.29.0
 docker.io/grafana/grafana:11.3.0
-ghcr.io/grafana/grafana-operator:v5.17.1
+ghcr.io/grafana/grafana-operator:v5.18.0
 public.ecr.aws/docker/library/redis:7.4.2-alpine
 quay.io/argoproj/argocd:v2.14.8
 quay.io/jetstack/cert-manager-approver-policy:v0.20.0

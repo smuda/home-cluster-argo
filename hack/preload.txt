@@ -7,9 +7,9 @@ ghcr.io/stakater/reloader:v1.4.2
 public.ecr.aws/docker/library/redis:7.4.2-alpine
 quay.io/argoproj/argocd:v2.14.8
 quay.io/jetstack/cert-manager-approver-policy:v0.20.0
-quay.io/jetstack/cert-manager-cainjector:v1.17.2
-quay.io/jetstack/cert-manager-controller:v1.17.2
-quay.io/jetstack/cert-manager-webhook:v1.17.2
+quay.io/jetstack/cert-manager-cainjector:v1.18.2
+quay.io/jetstack/cert-manager-controller:v1.18.2
+quay.io/jetstack/cert-manager-webhook:v1.18.2
 quay.io/prometheus-operator/prometheus-config-reloader:v0.82.0
 quay.io/prometheus-operator/prometheus-operator:v0.82.0
 quay.io/prometheus/alertmanager:v0.28.1

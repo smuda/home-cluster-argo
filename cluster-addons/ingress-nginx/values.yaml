@@ -6,6 +6,6 @@ upstream:
         enabled: true
     resources:
       requests:
-        memory: 200Mi
-      limits:
         memory: 250Mi
+      limits:
+        memory: 300Mi

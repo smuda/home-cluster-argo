@@ -57,7 +57,7 @@ reloader:
 
 sealedSecrets:
   use: true
-  namespace: kube-system
+  namespace: addon-sealed-secrets
   podSecurityLevel: restricted
 
 trivy:

@@ -9,6 +9,8 @@ KUBECONFIG=~/.kube/${CLUSTER_NAME}-argo
 PRE_LOAD_IMAGES_FILE=${SCRIPT_DIR}/preload.txt
 INGRESS=${INGRESS:-ingressNginx}
 ARGO_PWD=password
+SEALED_FILE="${SCRIPT_DIR}/sealed-secrets-secret.yml"
+SEALED_SECRET_NS=addon-sealed-secrets
 
 echo "Verify binaries exist"
 if ! command -v jq &> /dev/null
@@ -98,6 +100,21 @@ fi
 echo "Deleting temporary directory"
 rm -R tmp || echo "Temporary directory might not exist"
 
+if test -f "${SEALED_FILE}"; then
+  echo ""
+  echo "Create namespace ${SEALED_SECRET_NS}"
+  kubectl \
+      --kubeconfig "${KUBECONFIG}" \
+      create namespace "${SEALED_SECRET_NS}"
+
+  echo "Prepare for sealed-secrets"
+  kubectl \
+    --kubeconfig "${KUBECONFIG}" \
+    -n "${SEALED_SECRET_NS}" \
+    apply -f "${SEALED_FILE}" \
+    || exit 1
+fi
+
 echo ""
 echo "Create argocd namespace"
 kubectl --kubeconfig "${KUBECONFIG}" \
@@ -128,16 +145,6 @@ kubectl \
   --for condition=Available=True \
   --timeout=180s \
   || exit 1
-
-SEALED_FILE="${SCRIPT_DIR}/sealed-secrets-secret.yml"
-if test -f "${SEALED_FILE}"; then
-  echo ""
-  echo "Prepare for sealed-secrets"
-  kubectl \
-    --kubeconfig "${KUBECONFIG}" \
-    apply -f "${SEALED_FILE}" \
-    || exit 1
-fi
 
 echo ""
 echo "Install application"

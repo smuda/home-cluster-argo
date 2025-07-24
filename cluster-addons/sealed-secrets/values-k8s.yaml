@@ -1,7 +1,6 @@
 useTestKey: true
 
 sealed-secrets:
-  namespace: kube-system
   ingress:
     ingressClassName: nginx
     enabled: true

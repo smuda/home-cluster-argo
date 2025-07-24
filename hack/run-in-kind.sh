@@ -261,12 +261,6 @@ do
   echo "Try again"
   sleep 5
 done
-echo "Wait for cert-manager-config to install successfully"
-while ! argocd app wait argocd/addon-cert-manager-config --grpc-web > /dev/null
-do
-  echo "Try again"
-  sleep 5
-done
 echo "Recreate the lab issuer"
 kubectl -n addon-cert-manager delete certificate lab-issuer > /dev/null \
   || exit 1
@@ -274,6 +268,12 @@ sleep 1
 kubectl delete clusterissuer lab-cluster-issuer \
   || exit 1
 sleep 1
+echo "Wait for cert-manager-config to install successfully"
+while ! argocd app wait argocd/addon-cert-manager-config --grpc-web > /dev/null
+do
+  echo "Try again"
+  sleep 5
+done
 
 echo ""
 echo "Install argocd again, which means we will get metrics and cert-manager certificate"

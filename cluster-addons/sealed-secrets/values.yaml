@@ -1,6 +1,17 @@
 sealed-secrets:
   fullnameOverride: sealed-secrets-controller
-  keyrenewperiod: "0"  # Disable key renewal
+  # keyrenewperiod: "0"  # Disable key renewal
+  args:
+    - --update-status
+    - --key-renew-period
+    - "0"
+    - --key-prefix
+    - sealed-secrets-key
+    - --listen-addr
+    - :8080
+    - --listen-metrics-addr
+    - :8081
+    - --watch-for-secrets
   image:
     registry: ghcr.io
     repository: bitnami-labs/sealed-secrets-controller

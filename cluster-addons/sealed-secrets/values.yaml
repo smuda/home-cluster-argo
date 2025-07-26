@@ -15,6 +15,7 @@ sealed-secrets:
   image:
     registry: ghcr.io
     repository: bitnami-labs/sealed-secrets-controller
+    tag: latest
   serviceAccount:
     create: true
   rbac:

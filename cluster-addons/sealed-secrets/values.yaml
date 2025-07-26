@@ -1,6 +1,9 @@
 sealed-secrets:
   fullnameOverride: sealed-secrets-controller
   keyrenewperiod: "0"  # Disable key renewal
+  image:
+    registry: ghcr.io
+    repository: bitnami-labs/sealed-secrets-controller
   serviceAccount:
     create: true
   rbac:

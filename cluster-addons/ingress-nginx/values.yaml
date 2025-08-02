@@ -1,4 +1,5 @@
 upstream:
+  nameOverride: ingress-nginx
   controller:
     metrics:
       enabled: true

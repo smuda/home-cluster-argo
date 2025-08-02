@@ -189,7 +189,7 @@ if [[ ${INGRESS} == "ingressNginx" ]]; then
   while ! kubectl \
    --kubeconfig "${KUBECONFIG}" \
    --namespace=addon-ingress-nginx \
-    wait deployment ingress-nginx-upstream-controller \
+    wait deployment ingress-nginx-controller \
     --for condition=Available=True \
     --timeout=120s
   do

@@ -292,5 +292,14 @@ helm --kubeconfig "${KUBECONFIG}" \
   --set argo-cd.server.certificate.issuer.name=lab-cluster-issuer \
   || exit 1
 
+echo "Login with argocd cli (password ${ARGO_PWD}"
+argocd login \
+  --insecure \
+  "${ARGO_HOST}" \
+  --grpc-web \
+  --username admin \
+  --password "${ARGO_PWD}" \
+  || exit 1
+
 echo "You can now login to argo with https://${ARGO_HOST} using admin and ${ARGO_PWD:-password}"
 kubectl config set-context --current --namespace=default

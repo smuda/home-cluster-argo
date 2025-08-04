@@ -7,10 +7,39 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 CLUSTER_NAME=home-cluster
 KUBECONFIG=~/.kube/${CLUSTER_NAME}-argo
 PRE_LOAD_IMAGES_FILE=${SCRIPT_DIR}/preload.txt
+PRE_LOAD_IMAGES_EXTRAS_FILE=${SCRIPT_DIR}/preload-extras.txt
 INGRESS=${INGRESS:-ingressNginx}
 ARGO_PWD=password
 SEALED_FILE="${SCRIPT_DIR}/sealed-secrets-secret.yml"
 SEALED_SECRET_NS=addon-sealed-secrets
+
+pullNeededImagesFromFile () {
+  IMAGES_FILE="$1"
+
+  echo ""
+  echo "Pull images from ${IMAGES_FILE} that we know will be needed, especially from docker.io which minimize re-pulls"
+  while read -r image; do
+    echo "Checking ${image}"
+    # Check if the image exists using Docker manifest inspect
+    docker inspect "${image}" > /dev/null 2>&1 \
+      || docker pull --platform linux/arm64 --platform linux/amd64 "${image}" \
+      || exit 1
+  done <"${IMAGES_FILE}"
+}
+
+preloadImagesFromFile () {
+  IMAGES_FILE="$1"
+
+  mkdir -p tmp
+  echo ""
+  echo "Preload images from ${IMAGES_FILE} that we know will be needed, especially from docker.io which minimize re-pulls"
+  while read -r p; do
+    docker save --platform linux/arm64 --platform linux/amd64 "${p}" > tmp/image.tar \
+    || exit 1
+    kind --name "${CLUSTER_NAME}" load image-archive tmp/image.tar \
+    || exit 1
+  done <"${IMAGES_FILE}"
+}
 
 echo "Verify binaries exist"
 if ! command -v jq &> /dev/null
@@ -54,15 +83,11 @@ GIT_REVISION=$(git rev-parse --abbrev-ref HEAD)
 echo "Current git branch is ${GIT_REVISION}"
 
 if test -f "${PRE_LOAD_IMAGES_FILE}"; then
-  echo ""
-  echo "Pull images that we know will be needed, especially from docker.io which minimize re-pulls"
-  while read -r image; do
-    echo "Checking ${image}"
-    # Check if the image exists using Docker manifest inspect
-    docker inspect "${image}" > /dev/null 2>&1 \
-      || docker pull --platform linux/arm64 --platform linux/amd64 "${image}" \
-      || exit 1
-  done <"${PRE_LOAD_IMAGES_FILE}"
+  pullNeededImagesFromFile "${PRE_LOAD_IMAGES_FILE}"
+fi
+
+if test -f "${PRE_LOAD_IMAGES_EXTRAS_FILE}"; then
+  pullNeededImagesFromFile "${PRE_LOAD_IMAGES_EXTRAS_FILE}"
 fi
 
 echo ""
@@ -86,15 +111,11 @@ do
 done
 
 if test -f "${PRE_LOAD_IMAGES_FILE}"; then
-  mkdir -p tmp
-  echo ""
-  echo "Preload images that we know will be needed, especially from docker.io which minimize re-pulls"
-  while read -r p; do
-    docker save --platform linux/arm64 --platform linux/amd64 "${p}" > tmp/image.tar \
-    || exit 1
-    kind --name "${CLUSTER_NAME}" load image-archive tmp/image.tar \
-    || exit 1
-  done <"${PRE_LOAD_IMAGES_FILE}"
+  preloadImagesFromFile "${PRE_LOAD_IMAGES_FILE}"
+fi
+
+if test -f "${PRE_LOAD_IMAGES_EXTRAS_FILE}"; then
+  preloadImagesFromFile "${PRE_LOAD_IMAGES_EXTRAS_FILE}"
 fi
 
 echo "Deleting temporary directory"

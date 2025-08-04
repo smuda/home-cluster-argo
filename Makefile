@@ -12,7 +12,6 @@ update-lock:
 	find . -name Chart.lock | xargs dirname | xargs -n 1 helm dep update
 
 update-kind-preload:
-	cp hack/preload-extras.txt hack/preload.txt
 	KUBECONFIG=~/.kube/home-cluster-argo \
 	oc get pod -A -o json \
       | jq -r '.items[].spec.containers[].image' \
@@ -22,4 +21,4 @@ update-kind-preload:
       | grep -v -e "ghcr.io/kro-run/kro/controller" -e "ghcr.io/stakater/reloader" \
       | sort \
       | uniq \
-      >> ./hack/preload.txt
+      > ./hack/preload.txt

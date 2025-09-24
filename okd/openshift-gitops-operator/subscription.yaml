@@ -11,7 +11,7 @@ spec:
     env:
     - name: ARGOCD_CLUSTER_CONFIG_NAMESPACES
       value: openshift-gitops
-  installPlanApproval: Manual
+  installPlanApproval: Automatic
   name: openshift-gitops-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace

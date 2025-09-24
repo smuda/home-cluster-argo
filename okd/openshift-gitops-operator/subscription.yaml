@@ -6,7 +6,7 @@ metadata:
     operators.coreos.com/openshift-gitops-operator.openshift-operators: ""
   name: openshift-gitops-operator
 spec:
-  channel: gitops-1.16
+  channel: gitops-1.17
   config:
     env:
     - name: ARGOCD_CLUSTER_CONFIG_NAMESPACES
@@ -15,4 +15,4 @@ spec:
   name: openshift-gitops-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: openshift-gitops-operator.v1.16.0
+  startingCSV: openshift-gitops-operator.v1.17.0

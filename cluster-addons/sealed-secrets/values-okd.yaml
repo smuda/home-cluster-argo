@@ -5,3 +5,5 @@ sealed-secrets:
     registry: registry.okd4.example.com:5010
   ingress:
     enabled: true
+  containerSecurityContext:
+    runAsUser: null

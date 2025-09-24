@@ -1,8 +1,8 @@
 useTestKey: false # OCP is more production, so I'll insert a key I don't have publicly on github. :-)
 
 sealed-secrets:
-  image:
-    registry: registry.okd4.example.com:5010
+  image: {}
+    # registry: registry.okd4.example.com:5010
   ingress:
     enabled: true
   containerSecurityContext:

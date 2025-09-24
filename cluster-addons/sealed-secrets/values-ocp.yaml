@@ -7,3 +7,5 @@ sealed-secrets:
     enabled: true
   containerSecurityContext:
     runAsUser: null
+  podSecurityContext:
+    fsGroup: null

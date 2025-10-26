@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: helm-pre-install-hook
+  namespace: argocd
+spec:
+  destination:
+    namespace: addon-helm-pre-install-hook
+    server: https://kubernetes.default.svc
+  project: addons
+  sources:
+    - path: demos/helm-pre-install-hook-in-argo-with-secrets
+      repoURL: https://github.com/smuda/home-cluster-argo.git
+      targetRevision: feature/test-argo-helm-presynk
+      helm:
+        releaseName: pre-install-hook
+    - path: demos/helm-pre-install-hook-in-argo-with-secrets/manifests
+      repoURL: https://github.com/smuda/home-cluster-argo.git
+      targetRevision: feature/test-argo-helm-presynk
+      directory:
+        recurse: true
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    automated:
+      prune: true
+      selfHeal: true

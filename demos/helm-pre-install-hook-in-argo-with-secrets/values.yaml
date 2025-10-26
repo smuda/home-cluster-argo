@@ -1,0 +1,6 @@
+triggerAuthentication:
+  saName: thanos
+  secretName: thanos
+
+scaledObject:
+  threshold: 5

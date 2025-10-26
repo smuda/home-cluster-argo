@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: update-db
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": pre-install
+    #"helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      labels:
+        preinstall: app
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: db-upgrade
+          image: bash:devel-alpine3.22
+          args:
+            - bash
+            - -c
+            - echo "FOO!" && sleep 60 && echo "Done."
+          volumeMounts:
+            - mountPath: /secret
+              name: my-secret
+      volumes:
+        - name: my-secret
+          secret:
+            secretName: update-db-secret

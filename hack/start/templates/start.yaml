@@ -23,6 +23,12 @@ spec:
     path: _start/
     repoURL: https://github.com/smuda/home-cluster-argo.git
     targetRevision: {{ .Values.targetRevision }}
+  ignoreDifferences:
+    - group: argoproj.io
+      kind: Application
+      name: addons-start
+      jsonPointers:
+        - /spec/syncPolicy/automated
   syncPolicy:
     automated:
       prune: true

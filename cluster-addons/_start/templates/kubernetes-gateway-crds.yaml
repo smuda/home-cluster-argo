@@ -1,0 +1,36 @@
+{{ if .Values.nginxGatewayFabric.use }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubernetes-gateway-crds
+  namespace: {{ .Values.argo.common.apps_namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/compare-options: ServerSideDiff=true
+{{- if .Values.argo.common.finalizers }}
+  finalizers: {{ .Values.argo.common.finalizers | toYaml | nindent 4 }}
+{{- end }}
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: {{ .Values.argo.project }}
+  source:
+    path: cluster-addons/gateway-crds/manifests/
+    repoURL: https://github.com/smuda/home-cluster-argo.git
+    targetRevision: {{ .Values.argo.common.target_revision }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true
+    automated:
+      prune: true
+      selfHeal: true
+    {{- if .Values.argo.common.enableLabelManagement }}
+    managedNamespaceMetadata:
+      labels: # The labels to set on the application namespace
+        pod-security.kubernetes.io/audit: {{ .Values.nginxGatewayFabric.podSecurityLevel }}
+        pod-security.kubernetes.io/enforce: {{ .Values.nginxGatewayFabric.podSecurityLevel }}
+        pod-security.kubernetes.io/warn: {{ .Values.nginxGatewayFabric.podSecurityLevel }}
+    {{- end }}
+{{ end }}

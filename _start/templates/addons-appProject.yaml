@@ -13,6 +13,8 @@ spec:
   destinations:
     - namespace: 'addon-*'
       server: '*'
+    - namespace: 'default'
+      server: '*'
     - namespace: 'kube-system'
       server: '*'
   sourceRepos:

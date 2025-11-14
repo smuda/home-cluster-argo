@@ -110,6 +110,10 @@ do
   sleep 5
 done
 
+# There seems to be a problem sometimes, which means the docker socker
+# is not available. Just sleeping seems to fix it.
+sleep 5
+
 if test -f "${PRE_LOAD_IMAGES_FILE}"; then
   preloadImagesFromFile "${PRE_LOAD_IMAGES_FILE}"
 fi
@@ -226,6 +230,22 @@ if [[ ${INGRESS} == "nginxIngress" ]]; then
    --kubeconfig "${KUBECONFIG}" \
    --namespace=addon-nginx-ingress \
     wait deployment nginx-ingress-upstream-controller \
+    --for condition=Available=True \
+    --timeout=120s
+  do
+    echo "Try again"
+    sleep 5
+  done
+fi
+
+
+if [[ ${INGRESS} == "nginxGatewayFabric" ]]; then
+  echo ""
+  echo "Wait for nginx-gateway-fabric"
+  while ! kubectl \
+   --kubeconfig "${KUBECONFIG}" \
+   --namespace=addon-nginx-gateway-fabric \
+    wait deployment nginx-gateway-upstream-controller \
     --for condition=Available=True \
     --timeout=120s
   do

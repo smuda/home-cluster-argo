@@ -38,6 +38,10 @@ metricsServer:
   use: false
   podSecurityLevel: privileged
 
+nginxGatewayFabric:
+  use: false
+  podSecurityLevel: baseline
+
 nginxIngress:
   use: false
   podSecurityLevel: baseline

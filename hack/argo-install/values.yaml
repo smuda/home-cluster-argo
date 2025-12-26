@@ -36,12 +36,12 @@ argo-cd:
           name: argo-cd
           url: https://argoproj.github.io/argo-helm
     certificate:
-      domain: argocd.app.127.0.0.1.nip.io
+      domain: argocd.apps.127.0.0.1.nip.io
       enabled: false
     ingress:
       enabled: true
       tls: true
-      hostname: argocd.app.127.0.0.1.nip.io
+      hostname: argocd.apps.127.0.0.1.nip.io
       ingressClassName: nginx
     metrics:
       enabled: true

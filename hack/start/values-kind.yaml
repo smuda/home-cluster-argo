@@ -1,2 +1,2 @@
 ingress:
-  hostname: argocd.app.127.0.0.1.nip.io
+  hostname: argocd.apps.127.0.0.1.nip.io

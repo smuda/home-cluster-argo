@@ -1,4 +1,4 @@
-argo-cd:
+argocd:
 
   global:
     networkPolicy:

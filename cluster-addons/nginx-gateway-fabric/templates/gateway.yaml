@@ -1,0 +1,15 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: gateway
+spec:
+  gatewayClassName: nginx
+  listeners:
+    - name: http
+      port: 80
+      protocol: HTTP
+      hostname: "*.127.0.0.1.nip.io"
+    - name: https
+      port: 443
+      protocol: HTTP
+      hostname: "*.127.0.0.1.nip.io"

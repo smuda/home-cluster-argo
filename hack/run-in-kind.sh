@@ -245,7 +245,7 @@ if [[ ${INGRESS} == "nginxGatewayFabric" ]]; then
   while ! kubectl \
    --kubeconfig "${KUBECONFIG}" \
    --namespace=addon-nginx-gateway-fabric \
-    wait deployment nginx-gateway-upstream-controller \
+    wait deployment nginx-gateway-upstream \
     --for condition=Available=True \
     --timeout=120s
   do
@@ -324,7 +324,7 @@ do
 done
 
 echo ""
-echo "Install argocd again, which means we will get metrics and cert-manager certificate"
+echo "Install argocd again, which means we will get metrics, gateway and cert-manager certificate"
 helm --kubeconfig "${KUBECONFIG}" \
   upgrade -n argocd \
   argocd ./argo-install \

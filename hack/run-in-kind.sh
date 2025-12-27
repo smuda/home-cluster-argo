@@ -6,6 +6,7 @@ KUBE_VERSION=v1.33.1
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 CLUSTER_NAME=home-cluster
 KUBECONFIG=~/.kube/${CLUSTER_NAME}-argo
+USE_DOCKER_CACHE=True
 PRE_LOAD_IMAGES_FILE=${SCRIPT_DIR}/preload.txt
 PRE_LOAD_IMAGES_EXTRAS_FILE=${SCRIPT_DIR}/preload-extras.txt
 INGRESS=${INGRESS:-ingressNginx}
@@ -167,13 +168,20 @@ kubectl \
   --timeout=180s \
   || exit 1
 
+# Prepare argocd value files
+ARGOCD_APP_VALUE_FILES="-f start/values-kind.yaml"
+if [[ "${USE_DOCKER_CACHE}" == True ]]; then
+  ARGOCD_APP_VALUE_FILES="${ARGOCD_APP_VALUE_FILES} -f start/values-docker-cache.yaml"
+fi
+
 echo ""
 echo "Install application"
+# shellcheck disable=SC2086
 helm \
   --kubeconfig "${KUBECONFIG}" \
   --namespace=argocd \
   upgrade -i start start \
-  -f start/values-kind.yaml \
+  ${ARGOCD_APP_VALUE_FILES} \
   --set "targetRevision=${GIT_REVISION}" \
   --set-string "helmParameters.addons.helmParameters.${INGRESS}.use=true" \
   || exit 1

@@ -13,7 +13,7 @@ spec:
       version: v3
       releaseName: start
       valueFiles:
-        - values-kind.yaml
+        {{- .Values.helmValueFiles | toYaml | nindent 8 }}
       parameters:
         - name: argo.common.target_revision
           value: {{ .Values.targetRevision }}

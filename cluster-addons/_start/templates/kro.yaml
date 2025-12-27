@@ -19,7 +19,11 @@ spec:
       version: v3
       releaseName: kro
       {{- if .Values.argo.common.valueFiles }}
-      valueFiles: {{ .Values.argo.common.valueFiles | toYaml | nindent 8 }}
+      valueFiles:
+        {{- .Values.argo.common.valueFiles | toYaml | nindent 8 }}
+        {{ with .Values.argo.common.additionalValueFiles }}
+        {{ . | toYaml | nindent 8 }}
+        {{ end }}
       {{- end }}
     path: cluster-addons/kro/
     repoURL: https://github.com/smuda/home-cluster-argo.git

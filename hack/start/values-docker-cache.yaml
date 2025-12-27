@@ -1,0 +1,3 @@
+helmValueFiles:
+  - values-kind.yaml
+  - values-docker-cache.yaml

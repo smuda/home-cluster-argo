@@ -1,0 +1,4 @@
+argo:
+  common:
+    additionalValueFiles:
+      - values-docker-cache.yaml

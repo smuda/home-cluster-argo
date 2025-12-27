@@ -1,3 +1,6 @@
+global:
+  clusterId: someclustername
+
 upstream:
   kubecostToken: "YXNkZkBhc2RmLmNvbQ==xm343yadf98"
 

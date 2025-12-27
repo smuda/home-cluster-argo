@@ -9,6 +9,6 @@ version: 0.2.3
 dependencies:
   # curl -sL https://api.github.com/repos/kro-run/kro/releases/latest | jq -r '.tag_name | ltrimstr("v")'
   - name: kro
-    version: 0.2.3
+    version: 0.7.1
     alias: upstream
-    repository: oci://ghcr.io/kro-run/kro
+    repository: oci://registry.k8s.io/kro/charts

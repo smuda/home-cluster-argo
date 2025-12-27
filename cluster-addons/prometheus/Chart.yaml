@@ -9,6 +9,6 @@ version: 1.0.0
 dependencies:
   # https://github.com/prometheus-community/helm-charts/releases
   - name: kube-prometheus-stack
-    version: 71.2.0
+    version: 80.7.0
     alias: upstream
     repository: https://prometheus-community.github.io/helm-charts

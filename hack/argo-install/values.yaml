@@ -1,4 +1,4 @@
-argo-cd:
+argocd:
 
   global:
     networkPolicy:
@@ -9,9 +9,6 @@ argo-cd:
     metrics:
       enabled: true
   controller:
-    env:
-      - name: ARGOCD_SYNC_WAVE_DELAY
-        value: "10"
     metrics:
       enabled: true
       serviceMonitor:
@@ -48,6 +45,8 @@ argo-cd:
       serviceMonitor:
         enabled: true
   configs:
+    params:
+      controller.sync.wave.delay.seconds: 10
     secret:
       # This is really `password` bcrypt hashed
       argocdServerAdminPassword: $2a$10$atlthaDW9TadP0OduJCBruNQLEcoYzOFfgjRU5cwUjf3dDjbj2qIu

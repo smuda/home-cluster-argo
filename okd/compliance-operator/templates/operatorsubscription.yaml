@@ -9,4 +9,4 @@ spec:
   name: compliance-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: compliance-operator.v1.7.0
+  startingCSV: compliance-operator.v1.8.0

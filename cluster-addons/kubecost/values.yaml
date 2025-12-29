@@ -1,5 +1,13 @@
 global:
   clusterId: someclustername
+  securityContext: {}
+  updateCaTrust:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 128Mi
+      limits:
+        memory: 128Mi
 
 upstream:
   kubecostToken: "YXNkZkBhc2RmLmNvbQ==xm343yadf98"
@@ -8,28 +16,41 @@ upstream:
     currencyCode: SEK
     clusterProfile: development
 
-  pricingCsv:
-    enabled: false
-    location:
-      provider: "AWS"
-      region: "eu-north-1"
+  aggregator:
+    persistentConfigsStorage:
+      storageClass: nfs-csi
+    resources:
+      requests:
+        cpu: 10m
+        memory: 512Mi
+      limits:
+        memory: 512Mi
 
-  kubecostFrontend:
+  cloudCost:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 128Mi
+      limits:
+        memory: 128Mi
+
+  clusterController:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 128Mi
+      limits:
+        memory: 128Mi
+
+  enterpriseCustomPricing:
+    enabled: false
+
+  frontend:
     resources:
       requests:
         cpu: "10m"
         memory: "55Mi"
       limits:
-      #  cpu: "100m"
-        memory: "256Mi"
-
-  kubecostModel:
-    resources:
-      requests:
-        cpu: "200m"
-        memory: "55Mi"
-      limits:
-      #  cpu: "800m"
         memory: "256Mi"
 
   ingress:
@@ -39,12 +60,10 @@ upstream:
   podSecurityPolicy:
     enabled: false # Doesn't work for really new K8s
 
-  prometheus:
-    server:
-      resources:
+  localStore:
+    resources:
       requests:
-        cpu: 500m
-        memory: 512Mi
+        cpu: "10m"
+        memory: "55Mi"
       limits:
-      #  cpu: 500m
-        memory: 512Mi
+        memory: "256Mi"

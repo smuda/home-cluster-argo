@@ -26,9 +26,3 @@ global:
 upstream:
   ingress:
     enabled: false
-
-  kubecostMetrics:
-    exporter:
-      enabled: true
-      serviceMonitor:
-        enabled: true

@@ -321,7 +321,7 @@ spec:
     #      memory: 1000Mi
 
   ## KEDA ServiceAccount related config
-  serviceAccount:
+  serviceAccount: {}
   ## Annotations to be added to the Service Account
   # https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
   # annotations:

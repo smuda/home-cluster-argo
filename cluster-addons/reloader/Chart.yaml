@@ -9,6 +9,6 @@ version: 1.0.0
 dependencies:
   # https://github.com/stakater/Reloader/releases
   - name: reloader
-    version: 2.2.7
+    version: 2.2.8
     alias: upstream
     repository: https://stakater.github.io/stakater-charts

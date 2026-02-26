@@ -1,0 +1,80 @@
+version: 2
+updates:
+  # cluster-addons with HTTPS Helm repos
+  - package-ecosystem: helm
+    directory: /cluster-addons/cert-manager
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: helm
+    directory: /cluster-addons/cert-manager-approver-policy
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: helm
+    directory: /cluster-addons/ingress-nginx
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: helm
+    directory: /cluster-addons/kubecost
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: helm
+    directory: /cluster-addons/metrics-server
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: helm
+    directory: /cluster-addons/opencost
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: helm
+    directory: /cluster-addons/prometheus
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: helm
+    directory: /cluster-addons/reloader
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: helm
+    directory: /cluster-addons/sealed-secrets
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: helm
+    directory: /cluster-addons/trivy-operator
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: helm
+    directory: /cluster-addons/pv-providers/csi-driver-nfs
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: helm
+    directory: /hack/argo-install
+    schedule:
+      interval: monthly
+
+  # OCI registries - Dependabot may not support these yet,
+  # but including them costs nothing and will work if/when
+  # support is added.
+  - package-ecosystem: helm
+    directory: /cluster-addons/grafana-operator
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: helm
+    directory: /cluster-addons/nginx-ingress
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: helm
+    directory: /cluster-addons/kro
+    schedule:
+      interval: monthly

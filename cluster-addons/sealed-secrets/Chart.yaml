@@ -9,5 +9,5 @@ version: 1.0.0
 dependencies:
   # https://github.com/bitnami-labs/sealed-secrets/releases
   - name: sealed-secrets
-    version: v2.18.0
+    version: 2.18.3
     repository: https://bitnami-labs.github.io/sealed-secrets

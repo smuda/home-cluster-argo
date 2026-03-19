@@ -23,21 +23,25 @@ pullNeededImagesFromFile () {
     echo "Checking ${image}"
     # Check if the image exists using Docker manifest inspect
     docker inspect "${image}" > /dev/null 2>&1 \
-      || docker pull --platform linux/arm64 --platform linux/amd64 "${image}" \
+      || docker pull "${image}" \
       || exit 1
   done <"${IMAGES_FILE}"
 }
 
 preloadImagesFromFile () {
   IMAGES_FILE="$1"
+  NODE="${CLUSTER_NAME}-control-plane"
 
   mkdir -p tmp
   echo ""
   echo "Preload images from ${IMAGES_FILE} that we know will be needed, especially from docker.io which minimize re-pulls"
   while read -r p; do
-    docker save --platform linux/arm64 --platform linux/amd64 "${p}" > tmp/image.tar \
+    docker save "${p}" > tmp/image.tar \
     || exit 1
-    kind --name "${CLUSTER_NAME}" load image-archive tmp/image.tar \
+    docker exec -i "${NODE}" \
+      ctr --namespace=k8s.io images import \
+      --digests --snapshotter=overlayfs - \
+      < tmp/image.tar \
     || exit 1
   done <"${IMAGES_FILE}"
 }

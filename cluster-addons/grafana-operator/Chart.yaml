@@ -9,6 +9,6 @@ version: 5.18.0
 dependencies:
   # https://github.com/grafana/grafana-operator/releases
   - name: grafana-operator
-    version: 5.22.0
+    version: 5.22.2
     repository: oci://ghcr.io/grafana/helm-charts
     alias: operator

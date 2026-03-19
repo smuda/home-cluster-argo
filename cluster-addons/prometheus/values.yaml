@@ -21,3 +21,7 @@ upstream:
       ingressClassName: nginx
       hosts:
         - alert-manager.apps.k8s1.example.com
+
+  kube-state-metrics:
+    metricLabelsAllowlist:
+      - pods=[gitlab_project,gitlab_project_id,gitlab_namespace]

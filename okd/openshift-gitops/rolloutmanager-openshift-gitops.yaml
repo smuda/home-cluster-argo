@@ -4,7 +4,7 @@ metadata:
   name: openshift-gitops
 spec:
   ha:
-    enabled: true
+    enabled: false
   controllerResources:
     requests:
       cpu: 100m

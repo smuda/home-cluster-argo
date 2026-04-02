@@ -9,6 +9,6 @@ version: 1.0.0
 dependencies:
   # https://github.com/kubecost/cost-analyzer-helm-chart/releases
   - name: kubecost
-    version: 3.1.5
+    version: 3.1.6
     alias: upstream
     repository: https://kubecost.github.io/kubecost

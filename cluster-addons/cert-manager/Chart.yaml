@@ -9,6 +9,6 @@ version: 1.0.0
 dependencies:
   # https://github.com/cert-manager/cert-manager/releases
   - name: cert-manager
-    version: 1.20.0
+    version: 1.20.2
     alias: upstream
     repository: https://charts.jetstack.io

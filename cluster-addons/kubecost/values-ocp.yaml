@@ -1,4 +1,11 @@
 global:
+  # Force Bitnami-based subcharts (e.g. the finops-agent) to drop the
+  # hardcoded runAsUser/runAsGroup/fsGroup (1001) so OpenShift assigns a UID
+  # from the namespace's allowed range. "auto" only triggers when Helm can
+  # detect OpenShift via Capabilities, which ArgoCD's render does not.
+  compatibility:
+    openshift:
+      adaptSecurityContext: force
   # Platforms is a higher-level abstraction for platform-specific values and settings.
   platforms:
     # Deploying to OpenShift (OCP) requires enabling this option.

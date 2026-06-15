@@ -55,6 +55,8 @@ system:
     usbGuard: false # Package usbguard does not exist for FCOS
   timezone:
     enabled: true
+  psi:
+    enabled: true # Enable kernel Pressure Stall Information (psi=1 kernel arg)
 
 machineConfigPools:
   - master

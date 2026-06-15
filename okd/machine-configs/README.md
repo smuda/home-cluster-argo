@@ -1,5 +1,9 @@
 # OKD Machine Configs
 
+Per-config reference docs (what each MachineConfig changes and
+why) live in [`docs/`](docs/README.md), mirroring the layout of
+`templates/`. This README covers operational tips.
+
 # Forcing machine configs
 
 When playing around with machine configs it's very easy to have the node get stuck in

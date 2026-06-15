@@ -2,3 +2,17 @@ upstream:
   operator:
     privateRegistryScanSecretsNames:
       openshift-config: pull-secret
+
+  trivy:
+    server:
+      # Drop the upstream hardcoded runAsUser/fsGroup (65534). OpenShift's
+      # restricted-v2 SCC assigns a UID from the namespace range; a fixed UID
+      # outside that range is rejected and the server pod fails to start.
+      podSecurityContext:
+        # null removes the upstream defaults (Helm deep-merges maps), letting
+        # the SCC inject a UID/fsGroup from the namespace range.
+        runAsUser: null
+        fsGroup: null
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault

@@ -4,6 +4,10 @@ upstream:
   operator:
     metricsVulnIdEnabled: true
     scanJobsConcurrentLimit: 3 # Limit to three concurrent jobs. Default is 10.
+    # Run a built-in Trivy server (ClientServer mode). The server owns the
+    # vuln DB and cache, so scan job containers no longer contend for a shared
+    # local fs cache lock (the cause of failing scan pods in Standalone mode).
+    builtInTrivyServer: true
 
   podSecurityContext:
     runAsNonRoot: true

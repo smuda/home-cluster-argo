@@ -1,0 +1,7 @@
+# Mirror dead upstream image registries to maintained alternatives.
+imageTagMirrors:
+  # Redirects the kube-rbac-proxy sidecar away from the shut-down
+  # gcr.io/kubebuilder registry. See the imagetagmirrorset template.
+  # NOTE: applying this triggers a MachineConfig rollout (node reboots).
+  kubebuilderKubeRbacProxy:
+    enabled: true

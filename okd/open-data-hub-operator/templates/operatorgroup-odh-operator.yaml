@@ -1,0 +1,10 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: opendatahub-operator
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  # No targetNamespaces / selector = AllNamespaces (global) install,
+  # which matches the live cluster (the CSV is copied to every
+  # namespace). Setting targetNamespaces here would scope it down.
+  upgradeStrategy: Default

@@ -1,0 +1,27 @@
+{{- if .Values.imageTagMirrors.kubebuilderKubeRbacProxy.enabled }}
+# Redirects pulls of the kube-rbac-proxy sidecar that the community
+# Open Data Hub operator references. Google shut down the
+# gcr.io/kubebuilder/* registry, so that image tag returns
+# "manifest unknown" and the operator pod hangs in ImagePullBackOff.
+#
+# ITMS is tag-preserving (source/repo:TAG -> mirror/repo:TAG), so the
+# mirror must publish the identical v0.x tags. The cluster release
+# payload (digest-only mono-repo) and the Red Hat ose-kube-rbac-proxy
+# image (different tag scheme, needs RH auth) cannot serve that role,
+# which leaves the maintainer's repo as the only tag-compatible mirror.
+apiVersion: config.openshift.io/v1
+kind: ImageTagMirrorSet
+metadata:
+  name: kubebuilder-kube-rbac-proxy
+  annotations:
+    # Apply early so the MachineConfig rollout settles before the
+    # operator subscription deploys and pulls its sidecar.
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  imageTagMirrors:
+    - source: gcr.io/kubebuilder/kube-rbac-proxy
+      mirrors:
+        - quay.io/brancz/kube-rbac-proxy
+      # The source registry is gone; never fall back to it.
+      mirrorSourcePolicy: NeverContactSource
+{{- end }}

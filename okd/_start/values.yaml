@@ -27,6 +27,15 @@ keda:
 machineConfigs:
   use: true
   podSecurityLevel: restricted
+opendatahubOperator:
+  use: true
+  namespace: openshift-open-data-hub-operators
+  # ODH community operator v1.5.0 controller-manager does not set
+  # seccompProfile, so it cannot run under PodSecurity "restricted".
+  # Run the operator namespace as privileged (see managedNamespaceMetadata
+  # in templates/open-data-hub-operator.yaml, which also disables the
+  # OpenShift scc label-sync so this level is not overwritten).
+  podSecurityLevel: privileged
 openshiftGitOpsOperator:
   use: true
 openshiftVerticalPodAutoscaler:

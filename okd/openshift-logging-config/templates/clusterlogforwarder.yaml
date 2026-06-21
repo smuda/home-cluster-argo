@@ -15,6 +15,31 @@ spec:
   managementState: Managed
   serviceAccount:
     name: victorialogs
+  {{- with .Values.infrastructureDropFilters }}
+  # Drop benign, recurring operator noise before it reaches VictoriaLogs.
+  # Each list entry's conditions AND together; entries OR together (a record
+  # is dropped when any entry fully matches). Wired into the infrastructure
+  # pipeline below. Field paths are nested Vector paths, not VictoriaLogs keys.
+  filters:
+    - name: drop-infrastructure-noise
+      type: drop
+      drop:
+        {{- range . }}
+        - test:
+            {{- if .namespace }}
+            - field: .kubernetes.namespace_name
+              matches: {{ .namespace | quote }}
+            {{- end }}
+            {{- if .container }}
+            - field: .kubernetes.container_name
+              matches: {{ .container | quote }}
+            {{- end }}
+            {{- if .messageMatches }}
+            - field: .message
+              matches: {{ .messageMatches | quote }}
+            {{- end }}
+        {{- end }}
+  {{- end }}
   outputs:
     - name: victorialogs
       type: elasticsearch
@@ -49,6 +74,10 @@ spec:
     - name: infrastructure
       inputRefs:
         - infrastructure
+      {{- if .Values.infrastructureDropFilters }}
+      filterRefs:
+        - drop-infrastructure-noise
+      {{- end }}
       outputRefs:
         - victorialogs-infrastructure
     - name: audit

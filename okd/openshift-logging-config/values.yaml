@@ -3,3 +3,63 @@ victoriaLogs:
   # bulk ingestion endpoint. The collector runs in the cluster, so the service
   # FQDN is reachable cross-namespace.
   endpoint: http://victoria-logs-upstream-server.addon-victoria-logs.svc.cluster.local:9428
+
+# Benign, high-volume operator lines dropped before reaching VictoriaLogs.
+# Each entry becomes one drop test on the infrastructure pipeline; a record is
+# dropped when all of an entry's set conditions match. These recur on a timer
+# and do not indicate a fault, so they are noise in the log store.
+infrastructureDropFilters:
+  # OLM creates a short-lived "update pod" on every registryPoll; while it
+  # starts, catalog-operator logs this at error level then self-resolves.
+  - name: olm-catalog-update-not-ready
+    namespace: openshift-operator-lifecycle-manager
+    container: catalog-operator
+    messageMatches: "has not yet reported ready|UpdateNotReadyErr"
+  # The PodSecurity readiness controller flags namespaces lacking pod-security
+  # labels. For platform openshift-* namespaces that is Red Hat's job (tracked
+  # upstream), so it is noise. The regex requires the *evaluated* namespace
+  # (named at the end of the line, e.g. openshift-service-ca="(MISSING)") to
+  # start with "openshift-", so the same warning about one of our own
+  # namespaces is NOT dropped and stays visible.
+  - name: kube-apiserver-operator-podsecurity-readiness
+    namespace: openshift-kube-apiserver-operator
+    container: kube-apiserver-operator
+    messageMatches: 'podsecurityreadinesscontroller\.go.*no appropriate labels or annotations were found" openshift-[a-z0-9-]+='
+  # OVN-Kubernetes' metrics collector stats its logfile to publish a size
+  # gauge, but the path is empty when ovnkube logs to stdout, so stat fails.
+  # Cosmetic: only the logfile-size metric is affected, not networking.
+  - name: ovnkube-controller-logfile-size-metric
+    namespace: openshift-ovn-kubernetes
+    container: ovnkube-controller
+    messageMatches: "Failed to get the logfile size"
+  # OLM's catalog-operator and the marketplace-operator both write CatalogSource
+  # status, so a status update occasionally loses an optimistic-concurrency race
+  # ("the object has been modified"). Transient and retried; sources stay READY.
+  # Scoped to CatalogSource conflicts so other, potentially real conflicts show.
+  - name: catalog-operator-catalogsource-conflict
+    namespace: openshift-operator-lifecycle-manager
+    container: catalog-operator
+    messageMatches: 'catalogsources\.operators\.coreos\.com.*the object has been modified'
+  # haproxy-monitor (the on-prem API-VIP load balancer's baremetal-runtimecfg
+  # sidecar) tries to load a dynamic logging-verbosity config with an empty
+  # namespace, so client-go rejects the lookup before it reaches the API. It
+  # falls back to the default log level; API load balancing is unaffected.
+  # Cosmetic, recurs on a timer.
+  - name: haproxy-monitor-logging-config
+    namespace: openshift-kni-infra
+    container: haproxy-monitor
+    messageMatches: "Failed to get logging configuration"
+  # ovnkube-controller (OVN interconnect, one zone per node) warns when it
+  # can't remove a remote-zone pod's IP from the namespace address-set
+  # because the pod already completed and released its IP. Our per-node CIS
+  # node-collector Jobs (addon-trivy) are short-lived, so this cleanup race
+  # fires on every scan cycle. The IP is already gone — nothing leaks.
+  # Scoped to the node-collector source so the same warning about other
+  # pods (a potential real leak) stays visible.
+  - name: ovnkube-trivy-node-collector-ip-cleanup
+    namespace: openshift-ovn-kubernetes
+    container: ovnkube-controller
+    # NOTE: no literal apostrophe — the operator renders messageMatches into a
+    # VRL raw string r'...', where a "'" would terminate it. The "." matches the
+    # apostrophe in "pod's".
+    messageMatches: "Unable to remove remote zone pod.s addon-trivy/node-collector-.*no pod IPs found"

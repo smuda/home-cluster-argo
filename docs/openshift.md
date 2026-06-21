@@ -56,6 +56,32 @@ assigns container UIDs from a namespace range. Consequences for charts:
   `privileged` **and** the SCC label-sync is disabled so OpenShift
   doesn't overwrite the level. The Open Data Hub operator in
   `okd/_start/values.yaml` is the documented example of this.
+- Trivy's CIS node-collector is another case. The operator launches a
+  Job that needs `hostPID`, read-only control-plane `hostPath` mounts,
+  and the `RuntimeDefault` seccomp profile, which `restricted` forbids.
+  On OpenShift the `addon-trivy` namespace runs `privileged` PSS
+  (`trivy.podSecurityLevel` in `cluster-addons/_start/values-okd.yaml`
+  / `values-ocp.yaml`) and the `trivy-operator` SA is bound to the
+  `privileged` SCC (`createSccBinding: true`, rendered by
+  `cluster-addons/trivy-operator/templates/scc-binding.yaml`). The
+  tighter `hostaccess` SCC was tried first but its `seccompProfiles`
+  list is empty, so it rejects the collector's seccomp profile
+  ("seccomp may not be set"); `privileged` is the only built-in SCC
+  that allows `hostPID` + `hostPath` + seccomp together. A custom SCC
+  could be tighter if it proves worth the upkeep. The operator and
+  server pods still get `restricted-v2` because SCC selection prefers
+  the strictest match. Without this the Job retries forever and floods
+  the controller-manager logs.
+
+  Two costs to keep in mind. First, the same `trivy-operator` SA runs
+  the operator itself, so a compromise of that long-lived pod now also
+  gains control-plane-node file read (`/var/lib/etcd`,
+  `/etc/kubernetes`, ...) via the host mounts, plus everything the
+  `privileged` SCC permits. Treat that pod as a high-value target.
+  Second, on OpenShift the SCC is the real gate, so moving the
+  namespace to `privileged` PSS is acceptable here; do not copy this
+  PSS bump to plain k8s clusters, where PSS is the only gate and SCC
+  does not exist.
 
 ## Monitoring
 

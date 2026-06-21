@@ -1,10 +1,29 @@
+# Grant the operator SA the privileged SCC so the CIS node-collector Job
+# (hostPID + control-plane hostPath mounts + RuntimeDefault seccomp) can
+# schedule. Paired with the addon-trivy namespace running privileged PSS
+# (cluster-addons/_start). See docs/openshift.md for why privileged and not
+# hostaccess.
+createSccBinding: true
+
 upstream:
   operator:
     privateRegistryScanSecretsNames:
       openshift-config: pull-secret
 
-  nodeCollector:
-    useNodeSelector: false
+  # The CIS node-collector image runs as root to read root-owned host paths
+  # (etcd/kube-scheduler/kubelet certs); the privileged SCC permits this. The
+  # base values set runAsNonRoot:true on scan and node-collector pods, so
+  # kubelet rejects the root node-collector container
+  # (CreateContainerConfigError). The Job then never completes and the operator
+  # recreates it on every reconcile, flooding kube-controller-manager with
+  # Job-status StorageError races. Allow root here. The knob is shared with
+  # image-scan jobs (the chart exposes no node-collector-only securityContext);
+  # they keep running under the privileged SCC, which still governs their UID.
+  trivyOperator:
+    scanJobPodTemplatePodSecurityContext:
+      runAsNonRoot: false
+      seccompProfile:
+        type: RuntimeDefault
 
   trivy:
     server:

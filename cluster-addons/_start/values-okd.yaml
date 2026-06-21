@@ -1,2 +1,9 @@
 ingressNginx:
   use: false
+
+# Trivy's CIS node-collector Job needs hostPID plus control-plane hostPath
+# mounts, which restricted PSS forbids. Move addon-trivy to privileged so the
+# Job can schedule; the operator and server pods keep their own restrictive
+# securityContext. Paired with the hostaccess SCC binding in the trivy chart.
+trivy:
+  podSecurityLevel: privileged

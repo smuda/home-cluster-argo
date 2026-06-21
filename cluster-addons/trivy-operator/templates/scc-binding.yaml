@@ -1,0 +1,23 @@
+{{- if .Values.createSccBinding -}}
+# OpenShift only. The trivy-operator SA runs the CIS node-collector Job, which
+# needs hostPID, read-only control-plane hostPath mounts, and the RuntimeDefault
+# seccomp profile. hostaccess permits the first two but forbids seccomp (empty
+# seccompProfiles), so the only built-in SCC that admits the pod cleanly is
+# privileged. Pods that don't need it still get restricted-v2 since SCC
+# selection prefers the strictest match. Note: this SA also runs the operator,
+# so a compromise of that pod gains control-plane-node file read via the host
+# mounts; treat it as a high-value target.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: system:openshift:scc:privileged
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:openshift:scc:privileged
+subjects:
+  - kind: ServiceAccount
+    name: trivy-operator
+    namespace: {{ .Release.Namespace }}
+{{- end -}}

@@ -1,3 +1,7 @@
+# Bind the trivy-operator SA to the privileged SCC so the CIS node-collector
+# Job can run. OpenShift only; the value files for OKD/OCP set this true.
+createSccBinding: false
+
 upstream:
   fullnameOverride: trivy-operator
 
@@ -8,6 +12,20 @@ upstream:
     # vuln DB and cache, so scan job containers no longer contend for a shared
     # local fs cache lock (the cause of failing scan pods in Standalone mode).
     builtInTrivyServer: true
+
+  # The CIS node-collector scans every node, including control-plane nodes (it
+  # mounts /var/lib/etcd, kube-scheduler and kube-controller-manager paths).
+  # Control-plane nodes carry the node-role taint, so without matching
+  # tolerations the per-node Jobs hang Pending and get recreated, flooding
+  # kube-controller-manager with Job StorageError races.
+  nodeCollector:
+    tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
 
   podSecurityContext:
     runAsNonRoot: true

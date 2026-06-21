@@ -1,0 +1,46 @@
+{{ if .Values.victoriaLogsCollector.use }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: addon-victoria-logs-collector
+  namespace: {{ .Values.argo.common.apps_namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/compare-options: ServerSideDiff=true
+{{- if .Values.argo.common.finalizers }}
+  finalizers: {{ .Values.argo.common.finalizers | toYaml | nindent 4 }}
+{{- end }}
+spec:
+  destination:
+    namespace: addon-victoria-logs-collector
+    server: https://kubernetes.default.svc
+  project: {{ .Values.argo.project }}
+  source:
+    helm:
+      version: v3
+      releaseName: victoria-logs-collector
+      {{- if .Values.argo.common.valueFiles }}
+      valueFiles:
+        {{- .Values.argo.common.valueFiles | toYaml | nindent 8 }}
+        {{ with .Values.argo.common.additionalValueFiles }}
+        {{ . | toYaml | nindent 8 }}
+        {{ end }}
+      {{- end }}
+    path: cluster-addons/victoria-logs-collector/
+    repoURL: https://github.com/smuda/home-cluster-argo.git
+    targetRevision: {{ .Values.argo.common.target_revision }}
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    automated:
+      prune: true
+      selfHeal: true
+    {{- if .Values.argo.common.enableLabelManagement }}
+    managedNamespaceMetadata:
+      labels: # The labels to set on the application namespace
+        pod-security.kubernetes.io/audit: {{ .Values.victoriaLogsCollector.podSecurityLevel }}
+        pod-security.kubernetes.io/enforce: {{ .Values.victoriaLogsCollector.podSecurityLevel }}
+        pod-security.kubernetes.io/warn: {{ .Values.victoriaLogsCollector.podSecurityLevel }}
+    {{- end }}
+{{ end }}

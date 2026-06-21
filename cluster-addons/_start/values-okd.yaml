@@ -1,6 +1,11 @@
 ingressNginx:
   use: false
 
+# OpenShift collects logs via the OpenShift Logging operator's Vector collector
+# (okd/openshift-logging-*), not the vlagent DaemonSet.
+victoriaLogsCollector:
+  use: false
+
 # Trivy's CIS node-collector Job needs hostPID plus control-plane hostPath
 # mounts, which restricted PSS forbids. Move addon-trivy to privileged so the
 # Job can schedule; the operator and server pods keep their own restrictive

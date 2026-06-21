@@ -1,0 +1,3 @@
+# Not deployed on OpenShift: see values-okd.yaml. Disabled in
+# cluster-addons/_start/values-ocp.yaml.
+upstream: {}

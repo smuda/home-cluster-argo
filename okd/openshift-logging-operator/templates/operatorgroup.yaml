@@ -1,0 +1,9 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: openshift-logging
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  # No targetNamespaces: the Cluster Logging operator installs in
+  # AllNamespaces mode (it watches the whole cluster).
+  upgradeStrategy: Default

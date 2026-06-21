@@ -1,0 +1,15 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: cluster-logging
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  # Logging 6.x ships the observability.openshift.io/v1 ClusterLogForwarder API
+  # used by openshift-logging-config. See:
+  # https://docs.victoriametrics.com/guides/collecting-openshift-logs-with-victoria-logs/
+  channel: stable-6.2
+  installPlanApproval: Automatic
+  name: cluster-logging
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  # Pin startingCSV here if a specific Logging version is required.

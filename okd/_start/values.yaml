@@ -38,6 +38,13 @@ opendatahubOperator:
   podSecurityLevel: privileged
 openshiftGitOpsOperator:
   use: true
+openshiftLogging:
+  use: true
+  namespace: openshift-logging
+  # The OpenShift Logging operator deploys a Vector collector DaemonSet that
+  # mounts node log paths (hostPath), which PodSecurity "restricted"/"baseline"
+  # forbid; run the namespace privileged.
+  podSecurityLevel: privileged
 openshiftVerticalPodAutoscaler:
   use: true
   podSecurityLevel: restricted

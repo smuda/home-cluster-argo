@@ -1,0 +1,5 @@
+victoriaLogs:
+  # In-cluster VictoriaLogs store (cluster-addons/victoria-logs) Elasticsearch
+  # bulk ingestion endpoint. The collector runs in the cluster, so the service
+  # FQDN is reachable cross-namespace.
+  endpoint: http://victoria-logs-upstream-server.addon-victoria-logs.svc.cluster.local:9428

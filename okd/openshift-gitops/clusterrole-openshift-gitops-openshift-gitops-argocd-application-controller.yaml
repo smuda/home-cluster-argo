@@ -29,6 +29,7 @@ rules:
       - autoscaling.openshift.io
       - compliance.openshift.io
       - monitoring.coreos.com
+      - observability.openshift.io
       - route.openshift.io
     resources:
       - "*"

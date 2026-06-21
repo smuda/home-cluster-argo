@@ -1,0 +1,4 @@
+# Not deployed on OpenShift: OKD/OCP collect logs via the OpenShift Logging
+# operator's Vector collector instead (okd/openshift-logging-operator and
+# okd/openshift-logging-config). Disabled in cluster-addons/_start/values-okd.yaml.
+upstream: {}

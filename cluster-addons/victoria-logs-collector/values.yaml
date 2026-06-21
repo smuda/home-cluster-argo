@@ -1,0 +1,6 @@
+upstream:
+  # vlagent DaemonSet tails container logs and ships them to the in-cluster
+  # VictoriaLogs store (the victoria-logs addon). No path on the URL means the
+  # native /insert ingestion endpoint is used.
+  remoteWrite:
+    - url: http://victoria-logs-upstream-server.addon-victoria-logs.svc.cluster.local:9428

@@ -1,0 +1,126 @@
+# OpenShift exposes VictoriaLogs behind the cluster's built-in OAuth using an
+# oauth-proxy sidecar (the same model openshift-gitops uses). External traffic
+# flows: reencrypt Route -> oauth-proxy :8443 -> VictoriaLogs :9428, and is
+# restricted to cluster admins via the --openshift-sar below.
+#
+# The plain :9428 Service stays in-cluster only (the OpenShift Logging
+# ClusterLogForwarder ingests over it); the unauthenticated nginx ingress is
+# disabled so the Route is the only external entrypoint.
+#
+# OCP works the same way; values-ocp.yaml differs only in the oauth-proxy image
+# registry. See docs/logaggregation-okd.md.
+upstream:
+  serviceAccount:
+    create: true
+    name: victoria-logs
+    annotations:
+      # Lets the SA act as the OAuth client and registers the Route as a valid
+      # redirect target.
+      serviceaccounts.openshift.io/oauth-redirectreference.primary: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"victoria-logs"}}'
+
+  server:
+    # Restart the pod when any mounted secret/configmap changes (stakater
+    # Reloader auto mode), so future secrets are covered without listing each.
+    annotations:
+      reloader.stakater.com/auto: "true"
+
+    # OpenShift's restricted-v2 SCC assigns the UID/fsGroup from the namespace
+    # range; drop the upstream-hardcoded values.
+    podSecurityContext:
+      runAsUser: null
+      fsGroup: null
+
+    # No unauthenticated ingress on OpenShift; the oauth Route below is the only
+    # external entrypoint.
+    ingress:
+      enabled: false
+
+    service:
+      annotations:
+        # service-ca issues the TLS cert the sidecar serves on :8443.
+        service.beta.openshift.io/serving-cert-secret-name: victoria-logs-tls
+      extraPorts:
+        - name: oauth-proxy
+          port: 8443
+          targetPort: oauth-proxy
+          protocol: TCP
+
+    extraVolumes:
+      - name: oauth-tls
+        secret:
+          secretName: victoria-logs-tls
+      # Cookie signing key for oauth-proxy sessions. This oauth-proxy build
+      # requires a cookie-secret. It is NOT committed (leaking it allows session
+      # forgery / auth bypass); create it once out-of-band (or as a SealedSecret)
+      # -- see docs/logaggregation-okd.md.
+      - name: oauth-cookie
+        secret:
+          secretName: victoria-logs-oauth-cookie
+
+    extraContainers:
+      - name: oauth-proxy
+        # OKD: community origin image, tag tracks the OpenShift minor version
+        # (cluster is 4.20.x -> tag 4.20).
+        image: quay.io/openshift/origin-oauth-proxy:4.20
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: oauth-proxy
+            containerPort: 8443
+            protocol: TCP
+        args:
+          - -provider=openshift
+          - -https-address=:8443
+          - -http-address=
+          - -email-domain=*
+          - -upstream=http://localhost:9428
+          - -tls-cert=/etc/tls/private/tls.crt
+          - -tls-key=/etc/tls/private/tls.key
+          - -cookie-secret-file=/etc/proxy/secrets/session_secret
+          - -openshift-service-account=victoria-logs
+          # SOLE authorization boundary for this otherwise-unauthenticated
+          # store: reading secrets in openshift-config is cluster-admin-only.
+          # Widening this SAR widens who can read all cluster logs.
+          - '-openshift-sar={"namespace":"openshift-config","resource":"secrets","verb":"get"}'
+        volumeMounts:
+          - name: oauth-tls
+            mountPath: /etc/tls/private
+            readOnly: true
+          - name: oauth-cookie
+            mountPath: /etc/proxy/secrets
+            readOnly: true
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: [ALL]
+
+  extraObjects:
+    # The proxy SA must run TokenReview/SubjectAccessReview for the incoming
+    # user, which -openshift-sar relies on.
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      metadata:
+        name: victoria-logs-oauth-delegator
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: system:auth-delegator
+      subjects:
+        - kind: ServiceAccount
+          name: victoria-logs
+          namespace: addon-victoria-logs
+    # Trusted reencrypt Route -> oauth-proxy. Only external entrypoint.
+    - apiVersion: route.openshift.io/v1
+      kind: Route
+      metadata:
+        name: victoria-logs
+      spec:
+        host: logs.apps.okd4.example.com
+        to:
+          kind: Service
+          name: victoria-logs-upstream-server
+        port:
+          targetPort: oauth-proxy
+        tls:
+          termination: reencrypt
+          insecureEdgeTerminationPolicy: Redirect

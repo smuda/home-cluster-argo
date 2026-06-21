@@ -1,0 +1,129 @@
+# OCP exposes VictoriaLogs exactly like OKD (see values-okd.yaml and
+# docs/logaggregation-okd.md): oauth-proxy sidecar behind a reencrypt Route,
+# restricted to cluster admins. The only difference is the oauth-proxy image
+# comes from the Red Hat registry instead of the community origin image.
+upstream:
+  serviceAccount:
+    create: true
+    name: victoria-logs
+    annotations:
+      serviceaccounts.openshift.io/oauth-redirectreference.primary: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"victoria-logs"}}'
+
+  server:
+    # Restart the pod when any mounted secret/configmap changes (stakater
+    # Reloader auto mode), so future secrets are covered.
+    annotations:
+      reloader.stakater.com/auto: "true"
+
+    podSecurityContext:
+      runAsUser: null
+      fsGroup: null
+
+    ingress:
+      enabled: false
+
+    service:
+      annotations:
+        service.beta.openshift.io/serving-cert-secret-name: victoria-logs-tls
+      extraPorts:
+        - name: oauth-proxy
+          port: 8443
+          targetPort: oauth-proxy
+          protocol: TCP
+
+    extraVolumes:
+      - name: oauth-tls
+        secret:
+          secretName: victoria-logs-tls
+      # See values-okd.yaml: required cookie signing key, provided out-of-band
+      # (not committed). docs/logaggregation-okd.md.
+      - name: oauth-cookie
+        secret:
+          secretName: victoria-logs-oauth-cookie
+
+    extraContainers:
+      - name: oauth-proxy
+        # This cluster ships oauth-proxy only through its release payload: the
+        # integrated image registry is Removed, and registry.redhat.io has no
+        # ose-oauth-proxy:v4.20 tag (manifest unknown). This digest is what the
+        # openshift/oauth-proxy imagestream resolves to on the 4.20.x cluster;
+        # nodes pull it via the cluster pull secret. Refresh after a major
+        # upgrade with:
+        #   oc -n openshift get is oauth-proxy \
+        #     -o jsonpath='{.status.tags[0].items[0].dockerImageReference}'
+        image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:2789935eb78cb8983314ea417a41e41b73e1f57adc8a7c6585d28dcc0868fad7
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: oauth-proxy
+            containerPort: 8443
+            protocol: TCP
+        args:
+          - -provider=openshift
+          - -https-address=:8443
+          - -http-address=
+          - -email-domain=*
+          - -upstream=http://localhost:9428
+          - -tls-cert=/etc/tls/private/tls.crt
+          - -tls-key=/etc/tls/private/tls.key
+          - -cookie-secret-file=/etc/proxy/secrets/session_secret
+          - -openshift-service-account=victoria-logs
+          # SOLE authorization boundary (cluster-admin-only); see values-okd.yaml.
+          - '-openshift-sar={"namespace":"openshift-config","resource":"secrets","verb":"get"}'
+        volumeMounts:
+          - name: oauth-tls
+            mountPath: /etc/tls/private
+            readOnly: true
+          - name: oauth-cookie
+            mountPath: /etc/proxy/secrets
+            readOnly: true
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: [ALL]
+
+  extraObjects:
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      metadata:
+        name: victoria-logs-oauth-delegator
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: system:auth-delegator
+      subjects:
+        - kind: ServiceAccount
+          name: victoria-logs
+          namespace: addon-victoria-logs
+    - apiVersion: route.openshift.io/v1
+      kind: Route
+      metadata:
+        name: victoria-logs
+      spec:
+        host: logs.apps.okd4.example.com
+        to:
+          kind: Service
+          name: victoria-logs-upstream-server
+        port:
+          targetPort: oauth-proxy
+        tls:
+          termination: reencrypt
+          insecureEdgeTerminationPolicy: Redirect
+    # oauth-proxy cookie signing key. Sealed for THIS cluster's sealed-secrets
+    # key (a SealedSecret only decrypts on the cluster that sealed it). Re-seal
+    # per cluster: kubectl create secret generic victoria-logs-oauth-cookie
+    # -n addon-victoria-logs --from-literal=session_secret=$(openssl rand -base64 32)
+    # --dry-run=client -o yaml | kubeseal --controller-namespace addon-sealed-secrets
+    # --controller-name sealed-secrets-controller --format yaml
+    - apiVersion: bitnami.com/v1alpha1
+      kind: SealedSecret
+      metadata:
+        name: victoria-logs-oauth-cookie
+        namespace: addon-victoria-logs
+      spec:
+        encryptedData:
+          session_secret: AgCUEf0zomBx4zjswus9il7WUSB+jpFNhssciTwzN+SS2NsfR87ktMmxAa+48pf7ijkai2tGN+jf33lhis0dURmnCukR2p0xylEEjd3x0/aysUUiwdbVT6e2Vf1vKhthhY3uSBzEj1TF+ZW7T47yw9yOv9wbwiaiGxr8DdOu1ytjc9kNIEfuILJvZ/E1VR3la6hzsiDgRIkufzIJ+3RoZNQYu5m9XKo8NqL0QmeYH0mQ1RhpZMnSvAWWeheTbxuR1BhJJf7Ef9z/8fQkvJsrLXjJgYSNn7jbjS0tyPelx8mYpP8xCIJPyHAcNmq80QYcdWfGtAjj3JSqqE6T3C5UCt2Sj8LNtxMtFYD+pQNrTsSw1qp4Boan1uD0Fvl+OcXI32kJyMzKqvRj7PEvUTV5dlgItbVSLuhwU27dBmiXb38yM2vwugUZY7iy4phlq7qcqR5QYD3NoTlH4ioSscpB7VBdR0uVg2qtkrc/Oy2/F1Ry+rGYpluUhsORKCTS0eKacvPDEi80pDqDc/1eXAqWiUbAL345Gefe35+sb4tXF4nLuEbdw0xEACX2MHNp+iIAacwufMFTlq1vheuCwux+GRubwmMVs9SSYvVEW6aOa27fMX6zpfXay6AqOHeH0y5/MFs/ks3+BpBI0hjJsnKD/xTV5h5O4Ksgvzxv+QytRaqTJKwUJwuz4o4nUmcrk8uU5FG3ANhAp8VD1kqW6kmMxNyG4SUUm4lGq0tUBxUVGHISMbz+V4NlBjagxuyUfw==
+        template:
+          metadata:
+            name: victoria-logs-oauth-cookie
+            namespace: addon-victoria-logs

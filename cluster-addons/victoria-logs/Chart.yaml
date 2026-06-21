@@ -1,0 +1,14 @@
+apiVersion: v2
+name: victoria-logs
+description: A Helm chart for Kubernetes
+
+type: application
+
+version: 1.0.0
+
+dependencies:
+  # https://github.com/VictoriaMetrics/helm-charts/releases
+  - name: victoria-logs-single
+    version: 0.13.8
+    alias: upstream
+    repository: https://victoriametrics.github.io/helm-charts/

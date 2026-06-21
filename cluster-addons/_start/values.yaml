@@ -63,3 +63,14 @@ sealedSecrets:
 trivy:
   use: true
   podSecurityLevel: restricted
+
+victoriaLogs:
+  use: true
+  podSecurityLevel: restricted
+
+victoriaLogsCollector:
+  # vlagent DaemonSet needs hostPath access to node container logs, which the
+  # PodSecurity "restricted"/"baseline" volume allowlist forbids; run the
+  # namespace privileged. Disabled on OKD/OCP (OpenShift Logging is used there).
+  use: true
+  podSecurityLevel: privileged

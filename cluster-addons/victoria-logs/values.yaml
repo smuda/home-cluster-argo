@@ -1,0 +1,32 @@
+upstream:
+  # VictoriaLogs single-node: the log store plus the built-in VMUI. This repo
+  # deploys the store only; a log collector (kind/k8s) or the OpenShift Logging
+  # Vector ClusterLogForwarder (OKD/OCP) ships logs in a later change.
+  server:
+    # Retention is months by default; one month suits a homelab.
+    retentionPeriod: 1
+
+    # The upstream chart omits seccompProfile, which PodSecurity "restricted"
+    # requires; set it so the pod is admitted under the restricted namespace.
+    podSecurityContext:
+      seccompProfile:
+        type: RuntimeDefault
+
+    persistentVolume:
+      enabled: true
+      size: 10Gi
+
+    service:
+      # Use a normal ClusterIP (VIP) instead of the chart's default headless
+      # service, so the name resolves to a stable IP regardless of pod
+      # readiness (no transient DNS failures for the collector/Route when the
+      # pod restarts). Single-node store, so per-pod StatefulSet DNS is unused.
+      clusterIP: ""
+
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+        - name: logs.apps.k8s1.example.com
+          path: [/]
+          port: http

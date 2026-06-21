@@ -1,0 +1,11 @@
+upstream:
+  server:
+    # Local cluster: small volume, nip.io host behind ingress-nginx.
+    persistentVolume:
+      size: 2Gi
+
+    ingress:
+      hosts:
+        - name: logs.apps.127.0.0.1.nip.io
+          path: [/]
+          port: http

@@ -1,0 +1,6 @@
+# Pull-through cache overlay. Rewrite the upstream image repository here when
+# the docker-cache overlay is active, e.g.:
+# upstream:
+#   server:
+#     image:
+#       repository: <cache-host>/victoriametrics/victoria-logs

@@ -59,8 +59,14 @@ and OCP — selected by Helm value files, not branches.
 - **OpenShift**: OKD/OCP manage SCC and UIDs themselves — their value
   files often strip `securityContext`. See
   [docs/openshift.md](docs/openshift.md).
-- **Dependencies**: `Chart.lock` and `*.tgz` are git-ignored. Pin the
-  upstream `version` in `Chart.yaml` with a release-notes comment.
+- **Dependencies**: `Chart.lock` is committed; fetched `*.tgz` stay
+  git-ignored. Argo CD renders from the committed lock, so an in-sync
+  lock keeps renders deterministic instead of re-resolving upstream on
+  every sync. Pin the upstream `version` in `Chart.yaml` with a
+  release-notes comment, and regenerate the lock (`make update-lock`)
+  in the same change. CI's `helm dependency build` fails a PR whose
+  lock is out of sync; the `helm-lockfile` workflow regenerates locks
+  automatically on PRs that touch a `Chart.yaml`.
 
 ## Validate before committing
 

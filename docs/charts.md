@@ -34,12 +34,18 @@ Consequences:
 
 - Upstream values are set under the **`upstream:`** key in the leaf's
   `values*.yaml`.
-- `Chart.lock` and fetched `*.tgz` files are **git-ignored**
-  (see `.gitignore`). Run `helm dependency build` (CI does this) or
-  `make update-lock` locally to materialise them.
+- `Chart.lock` is committed; only the fetched `*.tgz` files are
+  **git-ignored** (see `.gitignore`). Argo CD's repo-server clones the
+  lock and renders with `helm dependency build`, so a committed,
+  in-sync lock keeps renders deterministic instead of re-resolving
+  upstream on every sync. Run `make update-lock` (or `helm dependency
+  build`) locally to materialise the `*.tgz`.
 - Pin the upstream `version` explicitly and keep the upstream
   release-notes URL in a comment, as above. Dependabot
-  (`.github/dependabot.yml`) proposes bumps.
+  (`.github/dependabot.yml`) proposes bumps; regenerate the lock with
+  `make update-lock` when you bump. The `helm-lockfile` workflow does
+  this automatically on PRs, and CI's `helm dependency build` fails a
+  PR whose lock is out of sync with `Chart.yaml`.
 
 ## The value-file set
 

@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0
 
@@ -21,12 +21,25 @@ jobs:
           python-version: '3.9'
           check-latest: true
 
+      # Committed Chart.lock files pin dependencies by digest, but
+      # `helm dependency build` resolves them against registered repos,
+      # so every upstream repository must be added first.
+      - name: Add upstream Helm repos
+        run: |
+          find . -name Chart.yaml -print0 \
+            | xargs -0 grep -hoE 'repository:[[:space:]]*https?://[^[:space:]]+' \
+            | sed -E 's/repository:[[:space:]]*//' | sort -u \
+            | while read -r url; do
+                helm repo add "repo-$(printf '%s' "$url" | shasum | cut -c1-8)" "$url" || true
+              done
+
       - name: Find all charts
         run: |
           CHART_DIRS=$(find . -name Chart.yaml | sed -e "s/\/Chart.yaml//g" | sort)
           while IFS= read -r CHART_DIR; do
             echo ""
-            echo "Building dependency"
+            echo "Building dependency for $CHART_DIR"
+            # Strict: fails if Chart.lock is out of sync with Chart.yaml.
             helm dependency build $CHART_DIR
             echo "Linting $CHART_DIR"
             helm lint $CHART_DIR

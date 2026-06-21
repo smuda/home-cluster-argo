@@ -1,5 +1,4 @@
 .idea/
 *.tgz
-Chart.lock
 must-gather.*
 hack/tmp

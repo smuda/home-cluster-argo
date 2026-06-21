@@ -55,7 +55,10 @@ spec:
         scaleTargetRef:
           apiVersion: apps/v1
           kind: Deployment
-          name: argocd-server
+          # Operator names the server deployment <ArgoCD CR name>-server, i.e.
+          # openshift-gitops-server. Must match or the HPA cannot find its
+          # target (AbleToScale=False).
+          name: openshift-gitops-server
     env:
       - name: ARGOCD_SYNC_WAVE_DELAY
         value: "60"

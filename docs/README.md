@@ -30,6 +30,14 @@ branches or directories.
 5. [openshift.md](openshift.md) — OKD/OCP specifics (the OpenShift
    GitOps operator, SCC, Pod Security, machine configs).
 
+### Topic guides
+
+- [logaggregation-k8s.md](logaggregation-k8s.md) — log aggregation on
+  kind/k8s (VictoriaLogs store + vlagent collector).
+- [logaggregation-okd.md](logaggregation-okd.md) — log aggregation on
+  OpenShift (OKD/OCP): Vector via the OpenShift Logging operator, and
+  the oauth-proxy exposure model.
+
 ## Top-level layout
 
 | Path              | Purpose                                              |

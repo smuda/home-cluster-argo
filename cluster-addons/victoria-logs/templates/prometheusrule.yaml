@@ -1,0 +1,61 @@
+{{- if .Values.alerting.enabled }}
+# Alerting rules for the VictoriaLogs store. Evaluated by whichever Prometheus
+# owns the cluster: kube-prometheus-stack on k8s/kind, user-workload monitoring
+# on OKD/OCP. The vl_* series come from the store's /metrics, scraped via the
+# ServiceMonitor enabled in values.yaml.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ .Release.Name }}-victoria-logs
+  namespace: {{ .Release.Namespace }}
+  {{- with .Values.alerting.extraLabels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  groups:
+    - name: victoria-logs.rules
+      rules:
+        # The store's scrape target is unreachable: metrics and ingestion
+        # health are unobservable, so every other alert here is blind. Scoped
+        # to the store container (release-name-independent) so an unrelated
+        # target in this namespace can't trip or dilute the alert.
+        - alert: VictoriaLogsTargetDown
+          expr: up{namespace="{{ .Release.Namespace }}", container="vlogs"} == 0
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: VictoriaLogs store target is down
+            description: >-
+              Prometheus has been unable to scrape the VictoriaLogs store in
+              {{ .Release.Namespace }} for 10m.
+        # The store has gone read-only (typically the data disk filled past the
+        # retention floor). Incoming logs are dropped while this holds.
+        - alert: VictoriaLogsReadOnly
+          expr: vl_storage_is_read_only{namespace="{{ .Release.Namespace }}"} == 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: VictoriaLogs storage is read-only
+            description: >-
+              The VictoriaLogs store in {{ .Release.Namespace }} is read-only
+              (likely the data disk is full). Incoming logs are being dropped.
+        {{- if .Values.alerting.notIngesting.enabled }}
+        # Deadman: nothing is being ingested. Catches a stopped or misconfigured
+        # collector/ClusterLogForwarder, which event-count metrics miss because
+        # a failed collector topology emits no series at all.
+        - alert: VictoriaLogsNotIngesting
+          expr: sum(rate(vl_rows_ingested_total{namespace="{{ .Release.Namespace }}"}[15m])) == 0
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: VictoriaLogs is not ingesting any logs
+            description: >-
+              No rows have been ingested into the VictoriaLogs store in
+              {{ .Release.Namespace }} for 30m. The log pipeline (collector or
+              ClusterLogForwarder) is likely down or misconfigured.
+        {{- end }}
+{{- end }}

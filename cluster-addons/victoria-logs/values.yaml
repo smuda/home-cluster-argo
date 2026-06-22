@@ -6,6 +6,13 @@ upstream:
     # Retention is months by default; one month suits a homelab.
     retentionPeriod: 1
 
+    # Expose the store's /metrics (:9428) to Prometheus. The upstream chart
+    # renders a prometheus-operator ServiceMonitor (kind: ServiceMonitor),
+    # which kube-prometheus-stack (k8s/kind) and OCP user-workload monitoring
+    # both discover. Drives the alerting rules below.
+    serviceMonitor:
+      enabled: true
+
     # The upstream chart omits seccompProfile, which PodSecurity "restricted"
     # requires; set it so the pod is admitted under the restricted namespace.
     podSecurityContext:
@@ -30,3 +37,24 @@ upstream:
         - name: logs.apps.k8s1.example.com
           path: [/]
           port: http
+
+# Prometheus alerting rules for the VictoriaLogs store, rendered as a
+# PrometheusRule in this chart's namespace. Discovered by kube-prometheus-stack
+# (k8s/kind, which needs ruleSelectorNilUsesHelmValues: false — set in the
+# prometheus addon) and by OCP user-workload monitoring (OKD/OCP). Metric names
+# are VictoriaLogs server metrics (vl_*), confirmed against the upstream chart's
+# bundled single-node dashboard.
+alerting:
+  enabled: true
+  # Extra labels stamped on the PrometheusRule, e.g. to satisfy a Prometheus
+  # ruleSelector that filters by label. Empty by default since both stacks here
+  # are configured to select all rules.
+  extraLabels: {}
+  notIngesting:
+    # Deadman alert: fire when the store ingests nothing for a sustained
+    # window. This is the one signal that catches a totally broken pipeline (a
+    # crashed collector or a ClusterLogForwarder/Vector config error stops the
+    # topology, so event-count metrics vanish rather than going to zero).
+    # Enabled on all types per request; note k8s/kind have no collector yet, so
+    # it will fire there until one is added.
+    enabled: true

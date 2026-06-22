@@ -14,6 +14,10 @@ upstream:
         - prometheus.apps.k8s1.example.com
     prometheusSpec:
       serviceMonitorSelectorNilUsesHelmValues: false
+      # Discover PrometheusRules cluster-wide rather than only those carrying
+      # the chart's release label (the kube-prometheus-stack default). Matches
+      # the serviceMonitor behavior above, so addon rules need no extra labels.
+      ruleSelectorNilUsesHelmValues: false
 
   alertmanager:
     ingress:

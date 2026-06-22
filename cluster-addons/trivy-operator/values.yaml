@@ -13,6 +13,17 @@ upstream:
     # local fs cache lock (the cause of failing scan pods in Standalone mode).
     builtInTrivyServer: true
 
+    # Auto-restart the operator when its `trivy-operator` config ConfigMap
+    # changes, so values edits (e.g. scanJob securityContext) take effect on
+    # Argo sync without a manual `oc rollout restart`. The operator reads that
+    # CM via the API and caches it at startup, and does NOT mount it — so the
+    # `reloader.stakater.com/auto` annotation (mounted CMs only) would miss it;
+    # the explicit name-based reload annotation is required. Inert on clusters
+    # without the reloader addon. These deployment annotations land on the
+    # operator Deployment's metadata, which is where Reloader reads them.
+    annotations:
+      configmap.reloader.stakater.com/reload: trivy-operator
+
   # The CIS node-collector scans every node, including control-plane nodes (it
   # mounts /var/lib/etcd, kube-scheduler and kube-controller-manager paths).
   # Control-plane nodes carry the node-role taint, so without matching

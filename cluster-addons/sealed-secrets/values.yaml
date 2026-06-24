@@ -1,6 +1,8 @@
 sealed-secrets:
   fullnameOverride: sealed-secrets-controller
   keyrenewperiod: "0"  # Disable key renewal
+  logLevel: "ERROR"
+  logFormat: "json"
   image:
     registry: ghcr.io
     repository: bitnami-labs/sealed-secrets-controller

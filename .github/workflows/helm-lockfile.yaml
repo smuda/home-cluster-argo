@@ -41,7 +41,7 @@ jobs:
             bitnami.github.io kubecost.github.io kubernetes-sigs.github.io
             kubernetes.github.io prometheus-community.github.io
             raw.githubusercontent.com stakater.github.io
-            victoriametrics.github.io registry.k8s.io
+            victoriametrics.github.io registry.k8s.io ghcr.io
         run: |
           set -euo pipefail
           mapfile -t changed < <(git diff --name-only \
@@ -64,8 +64,9 @@ jobs:
                 *) echo "::error file=$cy::disallowed repository host: $host"; exit 1 ;;
               esac
             done < /tmp/urls
-            # register the https repos (oci dependencies need no `helm repo add`)
-            grep -E '^https?://' /tmp/urls \
+            # register the https repos (oci dependencies need no `helm repo add`);
+            # `|| true` because an OCI-only chart has none and grep exits 1
+            { grep -E '^https?://' /tmp/urls || true; } \
               | while read -r url; do
                   helm repo add "repo-$(printf '%s' "$url" | shasum | cut -c1-8)" "$url" \
                     >/dev/null 2>&1 || true

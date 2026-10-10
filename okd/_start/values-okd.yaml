@@ -5,3 +5,10 @@ argo:
 
 openshiftVerticalPodAutoscaler:
   use: false
+
+# Not in the OKD 5.0 catalogs (redhat-operator-index:v5.0 /
+# community-operator-index:v5.0); the subscriptions never resolve.
+opendatahubOperator:
+  use: false
+openshiftLogging:
+  use: false

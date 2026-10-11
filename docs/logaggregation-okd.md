@@ -110,15 +110,19 @@ different group, change this SAR to a permission that group holds (or
 bind that group to a role and probe it here).
 
 > Cookie signing: oauth-proxy requires a cookie-secret (the session
-> signing key), mounted via `-cookie-secret-file`. It is not committed to
-> git — leaking it allows session forgery (auth bypass). Provision it
-> once out-of-band as Secret `victoria-logs-oauth-cookie` (key
-> `session_secret`) in `addon-victoria-logs`, ideally a SealedSecret, e.g.:
+> signing key), mounted via `-cookie-secret-file`. Leaking it allows
+> session forgery (auth bypass), so it is committed only as a
+> SealedSecret `victoria-logs-oauth-cookie` (key `session_secret`) in
+> `addon-victoria-logs`, in both `values-okd.yaml` and `values-ocp.yaml`.
+> The clusters share the sealed-secrets key; if that changes, re-seal:
 >
 > ```shell
 > oc -n addon-victoria-logs create secret generic \
 >   victoria-logs-oauth-cookie \
->   --from-literal=session_secret="$(openssl rand -base64 32)"
+>   --from-literal=session_secret="$(openssl rand -base64 32)" \
+>   --dry-run=client -o yaml | kubeseal \
+>   --controller-namespace addon-sealed-secrets \
+>   --controller-name sealed-secrets-controller --format yaml
 > ```
 
 ## Enabling / disabling

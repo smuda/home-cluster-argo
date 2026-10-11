@@ -50,9 +50,8 @@ upstream:
         secret:
           secretName: victoria-logs-tls
       # Cookie signing key for oauth-proxy sessions. This oauth-proxy build
-      # requires a cookie-secret. It is NOT committed (leaking it allows session
-      # forgery / auth bypass); create it once out-of-band (or as a SealedSecret)
-      # -- see docs/logaggregation-okd.md.
+      # requires a cookie-secret. Committed only as a SealedSecret (see
+      # extraObjects); leaking the plaintext allows session forgery.
       - name: oauth-cookie
         secret:
           secretName: victoria-logs-oauth-cookie
@@ -124,3 +123,17 @@ upstream:
         tls:
           termination: reencrypt
           insecureEdgeTerminationPolicy: Redirect
+    # oauth-proxy cookie signing key. Same SealedSecret as values-ocp.yaml:
+    # both clusters share the sealed-secrets key. Re-seal if that changes.
+    - apiVersion: bitnami.com/v1alpha1
+      kind: SealedSecret
+      metadata:
+        name: victoria-logs-oauth-cookie
+        namespace: addon-victoria-logs
+      spec:
+        encryptedData:
+          session_secret: AgCUEf0zomBx4zjswus9il7WUSB+jpFNhssciTwzN+SS2NsfR87ktMmxAa+48pf7ijkai2tGN+jf33lhis0dURmnCukR2p0xylEEjd3x0/aysUUiwdbVT6e2Vf1vKhthhY3uSBzEj1TF+ZW7T47yw9yOv9wbwiaiGxr8DdOu1ytjc9kNIEfuILJvZ/E1VR3la6hzsiDgRIkufzIJ+3RoZNQYu5m9XKo8NqL0QmeYH0mQ1RhpZMnSvAWWeheTbxuR1BhJJf7Ef9z/8fQkvJsrLXjJgYSNn7jbjS0tyPelx8mYpP8xCIJPyHAcNmq80QYcdWfGtAjj3JSqqE6T3C5UCt2Sj8LNtxMtFYD+pQNrTsSw1qp4Boan1uD0Fvl+OcXI32kJyMzKqvRj7PEvUTV5dlgItbVSLuhwU27dBmiXb38yM2vwugUZY7iy4phlq7qcqR5QYD3NoTlH4ioSscpB7VBdR0uVg2qtkrc/Oy2/F1Ry+rGYpluUhsORKCTS0eKacvPDEi80pDqDc/1eXAqWiUbAL345Gefe35+sb4tXF4nLuEbdw0xEACX2MHNp+iIAacwufMFTlq1vheuCwux+GRubwmMVs9SSYvVEW6aOa27fMX6zpfXay6AqOHeH0y5/MFs/ks3+BpBI0hjJsnKD/xTV5h5O4Ksgvzxv+QytRaqTJKwUJwuz4o4nUmcrk8uU5FG3ANhAp8VD1kqW6kmMxNyG4SUUm4lGq0tUBxUVGHISMbz+V4NlBjagxuyUfw==
+        template:
+          metadata:
+            name: victoria-logs-oauth-cookie
+            namespace: addon-victoria-logs

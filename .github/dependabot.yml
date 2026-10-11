@@ -27,11 +27,6 @@ updates:
       interval: monthly
 
   - package-ecosystem: helm
-    directory: /cluster-addons/opencost
-    schedule:
-      interval: monthly
-
-  - package-ecosystem: helm
     directory: /cluster-addons/prometheus
     schedule:
       interval: monthly

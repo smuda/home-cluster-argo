@@ -1,6 +1,6 @@
 dependencies:
 - name: cert-manager-approver-policy
   repository: https://charts.jetstack.io
-  version: v0.28.0
-digest: sha256:7112b27413707e94bf837939d28f61828d0942e05e2085803bb483f83f46b2aa
-generated: "2026-10-10T05:48:21.137449758Z"
+  version: v0.29.0
+digest: sha256:b5066d8fd5b8927bc702d1dfc5ccc41e7a1d306244adcfd04e6bcc4af8db9065
+generated: "2026-11-01T22:35:38.007276081Z"

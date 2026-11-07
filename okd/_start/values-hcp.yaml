@@ -1,0 +1,28 @@
+argo:
+  common:
+    valueFiles:
+      - values-hcp.yaml
+
+certManager:
+  use: false
+
+complianceOperator:
+  use: false
+
+csrAutoApprover:
+  use: false
+
+keda:
+  use: false
+
+machineConfigs:
+  use: false
+
+opendatahubOperator:
+  use: false
+
+openshiftLogging:
+  use: false
+
+openshiftVerticalPodAutoscaler:
+  use: false

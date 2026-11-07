@@ -1,0 +1,13 @@
+argo:
+  common:
+    valueFiles:
+      - values-hcp.yaml
+
+addons:
+  use: false
+
+okd:
+  use: true
+
+openshiftGitOpsOperator:
+  use: true

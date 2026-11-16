@@ -19,8 +19,6 @@ architecture and the conventions that are easy to get wrong here:
   for adding an addon.
 - [docs/openshift.md](docs/openshift.md) — OKD/OCP specifics.
 
-Keep the docs up to date when you change how things work.
-
 ## What this repo is
 
 A GitOps repository. Argo CD installs everything via the app-of-apps
@@ -86,7 +84,3 @@ touch the bootstrap chain.
 
 - Addon namespaces are prefixed `addon-`; Applications set
   `CreateNamespace=true`.
-- Chart docs use [helm-docs](https://github.com/norwoodj/helm-docs).
-- Commits use Conventional Commits; keep the subject under 72 chars and
-  do not add `Co-authored-by` lines.
-- Markdown wraps at 72 characters.
